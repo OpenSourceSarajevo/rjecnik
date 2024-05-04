@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 
 import Card from "./components/card";
+import Navbar from "./components/navbar";
 
 import styles from "./page.module.css";
 
@@ -14,6 +15,7 @@ const Home = async () => {
 
   return (
     <>
+      <Navbar />
       <main className={styles.main}>
         <div className={styles.grid}>{cards}</div>
       </main>

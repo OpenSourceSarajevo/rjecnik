@@ -1,0 +1,12 @@
+.nav {
+  display: flex;
+}
+
+.separator {
+  flex: 1;
+}
+
+.item {
+  margin: 10px;
+  font-size: 20px;
+}
