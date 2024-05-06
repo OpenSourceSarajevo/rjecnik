@@ -16,10 +16,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
+        working-directory: "./rjecnik-web"
         run: npm ci
 
       - name: Lint
+        working-directory: "./rjecnik-web"
         run: npm run lint
 
       - name: Build
+        working-directory: "./rjecnik-web"
         run: npm run build --if-present

@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/supabase/server";
 
 import Card from "./components/card";
 import Navbar from "./components/navbar";
