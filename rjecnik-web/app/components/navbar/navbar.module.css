@@ -1,5 +1,6 @@
 .nav {
   display: flex;
+  margin: 10px;
 }
 
 .separator {
@@ -9,4 +10,9 @@
 .item {
   margin: 10px;
   font-size: 20px;
+  padding: 5px;
+}
+
+.active {
+  background-color: rgb(48, 48, 48);
 }
