@@ -1,15 +1,18 @@
 import styles from "./card.module.css";
 
-type CardProps = {
+interface ICardProps {
   title: string;
   description: string;
-};
+}
 
-const Card = (props: CardProps) => {
-  const { title, description } = props;
+type CardProps<T extends React.ElementType> = ICardProps &
+  React.ComponentPropsWithRef<T>;
+
+const Card = <T extends React.ElementType = "div">(props: CardProps<T>) => {
+  const { title, description, ...rest } = props;
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} {...rest}>
       <h2>{title}</h2>
       <p>{description}</p>
     </div>
