@@ -10,14 +10,22 @@ type Word = {
 export async function GET(request: NextRequest) {
   const pageNumber = +request.nextUrl.searchParams.get("pageNumber")!;
   const pageSize = +request.nextUrl.searchParams.get("pageSize")!;
+  const word = request.nextUrl.searchParams.get("word");
 
   const supabase = createClient();
 
-  const { data, error } = await supabase
+  var query = supabase
     .from("words")
     .select("id, word, meaning")
-    .order("id")
-    .range(pageNumber * pageSize, (pageNumber + 1) * pageSize - 1);
+    .order("word, id", { ascending: true });
+
+  if (word!!) {
+    query = query.ilike("word", `%${word}%`);
+  }
+
+  query = query.range(pageNumber * pageSize, (pageNumber + 1) * pageSize - 1);
+
+  const { data, error } = await query;
 
   if (error) throw error;
 
