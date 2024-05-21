@@ -85,11 +85,7 @@ const Dictionary = () => {
         </div>
         <div className={style.list}>
           {data.map((item) => (
-            <Card
-              key={item.id}
-              title={item.id + " " + item.word}
-              description={item.meaning}
-            />
+            <Card key={item.id} title={item.word} description={item.meaning} />
           ))}
         </div>
       </div>

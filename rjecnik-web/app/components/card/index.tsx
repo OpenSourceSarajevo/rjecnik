@@ -1,21 +1,21 @@
+import Link from "next/link";
 import styles from "./card.module.css";
 
-interface ICardProps {
+type CardProps = {
   title: string;
   description: string;
-}
+};
 
-type CardProps<T extends React.ElementType> = ICardProps &
-  React.ComponentPropsWithRef<T>;
-
-const Card = <T extends React.ElementType = "div">(props: CardProps<T>) => {
-  const { title, description, ...rest } = props;
+const Card = (props: CardProps) => {
+  const { title, description } = props;
 
   return (
-    <div className={styles.card} {...rest}>
-      <h2>{title}</h2>
-      <p>{description}</p>
-    </div>
+    <Link href={`/dictionary/${title}`}>
+      <div className={styles.card}>
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+    </Link>
   );
 };
 
