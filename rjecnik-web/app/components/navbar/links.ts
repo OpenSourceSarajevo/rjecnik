@@ -5,15 +5,15 @@ export type Link = {
 
 export const links: Link[] = [
   {
-    name: "Home",
+    name: "Početna",
     href: "/",
   },
   {
-    name: "Dictionary",
-    href: "/dictionary",
+    name: "Rječnik",
+    href: "/rjecnik",
   },
   {
-    name: "Contact",
-    href: "/contact",
+    name: "Kontakt",
+    href: "/kontakt",
   },
 ];

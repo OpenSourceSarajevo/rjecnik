@@ -10,7 +10,7 @@ const Card = (props: CardProps) => {
   const { title, description } = props;
 
   return (
-    <Link href={`/dictionary/${title}`}>
+    <Link href={`/rjecnik/${title}`}>
       <div className={styles.card}>
         <h2>{title}</h2>
         <p>{description}</p>

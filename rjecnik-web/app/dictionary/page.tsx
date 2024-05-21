@@ -13,7 +13,7 @@ type Word = {
 };
 
 const Dictionary = () => {
-  const MAX_PER_PAGE = 5;
+  const MAX_PER_PAGE = 10;
 
   const [data, setData] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
