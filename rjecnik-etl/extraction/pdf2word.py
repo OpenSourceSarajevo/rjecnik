@@ -1,6 +1,6 @@
 from docx import Document
 
-from utils import is_bold, contains_numbers, extract_bold_text, read_pdf
+from utils import read_pdf
 
 begin_page=4
 end_page=661

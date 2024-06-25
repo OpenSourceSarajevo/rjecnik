@@ -20,14 +20,43 @@ python -m pip install -r requirements.txt
 3. Convert the pdf file to word, excel or csv
 
 ```bash
-python pdf2word.py
+python ./extration/pdf2word.py
 ```
 
 ```bash
-python pdf2excel.py
+python ./extration/pdf2excel.py
 ```
 
 ```bash
-python pdf2csv.py
+python ./extration/pdf2csv.py
 ```
 
+## Data Transofrmations:
+
+```bash
+python ./transofrmation/append_hyphened_lines.py
+```
+
+```bash
+python ./transofrmation/append_parenthese_se_lines.py
+```
+
+```bash
+python ./transofrmation/format_alfabet.py
+```
+
+```bash
+python ./transofrmation/remove_apostrophe.py
+```
+
+### Manual Changes to CSV File
+
+* [List of changes perfomed](./Changes.md)
+
+```bash
+python ./transofrmation/cleanup.py
+```
+
+```bash
+python ./transofrmation/get_word_origin.py
+```
