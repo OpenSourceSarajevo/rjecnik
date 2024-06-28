@@ -2,6 +2,18 @@ import re
 import sys
 import pandas as pd
 
+def multiple_dashes(row):
+    word, descriptors, meaning = row["word"], row["descriptors"], row["meaning"]
+
+    meaning = str(meaning)
+
+    pattern = r'-'
+    if re.search(pattern, meaning):
+        print(word, " | - ", meaning)
+        return True
+
+    return False
+
 def multiple_words(row):
     word, descriptors, meaning = row["word"], row["descriptors"], row["meaning"]
 
@@ -33,7 +45,6 @@ def invalid_descriptor(row):
     
     pattern = r'^(%s)' % '|'.join(keywords)
 
-    # pattern = r'^(gl\.|im\.|prid\.|prij\.|neprom\. prid\.|pril\.|vezn\.|uzv\.|uzvik|prijed\.|riječca|broj|zamj\.|zb\. im\.|red\. broj|zbir\. broj|poim\. prid\.|pom\. gl\.|lič\. zamj\.|upit\. zamj\.|neodr\. zamj\.|prisv\. zamj\.|odr\. zamj\.|br\.|vl\. im\.|pokaz\. zamj\.|up\. zamj\.|prisv\. prid\.)'
     if not re.search(pattern, descriptors):
         print(word, descriptors, meaning)
         return True
@@ -43,9 +54,16 @@ def invalid_descriptor(row):
 if __name__ == "__main__":
     df = pd.read_csv('rjecnik_stage_01.csv', on_bad_lines='warn')
 
-    sys.stdout = open('log.txt', 'w', encoding="utf-8")
-    cleaned_df = df[df.apply(invalid_descriptor, axis=1)]
+    sys.stdout = open('multiple_dashes.txt', 'w', encoding="utf-8")
+    cleaned_df = df[df.apply(multiple_dashes, axis=1)]
+    print(len(cleaned_df))
 
+    sys.stdout = open('invalid_descriptor.txt', 'w', encoding="utf-8")
+    cleaned_df = df[df.apply(invalid_descriptor, axis=1)]
+    print(len(cleaned_df))
+
+    sys.stdout = open('multiple_words.txt', 'w', encoding="utf-8")
+    cleaned_df = df[df.apply(multiple_words, axis=1)]
     print(len(cleaned_df))
 
     sys.stdout.close()

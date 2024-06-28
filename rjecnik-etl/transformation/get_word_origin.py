@@ -29,7 +29,9 @@ origin_mapping = {
     "rum": "rumunski",
     "hrv": "hrvatski",
     "mlet": "mletački",
-    "kelt": "keltski"
+    "kelt": "keltski",
+    "jap": "japanski",
+    "norv": "norveški"
 }
 
 def get_word_origin(row):
