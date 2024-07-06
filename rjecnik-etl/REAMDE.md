@@ -1,5 +1,10 @@
 # Rječnik ETL
 
+
+> [!NOTE] 
+> This project is a collection of scripts used to extract, clean, and load the initial data. Along side VSCode Regex/Replace option they were written to minimize the manual work needed to be performed on the data set. It served its purpose and trying to use it to recreate the loaded data would waste your time. 
+
+
 ### Prerequisites
 - [Python 3.9+](https://www.python.org/downloads)
 
@@ -17,7 +22,7 @@ python -m pip install -r requirements.txt
 
 * [Rječnik bosanskog jezika - Institut za jezik Sarajevo 2007](https://archive.org/details/RjenikBosanskogJezikaInstitutZaJezikSarajevo2007.)
 
-3. Convert the pdf file to word, excel or csv
+## Data Extraction:
 
 ```bash
 python ./extration/pdf2word.py
@@ -49,14 +54,14 @@ python ./transofrmation/format_alfabet.py
 python ./transofrmation/remove_apostrophe.py
 ```
 
-### Manual Changes to CSV File
-
-* [List of changes perfomed](./Changes.md)
-
 ```bash
 python ./transofrmation/cleanup.py
 ```
 
+* Before running the cleanup script allot of manual changes needed to be performed 
+
+## Data Load:
+
 ```bash
-python ./transofrmation/get_word_origin.py
+python ./load/load.py
 ```

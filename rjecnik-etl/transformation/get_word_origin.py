@@ -31,7 +31,9 @@ origin_mapping = {
     "mlet": "mletački",
     "kelt": "keltski",
     "jap": "japanski",
-    "norv": "norveški"
+    "norv": "norveški",
+    "jevr": "jevrejski",
+    "ind": "indijski"
 }
 
 def get_word_origin(row):
@@ -50,6 +52,8 @@ def get_word_origin(row):
                 descriptors = descriptors.replace(abbr, '').strip()
                 descriptors = descriptors.replace('(.)', '')
                 descriptors = descriptors.replace('( .)', '')
+                descriptors = descriptors.replace('(..)', '')
+                descriptors = descriptors.replace('(...)', '')
 
 
         origins_full_words = []
