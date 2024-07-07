@@ -50,12 +50,13 @@ def is_imenica(descriptors):
     return bool(re.match(pattern, descriptors))
 
 def get_type_and_gender(row):
-    word, descriptors, meaning, origin = row["word"], row["descriptors"].strip(), row["meaning"], row["origin"]
+    word, descriptors, meaning, origin = row["word"], row["descriptors"], row["meaning"], row["origin"]
 
     if pd.isna(descriptors):
         return pd.Series([word, descriptors, meaning, origin, '', ''])
     
-
+    descriptors = descriptors.strip()
+    
     gender = ''
     for abbr in gender_mapping:
         if abbr in descriptors or abbr in descriptors:
@@ -69,6 +70,15 @@ def get_type_and_gender(row):
             descriptors = descriptors.replace(abbr, '').strip()
 
     return pd.Series([word, descriptors, meaning, origin, type, gender])
+
+
+def get_type_glagol(row):
+    word, descriptors, meaning, origin = row["word"], row["descriptors"], row["meaning"], row["origin"]
+
+    if pd.isna(descriptors):
+        return pd.Series([word, descriptors, meaning, origin, '', ''])
+
+    return pd.Series([word, descriptors, meaning, origin, "glagol", ""])
 
 
 def is_pridjev(descriptors):
