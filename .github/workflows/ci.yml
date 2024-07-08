@@ -1,4 +1,10 @@
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - rjecnik-web/*
+  pull_request:
+    paths:
+      - rjecnik-web/*
 
 jobs:
   deploy:
