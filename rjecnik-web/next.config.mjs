@@ -14,8 +14,8 @@ const nextConfig = {
         destination: "/dictionary",
       },
       {
-        source: "/rjecnik/:word",
-        destination: "/dictionary/:word",
+        source: "/rjecnik/:word/:id",
+        destination: "/dictionary/:word/:id",
       },
       {
         source: "/kontakt",

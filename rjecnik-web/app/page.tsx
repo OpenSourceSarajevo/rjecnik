@@ -9,7 +9,7 @@ const Home = async () => {
   const { data: words } = await supabase.from("words").select();
 
   const cards = words?.map((e, i) => (
-    <Card key={i} title={e.word} description={e.meaning} />
+    <Card key={e.id} id={e.id} title={e.word} description={e.meaning} />
   ));
 
   return (
