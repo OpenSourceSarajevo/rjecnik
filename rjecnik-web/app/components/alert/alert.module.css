@@ -1,0 +1,21 @@
+.alert {
+  padding: 15px;
+  margin: 20px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.warning {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
+
+.link {
+  color: black;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.icon {
+  margin-right: 10px;
+}

@@ -5,6 +5,7 @@ import Card from "../components/card";
 import Loader from "../components/loader";
 
 import style from "./page.module.css";
+import Alert from "../components/alert";
 
 type Word = {
   id: number;
@@ -75,6 +76,7 @@ const Dictionary = () => {
   return (
     <>
       <div>
+        <Alert></Alert>
         <div className={style.wrapper}>
           <input
             className={style.input}
