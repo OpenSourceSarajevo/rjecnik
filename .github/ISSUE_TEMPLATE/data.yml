@@ -1,4 +1,5 @@
 name: Data Issue Report
+description: Prijavi problem sa podacima
 labels: ["data"]
 projects: ["Rjecnik-Data"]
 body:
@@ -11,29 +12,11 @@ body:
     validations:
       required: true
   - type: input
-    id: rijec
+    id: url
     attributes:
       label: url
       description: Url rijeci za koju prijavljujete gresku
       placeholder: npr. {url}/rijec/1
-    validations:
-      required: false
-  - type: dropdown
-    id: vrsta
-    attributes:
-      label: Vrsta
-      description: Vrste rijeci za koju prijavljujete gresku
-      options:
-        - imenica
-        - glagol
-        - broj
-        - pridjev
-        - prilog
-        - prijedlog
-        - veznik
-        - uzvik
-        - rjecca
-        - zamjenica
     validations:
       required: false
   - type: textarea
@@ -43,7 +26,5 @@ body:
       description: Definicija rijeci za koju prijavljujete gresku
       render: shell
   - type: markdown
-    id: forme
     attributes:
-      label: Padezi/Glagolska Vremena
-      description: Padezi ili glagolska vremena rijeci za koju prijavljujete gresku
+      value: "Padezi ili glagolska vremena"
