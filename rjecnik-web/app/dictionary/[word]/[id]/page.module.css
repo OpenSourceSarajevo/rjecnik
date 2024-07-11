@@ -3,5 +3,31 @@
 }
 
 .title {
-  margin-bottom: 1rem;
+  margin-bottom: 1em;
+}
+
+.type {
+  text-transform: lowercase;
+}
+
+.info {
+  display: flex;
+  margin: 1em;
+  gap: 1em;
+}
+
+.origin {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.formGroup {
+  margin-top: 1em;
+  text-transform: capitalize;
+}
+
+.forms {
+  margin-top: 0.5em;
 }
