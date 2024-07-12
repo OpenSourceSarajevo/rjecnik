@@ -1,5 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 
+import ReportButton from "./report-button";
+
 import style from "./page.module.css";
 
 const NestedForms = ({ data }: { data: object }) => {
@@ -40,6 +42,7 @@ const Page = async ({ params }: { params: { word: string; id: number } }) => {
   }
 
   const {
+    id,
     word,
     meaning,
     type,
@@ -48,6 +51,7 @@ const Page = async ({ params }: { params: { word: string; id: number } }) => {
     alternative,
     forms,
   }: {
+    id: number;
     word: string;
     meaning: string;
     type: string | null;
@@ -116,6 +120,7 @@ const Page = async ({ params }: { params: { word: string; id: number } }) => {
       <p>{meaning}</p>
       {originBlock}
       {formsBlock}
+      <ReportButton id={id} word={word} />
     </div>
   );
 };
