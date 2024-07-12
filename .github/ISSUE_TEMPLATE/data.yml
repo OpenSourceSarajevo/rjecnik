@@ -1,7 +1,7 @@
 name: Data Issue Report
 description: Prijavi problem sa podacima
 labels: ["data"]
-projects: ["Rjecnik-Data"]
+projects: ["OpenSourceSarajevo/2"]
 body:
   - type: input
     id: rijec
@@ -14,7 +14,7 @@ body:
   - type: input
     id: url
     attributes:
-      label: url
+      label: Url
       description: Url rijeci za koju prijavljujete gresku
       placeholder: npr. {url}/rijec/1
     validations:
