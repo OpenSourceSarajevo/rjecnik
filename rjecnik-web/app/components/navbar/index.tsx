@@ -5,20 +5,20 @@ import { usePathname } from "next/navigation";
 
 import { links } from "./links";
 
-import styles from "./navbar.module.css";
+import style from "./navbar.module.css";
 
 const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.separator}></div>
+    <nav className={style.nav}>
+      <div className={style.separator}></div>
       {links.map((link) => {
         return (
           <Link key={link.name} href={link.href}>
             <div
-              className={`${styles.item} ${
-                pathname === link.href ? styles.active : ""
+              className={`${style.item} ${
+                pathname === link.href ? style.active : ""
               }`}
             >
               {link.name}

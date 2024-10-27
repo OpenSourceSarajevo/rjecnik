@@ -1,0 +1,21 @@
+.item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.button {
+  width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.answer {
+  padding-bottom: 1rem;
+  color: var(--color-text-secondary);
+}

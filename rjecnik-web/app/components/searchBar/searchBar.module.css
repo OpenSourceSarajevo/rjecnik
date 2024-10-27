@@ -1,11 +1,7 @@
 .container {
-  padding: 6rem;
-}
-
-.wrapper {
   position: relative;
-  max-width: 100%;
-  margin: 1rem 2rem;
+  max-width: 36rem;
+  margin: 0 auto 4rem;
 }
 
 .input {
@@ -31,6 +27,14 @@
   color: var(--color-text-secondary);
 }
 
-.list {
-  margin: 1rem;
+.badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
 }

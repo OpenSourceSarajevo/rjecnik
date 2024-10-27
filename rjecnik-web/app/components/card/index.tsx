@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./card.module.css";
+import style from "./card.module.css";
 
 type CardProps = {
   id: number;
@@ -15,7 +15,7 @@ const Card = (props: CardProps) => {
 
   return (
     <Link href={`/rjecnik/${word}/${id}`}>
-      <div className={styles.card}>
+      <div className={style.card}>
         <h2>{title}</h2>
         <p>{description}</p>
       </div>
