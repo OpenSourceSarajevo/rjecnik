@@ -1,5 +1,5 @@
-import styles from "./loader.module.css";
+import style from "./loader.module.css";
 
 export default function Loader() {
-  return <div className={styles.loader}></div>;
+  return <div className={style.loader}></div>;
 }
