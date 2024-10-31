@@ -1,31 +1,33 @@
 import { createClient } from "@/utils/supabase/server";
+import { toDiacritical } from "@/utils/textTransformation";
 
+import ReturnNav from "../../../components/returnNav";
 import ReportButton from "./report-button";
 
 import style from "./page.module.css";
 
+
 const NestedForms = ({ data }: { data: object }) => {
-  return (
-    <div>
-      {Object.entries(data).map(([key, value], index) => (
-        <div key={index}>
-          <h4 className={style.formGroup}>{key}</h4>
-          <Forms data={value} />
-        </div>
-      ))}
-    </div>
-  );
+  return Object.entries(data).map(([key, value], index) => (
+		<div className={style.formColumn} key={index}>
+			<h3 className={style.formTitle}>{toDiacritical(key)}</h3>
+			<Forms data={value} />
+		</div>
+  ));
 };
 
 const Forms = ({ data }: { data: object }) => {
   return (
-    <div className={style.forms}>
-      {Object.entries(data).map(([subKey, subValue]) => (
-        <p key={subKey}>
-          {subKey}: {subValue}
-        </p>
-      ))}
-    </div>
+		<table className={style.formTable}>
+			<tbody>
+				{Object.entries(data).map(([key, value]) => (
+					<tr key={key}>
+						<td className={style.formKey}>{key}</td>
+						<td className={style.formValue}>{value}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
   );
 };
 
@@ -61,67 +63,83 @@ const Page = async ({ params }: { params: { word: string; id: number } }) => {
     forms: string[] | null;
   } = data;
 
-  let wordBlock = <h1 className={style.title}>{word}</h1>;
+  let wordBlock = <h1 className={style.word}>{word}</h1>;
   if (alternative && alternative?.length > 0) {
     wordBlock = (
-      <h1 className={style.title}>
-        {word}/{alternative.join("/")}
-      </h1>
-    );
+		<h1 className={style.word}>
+			{word}/{alternative.join("/")}
+		</h1>
+	);
   }
 
-  let genderBlock = null;
+  let wordType = (
+		<p className={style.wordType}>
+			{data.type}
+		</p>
+  );
   if (gender) {
-    genderBlock = <div>{gender} rod</div>;
-  }
-
-  const separator = type && gender ? "|" : null;
-
-  let originBlock = null;
-  if (origin && origin?.length > 0) {
-    originBlock = (
-      <div className={style.origin}>
-        <h4>Porijeklo:</h4>
-        {origin?.join(", ")}
-      </div>
-    );
+    wordType = <p className={style.wordType}>{data.type}, {gender} rod</p>;
   }
 
   let formsBlock = null;
-  if (forms && forms) {
+  if (forms) {
     if (type === "glagol") {
       formsBlock = (
-        <div>
-          <h4 className={style.formGroup}>Glagolska vremena</h4>
-          {forms.map((form: string, index: number) => (
-            <Forms data={JSON.parse(form)} key={index} />
-          ))}
-        </div>
-      );
+			<div className={style.section}>
+				<h2 className={style.sectionTitle}>Glagolska vremena</h2>
+				<div className={style.formColumn}>
+					<div className={style.formContainer}>
+						{forms.map((form: string, index: number) => (
+							<Forms data={JSON.parse(form)} key={index} />
+						))}
+					</div>
+				</div>
+			</div>
+		);
     } else {
       formsBlock = (
-        <div>
-          {forms.map((form: string, index: number) => (
-            <NestedForms data={JSON.parse(form)} key={index} />
-          ))}
-        </div>
-      );
+			<div className={style.section}>
+				<h2 className={style.sectionTitle}>Padeži</h2>
+				<div className={style.formContainer}>
+					{forms.map((form: string, index: number) => (
+						<NestedForms data={JSON.parse(form)} key={index} />
+					))}
+				</div>
+			</div>
+		);
     }
   }
 
   return (
-    <div className={style.wrapper}>
-      {wordBlock}
-      <div className={style.info}>
-        <p className={style.type}>{type}</p>
-        {separator}
-        {genderBlock}
-      </div>
-      <p>{meaning}</p>
-      {originBlock}
-      {formsBlock}
-      <ReportButton id={id} word={word} />
-    </div>
+		<div className={style.wrapper}>
+			<div className={style.nav}>
+				<ReturnNav url={"/rjecnik"}/>
+				<div className={style.spliter}/>
+				<ReportButton id={id} word={word} />
+			</div>
+			<div className={style.container}>
+				<div className={style.header}>
+					<div className={style.wordInfo}>
+						{wordBlock}
+						{wordType}
+					</div>
+					<div className={style.origins}>
+						{origin?.map((o: string, index: number) => (
+							<span key={index} className={style.origin}>
+								{o}
+							</span>
+						))}
+					</div>
+				</div>
+
+				<div className={style.section}>
+					<h2 className={style.sectionTitle}>Značenje</h2>
+					<div className={style.definitionCard}>{meaning}</div>
+				</div>
+
+				{formsBlock}
+			</div>
+		</div>
   );
 };
 

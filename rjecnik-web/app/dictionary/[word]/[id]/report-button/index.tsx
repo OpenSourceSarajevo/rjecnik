@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 
 import style from "./report-button.module.css";
+import { Flag } from "lucide-react";
 
 const getIssueReportUrl = (word: string, url: string): string => {
   return (
@@ -18,9 +19,15 @@ const ReportButton = ({ id, word }: { id: number; word: string }) => {
   const issueUrl = getIssueReportUrl(word, url);
 
   return (
-    <a href={issueUrl} target="_blank">
-      <button className={style.button}>Prijavi grešku</button>
-    </a>
+		<a href={issueUrl} target="_blank">
+			<button
+				className={style.button}
+				aria-label={`Prijavi problem za riječ ${word}`}
+			>
+				<Flag className={style.icon} />
+				<span>Prijavi problem</span>
+			</button>
+		</a>
   );
 };
 

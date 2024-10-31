@@ -1,33 +1,155 @@
 .wrapper {
-  padding: 3rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
-.title {
-  margin-bottom: 1em;
+@media (min-width: 640px) {
+  .wrapper {
+    padding: 2rem 1.5rem;
+  }
 }
 
-.type {
-  text-transform: lowercase;
+@media (min-width: 1024px) {
+  .wrapper {
+    padding: 2rem 2rem;
+  }
 }
 
-.info {
+.nav {
   display: flex;
-  margin: 1em;
-  gap: 1em;
+  padding: 1rem;
+}
+
+.spliter {
+  flex: 1;
+}
+
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.container {
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+.header {
+  border-bottom: 1px solid rgba(107, 114, 128, 0.1);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.wordInfo {
+  flex: 1;
+}
+
+.word {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.wordType {
+  font-size: 1.125rem;
+  color: #9ca3af;
+}
+
+.origins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .origin {
-  margin-top: 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-}
-
-.formGroup {
-  margin-top: 1em;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  background-color: #374151;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
   text-transform: capitalize;
 }
 
-.forms {
-  margin-top: 0.5em;
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.definitionCard {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #374151;
+  margin-bottom: 1rem;
+}
+
+.definitionCard:last-child {
+  margin-bottom: 0;
+}
+
+.example {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid #4b5563;
+  font-style: italic;
+}
+
+.formContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 640px) {
+  .formContainer {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.formColumn {
+  background-color: #374151;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.formTitle {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.formTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+}
+
+.formKey {
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: capitalize;
+  padding-right: 1rem;
+}
+
+.formValue {
+  color: #ffffff;
+  font-weight: 500;
 }

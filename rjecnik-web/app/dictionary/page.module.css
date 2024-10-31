@@ -2,6 +2,10 @@
   padding: 6rem;
 }
 
+.nav {
+  padding: 0 2rem;
+}
+
 .wrapper {
   position: relative;
   max-width: 100%;

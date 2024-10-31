@@ -18,7 +18,7 @@ const Alert = () => {
           {" "}
           Rječnika bosanskog jezika
         </a>{" "}
-        koristeći software za čitanje i procesiranje pdf-a je što je uzrokovalo
+        koristeći software za čitanje i procesiranje pdf-a što je uzrokovalo
         da podaci imaju mnogo grešaka. Sve probleme možete prijaviti na{" "}
         <a
           className={style.link}
