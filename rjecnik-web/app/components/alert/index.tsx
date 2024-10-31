@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./alert.module.css";
+import style from "./Alert.module.css";
 
 const Alert = () => {
   const githubUrl =

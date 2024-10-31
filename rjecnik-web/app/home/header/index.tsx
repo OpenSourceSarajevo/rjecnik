@@ -1,6 +1,6 @@
 import { BookOpen } from "lucide-react";
 
-import style from "./header.module.css";
+import style from "./Header.module.css";
 import Link from "next/link";
 
 const Header = () => {

@@ -1,4 +1,4 @@
-import style from "./section.module.css";
+import style from "./Section.module.css";
 
 interface SectionProps {
   id: string;

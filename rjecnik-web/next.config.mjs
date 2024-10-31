@@ -7,7 +7,6 @@ const nextConfig = {
     localeDetection: false,
   },
   async rewrites() {
-    console.log("Rewrites called");
     return [
       {
         source: "/rjecnik",
@@ -16,11 +15,7 @@ const nextConfig = {
       {
         source: "/rjecnik/:word/:id",
         destination: "/dictionary/:word/:id",
-      },
-      {
-        source: "/kontakt",
-        destination: "/contact",
-      },
+      }
     ];
   },
 };

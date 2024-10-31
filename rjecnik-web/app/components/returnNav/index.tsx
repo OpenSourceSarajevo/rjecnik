@@ -1,7 +1,7 @@
+import Link from "next/link";
 
 import { ArrowLeft, Book } from "lucide-react";
-import style from "./returnNav.module.css";
-import Link from "next/link";
+import style from "./ReturnNav.module.css";
 
 const ReturnNav = ({ url } : {url: string}) => {
 	return (

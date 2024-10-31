@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 
-import style from "./report-button.module.css";
+import style from "./ReportButton.module.css";
 import { Flag } from "lucide-react";
 
 const getIssueReportUrl = (word: string, url: string): string => {

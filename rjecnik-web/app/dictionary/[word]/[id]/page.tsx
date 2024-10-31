@@ -1,8 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { toDiacritical } from "@/utils/textTransformation";
 
-import ReturnNav from "../../../components/returnNav";
-import ReportButton from "./report-button";
+import ReturnNav from "../../../components/ReturnNav";
+import ReportButton from "./ReportButton";
 
 import style from "./page.module.css";
 

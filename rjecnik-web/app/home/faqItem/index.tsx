@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-import style from "./faqItem.module.css";
+import style from "./FaqItem.module.css";
 
 interface FaqItemProps {
   question: string;

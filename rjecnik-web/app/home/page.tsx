@@ -1,14 +1,15 @@
 "use client";
 
 import { BookText, Keyboard, Volume2 } from "lucide-react";
-import Feature from "./feature";
-import Header from "./header";
-import Section from "./section";
 
-import style from "./home.module.css";
-import FaqItem from "./faqItem";
-import SearchBar from "../components/searchBar";
-import Footer from "../components/footer";
+import Feature from "./Feature";
+import Header from "./Header";
+import Section from "./Section";
+import FaqItem from "./FaqItem";
+import SearchBar from "../components/SearchBar";
+import Footer from "../components/Footer";
+
+import style from "./page.module.css";
 
 const Home = () => {
   return (
@@ -48,7 +49,7 @@ const Home = () => {
           </div>
         </Section>
 
-        <Section id="about" title="O Nama" className={style.sectionBackground}>
+        <Section id="about" title="O Projektu" className={style.sectionBackground}>
           <div>
             <p className={style.mb4}>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt

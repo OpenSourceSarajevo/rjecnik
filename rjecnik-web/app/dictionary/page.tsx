@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 
-import Card from "../components/card";
-import Loader from "../components/loader";
-import ReturnNav from "../components/returnNav";
+import Card from "../components/Card";
+import Loader from "../components/Loader";
+import ReturnNav from "../components/ReturnNav";
 
 import style from "./page.module.css";
 
