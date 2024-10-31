@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react";
 import Card from "../components/card";
 import Loader from "../components/loader";
+import ReturnNav from "../components/returnNav";
 
 import style from "./page.module.css";
-import Alert from "../components/alert";
 import { Search } from "lucide-react";
-import ReturnNav from "../components/returnNav";
 
 type Word = {
   id: number;
