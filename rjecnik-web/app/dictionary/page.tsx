@@ -76,7 +76,7 @@ const Dictionary = () => {
   }
 
   return (
-		<>
+		
 			<div className={style.container}>
 				<div className={style.nav}>
 					<ReturnNav url={"/"} />
@@ -102,7 +102,7 @@ const Dictionary = () => {
 					))}
 				</div>
 			</div>
-		</>
+		
   );
 };
 
