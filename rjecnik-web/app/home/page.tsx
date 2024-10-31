@@ -6,8 +6,8 @@ import Feature from "./Feature";
 import Header from "./Header";
 import Section from "./Section";
 import FaqItem from "./FaqItem";
-import SearchBar from "../components/SearchBar";
-import Footer from "../components/Footer";
+import SearchBar from "@/app/components/SearchBar";
+import Footer from "@/app/components/Footer";
 
 import style from "./page.module.css";
 

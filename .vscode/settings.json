@@ -1,3 +1,15 @@
 {
-  "cSpell.words": ["ilike", "Kontakt", "Početna", "Rječnik"]
+	"cSpell.words": [
+		"Bosanski",
+		"ilike",
+		"Kontakt",
+		"lucide",
+		"Početna",
+		"riječ",
+		"Rječnik",
+		"supabase",
+		"Unesite",
+		"Uskoro"
+	],
+	"eslint.workingDirectories": ["rjecnik-web"]
 }
