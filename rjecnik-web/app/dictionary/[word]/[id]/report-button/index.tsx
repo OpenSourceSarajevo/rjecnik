@@ -5,8 +5,8 @@ import { Flag } from "lucide-react";
 
 const getIssueReportUrl = (word: string, url: string): string => {
   return (
-    process.env.NEXT_PUBLIC_GITHUB_REPOSITORY_ISSUES! +
-    `/new?labels=data&projects=OpenSourceSarajevo/2&template=data.yml&title=[Data]: ${word}&rijec=${word}&url=${url}`
+    process.env.NEXT_PUBLIC_GITHUB_REPOSITORY! +
+    `issues/new?labels=data&projects=OpenSourceSarajevo/2&template=data.yml&title=[Data]: ${word}&rijec=${word}&url=${url}`
   );
 };
 

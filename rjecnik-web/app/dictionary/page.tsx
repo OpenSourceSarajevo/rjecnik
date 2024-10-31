@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Search } from "lucide-react";
+
 import Card from "../components/card";
 import Loader from "../components/loader";
 import ReturnNav from "../components/returnNav";
 
 import style from "./page.module.css";
-import { Search } from "lucide-react";
 
 type Word = {
   id: number;
