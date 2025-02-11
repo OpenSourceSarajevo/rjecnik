@@ -13,9 +13,9 @@ const nextConfig = {
         destination: "/dictionary",
       },
       {
-        source: "/rjecnik/:word/:id",
-        destination: "/dictionary/:word/:id",
-      }
+        source: "/rjecnik/:word",
+        destination: "/dictionary/:word",
+      },
     ];
   },
 };

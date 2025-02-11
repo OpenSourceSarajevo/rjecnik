@@ -10,8 +10,14 @@ import Loader from "../components/Loader";
 
 type Word = {
   id: number;
-  word: string;
-  meaning: string;
+  headword: string;
+  definitions: Definition[];
+};
+
+type Definition = {
+  type: string | null;
+  gender: string | null;
+  definition: string;
 };
 
 const Dictionary = () => {
@@ -75,33 +81,31 @@ const Dictionary = () => {
   }
 
   return (
-		
-			<div className={style.container}>
-				<div className={style.nav}>
-					<ReturnNav url={"/"} />
-				</div>
-				<div className={style.wrapper}>
-					<input
-						type="text"
-						value={word}
-						onChange={(e) => handleChange(e.target.value)}
-						placeholder="Pretraži"
-						className={style.input}
-					/>
-					<Search className={style.icon} size={20} />
-				</div>
-				<div className={style.list}>
-					{data.map((item) => (
-						<Card
-							key={item.id}
-							id={item.id}
-							title={item.word}
-							description={item.meaning}
-						/>
-					))}
-				</div>
-			</div>
-		
+    <div className={style.container}>
+      <div className={style.nav}>
+        <ReturnNav url={"/"} />
+      </div>
+      <div className={style.wrapper}>
+        <input
+          type="text"
+          value={word}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder="Pretraži"
+          className={style.input}
+        />
+        <Search className={style.icon} size={20} />
+      </div>
+      <div className={style.list}>
+        {data.map((item) => (
+          <Card
+            key={item.id}
+            id={item.id}
+            title={item.headword}
+            description={""}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 

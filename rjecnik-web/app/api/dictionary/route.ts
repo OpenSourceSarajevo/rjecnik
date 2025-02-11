@@ -3,8 +3,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 type Word = {
   id: number;
-  word: string;
-  meaning: string;
+  headword: string;
+  definitions: Definition[];
+};
+
+type Definition = {
+  type: string | null;
+  gender: string | null;
+  examples: string[] | null;
+  definition: string;
+  part_of_speech: string | null;
+  pronunciation_ipa: string | null;
+  pronunciation_audio: string | null;
 };
 
 export async function GET(request: NextRequest) {
@@ -15,12 +25,12 @@ export async function GET(request: NextRequest) {
   const supabase = createClient();
 
   var query = supabase
-    .from("words")
-    .select("id, word, meaning")
-    .order("word, id", { ascending: true });
+    .from("words_v2")
+    .select("id, headword, definitions")
+    .order("headword", { ascending: true });
 
   if (word!!) {
-    query = query.ilike("word", `%${word}%`);
+    query = query.ilike("headword", `%${word}%`);
   }
 
   query = query.range(pageNumber * pageSize, (pageNumber + 1) * pageSize - 1);

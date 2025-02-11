@@ -9,12 +9,10 @@ type CardProps = {
 
 const Card = (props: CardProps) => {
   const { id, title, description } = props;
-
-  // In case the word contains a slash (/), e.g A/a
-  const word = title.split("/")[0];
-
+ 
+  const word =  encodeURIComponent(title);
   return (
-    <Link href={`/rjecnik/${word}/${id}`}>
+    <Link href={`/rjecnik/${word}`}>
       <div className={style.card}>
         <h2>{title}</h2>
         <p>{description}</p>
