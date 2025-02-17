@@ -30,13 +30,25 @@ const Dictionary = () => {
 
   const [fetchedAll, setFetchedAll] = useState(false);
 
+  const handleScroll = () => {
+    const OFFSET_PIXEL = 1;
+
+    if (
+      window.innerHeight + window.scrollY + OFFSET_PIXEL >=
+        document.body.offsetHeight &&
+      !fetchedAll
+    ) {
+      setPage((page) => page + 1);
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     (async function getData() {
@@ -50,25 +62,13 @@ const Dictionary = () => {
         {
           method: "GET",
         }
-      ).then((res) => res.json());
+      ).then((res) => res?.json());
 
       if (!!newData) setFetchedAll(true);
       setData((prevData) => [...prevData, ...newData]);
       setLoading(false);
     })();
   }, [page, word]);
-
-  const handleScroll = () => {
-    const OFFSET_PIXEL = 1;
-
-    if (
-      window.innerHeight + window.scrollY + OFFSET_PIXEL >=
-        document.body.offsetHeight &&
-      !fetchedAll
-    ) {
-      setPage((page) => page + 1);
-    }
-  };
 
   const handleChange = (value: string) => {
     setData([]);

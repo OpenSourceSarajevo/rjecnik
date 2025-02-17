@@ -12,6 +12,24 @@ import Footer from "@/app/components/Footer";
 import style from "./page.module.css";
 
 const Home = () => {
+  const faq = [
+    {
+      question: "Čemu služi ovaj rječnik?",
+      answer:
+        "Ovo je online bosanski rječnik koji pruža definicije, gramatičke informacije, sinonime, antonime i detalje o izgovoru riječi.",
+    },
+    {
+      question: "Hoće li rječnik podržavati prijevode?",
+      answer:
+        "Rječnik je fokusiran na bosanski jezik, trenutno ne planiramo podržavanje prijevoda na druge jezike.",
+    },
+    {
+      question: "Mogu li doprinijeti rječniku?",
+      answer:
+        "Trenutno jedino podržavamo otvorene doprinose putem prijavljivanja grešaka na GitHubu, ali radimo na funkciji koja će omogućiti korisnicima da predlažu ispravke i dodaju nove riječi.",
+    },
+  ];
+
   return (
     <>
       <Header />
@@ -20,10 +38,6 @@ const Home = () => {
         <Section id="hero" title="" className={style.hero}>
           <div className={style.textCenter}>
             <h1 className={style.heroTitle}>Bosanski Online Rječnik</h1>
-            <p className={style.heroSubtitle}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consequuntur magni molestiae quos magnam veniam exercitationem.
-            </p>
           </div>
 
           <div className={style.mb4}>
@@ -49,37 +63,37 @@ const Home = () => {
           </div>
         </Section>
 
-        <Section id="about" title="O Projektu" className={style.sectionBackground}>
+        <Section
+          id="o-projektu"
+          title="O Projektu"
+          className={style.sectionBackground}
+        >
           <div>
             <p className={style.mb4}>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt
-              libero aspernatur magnam quibusdam consequatur delectus
-              laudantium. Rem, laboriosam delectus veniam assumenda labore
-              ullam, voluptatibus recusandae perferendis maiores maxime,
-              doloremque incidunt!
+              Bosanski Online Rječnik je sveobuhvatan digitalni resurs
+              dizajniran za očuvanje i promociju bosanskog jezika. Naš projekat
+              koristi najnovije web tehnologije kako bi pružio pouzdanu i
+              pristupačnu referencu za govornike bosanskog jezika, učenike i
+              lingviste.
             </p>
             <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem
-              obcaecati commodi error omnis autem atque iusto quibusdam tempora
-              neque corporis!
+              Izgrađen koristeći Next.js i Supabase, naš rječnik nudi robusnu
+              platformu koja omogućava brzo pretraživanje, detaljne definicije i
+              primjere upotrebe. Podržavamo i latinicu i ćirilicu, čineći naš
+              resurs inkluzivnim za sve korisnike bosanskog jezika.
             </p>
           </div>
         </Section>
 
         <Section id="faq" title="Često Postavljana Pitanja">
           <div>
-            <FaqItem
-              question="Lorem ipsum dolor sit amet?"
-              answer="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi eos consequuntur animi repellat sed suscipit, ratione voluptates odit aperiam iure."
-            />
-            <FaqItem
-              question="Lorem ipsum dolor sit amet?"
-              answer="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi eos consequuntur animi repellat sed suscipit, ratione voluptates odit aperiam iure."
-            />
-            <FaqItem
-              question="Lorem ipsum dolor sit amet?"
-              answer="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi eos consequuntur animi repellat sed suscipit, ratione voluptates odit aperiam iure."
-            />
+            {faq.map((i) => (
+              <FaqItem
+                key={i.question}
+                question={i.question}
+                answer={i.answer}
+              />
+            ))}
           </div>
         </Section>
       </main>

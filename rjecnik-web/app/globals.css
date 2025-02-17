@@ -1,3 +1,4 @@
+
 :root {
   --border-radius: 12px;
 
@@ -9,7 +10,6 @@
   --color-text: #ffffff;
   --color-text-secondary: #9ca3af;
 }
-
 * {
   box-sizing: border-box;
   padding: 0;
