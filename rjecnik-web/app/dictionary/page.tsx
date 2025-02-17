@@ -50,7 +50,7 @@ const Dictionary = () => {
         {
           method: "GET",
         }
-      ).then((res) => res.json());
+      ).then((res) => res?.json());
 
       if (!!newData) setFetchedAll(true);
       setData((prevData) => [...prevData, ...newData]);

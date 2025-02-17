@@ -27,6 +27,18 @@
   gap: 1.5rem;
 }
 
+.githubLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.githubIcon {
+  margin-right: 0.5rem;
+  color: var(--color-icon);
+}
+
 @media (min-width: 768px) {
   .content {
     flex-direction: row;
