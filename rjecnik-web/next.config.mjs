@@ -16,6 +16,14 @@ const nextConfig = {
         source: "/rjecnik/:word",
         destination: "/dictionary/:word",
       },
+      {
+        source: "/privatnost",
+        destination: "/privacy",
+      },
+      {
+        source: "/uslovi-koristenja",
+        destination: "/terms",
+      },
     ];
   },
 };
