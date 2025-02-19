@@ -5,6 +5,7 @@ import { toDiacritical } from "@/utils/textTransformation";
 
 import ReturnNav from "@/app/components/ReturnNav";
 import ReportButton from "./ReportButton";
+import MeaningCard from "./MeaningCard";
 
 import style from "./page.module.css";
 
@@ -32,9 +33,20 @@ const Forms = ({ data }: { data: object }) => {
   );
 };
 
+type WordDefinitions = {
+  type: string | null;
+  gender: string | null;
+  examples: string[] | null;
+  definition: string;
+  part_of_speech: string | null;
+  pronunciation_ipa: string | null;
+  pronunciation_audio: string | null;
+};
+
 type WordDetails = {
   id: number;
   headword: string;
+  definitions: WordDefinitions[];
   origins: string[] | null;
   alternatives: string[] | null;
 };
@@ -45,7 +57,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("words_v2")
-    .select("id, headword, origins, alternatives")
+    .select("id, headword, definitions, origins, alternatives")
     .eq("headword", decodedHeadword)
     .maybeSingle<WordDetails>();
 
@@ -88,7 +100,10 @@ const Page = async ({ params }: { params: { word: string } }) => {
         </div>
 
         <div className={style.section}>
-          <h2 className={style.sectionTitle}>Značenje</h2>
+          <h2 className={style.sectionTitle}>Značenja</h2>
+          {data.definitions.map((details, index) => (
+            <MeaningCard key={index} {...details} />
+          ))}
         </div>
       </div>
     </div>

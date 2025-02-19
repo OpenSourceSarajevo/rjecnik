@@ -1,0 +1,53 @@
+.definitionCard {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: #374151;
+  margin-bottom: 1.5rem;
+  border: 1px solid #4b5563;
+  transition: all 0.2s ease;
+}
+
+.definitionCard:hover {
+  border-color: #6b7280;
+  transform: translateY(-2px);
+}
+
+.definitionCard:last-child {
+  margin-bottom: 0;
+}
+
+.definitionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.definitionNumber {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-family: "Times New Roman", serif;
+  background-color: #4b5563;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+}
+
+.wordType {
+  font-size: 1.25rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.usageTag {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  background-color: #4b5563;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
