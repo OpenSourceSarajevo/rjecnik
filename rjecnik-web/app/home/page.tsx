@@ -1,6 +1,6 @@
 "use client";
 
-import { BookText, Keyboard, Volume2 } from "lucide-react";
+import { BookText, BookType, Keyboard, Volume2 } from "lucide-react";
 
 import Feature from "./Feature";
 import Header from "./Header";
@@ -10,6 +10,7 @@ import SearchBar from "@/app/components/SearchBar";
 import Footer from "@/app/components/Footer";
 
 import style from "./page.module.css";
+import { m } from "framer-motion";
 
 const Home = () => {
   const faq = [
@@ -30,6 +31,34 @@ const Home = () => {
     },
   ];
 
+  const features = [
+    {
+      Icon: BookText,
+      title: "Definicije",
+      description: "Detaljne definicije riječi",
+      soon: false,
+    },
+    {
+      Icon: BookType,
+      title: "Primjeri",
+      description: "Primjeri upotrebe u svakodnevnom govoru",
+      soon: true,
+    },
+    {
+      Icon: Volume2,
+      title: "Izgovor",
+      description:
+        "Audio zapisi izvornih govornika za pravilno učenje izgovora",
+      soon: true,
+    },
+    {
+      Icon: Keyboard,
+      title: "Latinica i Ćirilica",
+      description: "Podrška za oba pisma bosanskog jezika",
+      soon: true,
+    },
+  ];
+
   return (
     <>
       <Header />
@@ -45,21 +74,9 @@ const Home = () => {
           </div>
 
           <div className={style.featuresGrid}>
-            <Feature
-              Icon={BookText}
-              title="Definicije"
-              description="Detaljne definicije sa primjerima upotrebe u svakodnevnom govoru"
-            />
-            <Feature
-              Icon={Volume2}
-              title="Izgovor"
-              description="Audio zapisi izvornih govornika za pravilno učenje izgovora"
-            />
-            <Feature
-              Icon={Keyboard}
-              title="Latinica i Ćirilica"
-              description="Podrška za oba pisma bosanskog jezika"
-            />
+            {features.map((feature, index) => (
+              <Feature key={index} {...feature} />
+            ))}
           </div>
         </Section>
 
