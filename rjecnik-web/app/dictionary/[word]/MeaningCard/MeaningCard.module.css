@@ -23,31 +23,22 @@
   margin-bottom: 1rem;
 }
 
-.definitionNumber {
-  font-weight: 600;
-  color: #ffffff;
-  font-size: 1.25rem;
-  font-family: "Times New Roman", serif;
-  background-color: #4b5563;
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-}
-
 .wordType {
   font-size: 1.25rem;
   color: #9ca3af;
   font-style: italic;
 }
 
-.usageTag {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  background-color: #4b5563;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  text-transform: capitalize;
+.example {
+  color: #d1d5db;
+  font-style: italic;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: "Times New Roman", serif;
+  padding-left: 1rem;
+  border-left: 2px solid #4b5563;
+}
+
+.example:last-child {
+  margin-bottom: 0;
 }

@@ -51,6 +51,20 @@ type WordDetails = {
   alternatives: string[] | null;
 };
 
+const Origins = ({ origins }: { origins: string[] | null }) => {
+  if (!origins) return <></>;
+
+  return (
+    <div className={style.origins}>
+      {origins?.map((origin: string, index: number) => (
+        <span key={index} className={style.origin}>
+          {origin}
+        </span>
+      ))}
+    </div>
+  );
+};
+
 const Page = async ({ params }: { params: { word: string } }) => {
   const decodedHeadword = decodeURIComponent(params.word);
 
@@ -60,10 +74,6 @@ const Page = async ({ params }: { params: { word: string } }) => {
     .select("id, headword, definitions, origins, alternatives")
     .eq("headword", decodedHeadword)
     .maybeSingle<WordDetails>();
-
-  if (error) {
-    console.log(error);
-  }
 
   if (data === null) {
     notFound();
@@ -90,13 +100,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
       <div className={style.container}>
         <div className={style.header}>
           <div className={style.wordInfo}>{wordBlock}</div>
-          <div className={style.origins}>
-            {origins?.map((origin: string, index: number) => (
-              <span key={index} className={style.origin}>
-                {origin}
-              </span>
-            ))}
-          </div>
+          <Origins origins={origins} />
         </div>
 
         <div className={style.section}>
