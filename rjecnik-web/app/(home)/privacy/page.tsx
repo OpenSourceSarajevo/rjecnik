@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 
@@ -37,7 +35,6 @@ const PrivacyPolicy = () => {
 
   return (
     <div className={styles.privacyContainer}>
-      <Header />
       <div className={styles.contentWrapper}>
         {!isMobile && (
           <aside className={styles.sidebar}>
@@ -86,7 +83,6 @@ const PrivacyPolicy = () => {
           </div>
         </motion.main>
       </div>
-      <Footer />
     </div>
   );
 };
