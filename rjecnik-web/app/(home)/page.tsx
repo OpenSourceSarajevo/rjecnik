@@ -2,15 +2,12 @@
 
 import { BookText, BookType, Keyboard, Volume2 } from "lucide-react";
 
-import Feature from "./components/Feature";
-import Header from "./components/Header";
-import Section from "./components/Section";
-import FaqItem from "./components/FaqItem";
+import Feature from "../components/Feature";
+import Section from "../components/Section";
+import FaqItem from "../components/FaqItem";
 import SearchBar from "@/app/components/SearchBar";
-import Footer from "@/app/components/Footer";
 
 import style from "./page.module.css";
-import { m } from "framer-motion";
 
 const Home = () => {
   const faq = [
@@ -61,8 +58,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
-
       <main>
         <Section id="hero" title="" className={style.hero}>
           <div className={style.textCenter}>
@@ -114,8 +109,6 @@ const Home = () => {
           </div>
         </Section>
       </main>
-
-      <Footer />
     </>
   );
 };

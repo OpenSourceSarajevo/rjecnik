@@ -23,7 +23,6 @@ const TermsConditions = () => {
 
   return (
     <div className={styles.termsContainer}>
-      <Header />
       <div className={styles.contentWrapper}>
         <aside className={styles.sidebar}>
           <ul>
@@ -65,7 +64,6 @@ const TermsConditions = () => {
           </div>
         </motion.main>
       </div>
-      <Footer />
     </div>
   );
 };
