@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/app/home/Header";
+import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
