@@ -8,6 +8,7 @@ import ReportButton from "./ReportButton";
 import MeaningCard from "./MeaningCard";
 
 import style from "./page.module.css";
+import RelatedWords from "./RelatedWords";
 
 const NestedForms = ({ data }: { data: object }) => {
   return Object.entries(data).map(([key, value], index) => (
@@ -49,6 +50,8 @@ type WordDetails = {
   definitions: WordDefinitions[];
   origins: string[] | null;
   alternatives: string[] | null;
+  synonyms: string[];
+  antonyms: string[];
 };
 
 const Origins = ({ origins }: { origins: string[] | null }) => {
@@ -71,7 +74,9 @@ const Page = async ({ params }: { params: { word: string } }) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("words_v2")
-    .select("id, headword, definitions, origins, alternatives")
+    .select(
+      "id, headword, definitions, origins, alternatives, synonyms, antonyms"
+    )
     .eq("headword", decodedHeadword)
     .maybeSingle<WordDetails>();
 
@@ -79,7 +84,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
     notFound();
   }
 
-  const { id, headword, origins, alternatives } = data;
+  const { id, headword, origins, alternatives, synonyms, antonyms } = data;
 
   let wordBlock = <h1 className={style.word}>{headword}</h1>;
   if (alternatives && alternatives?.length > 0) {
@@ -87,6 +92,13 @@ const Page = async ({ params }: { params: { word: string } }) => {
       <h1 className={style.word}>
         {headword}/{alternatives.join("/")}
       </h1>
+    );
+  }
+
+  let relatedWordsBlock = null;
+  if (antonyms.length > 0 || synonyms.length > 0) {
+    relatedWordsBlock = (
+      <RelatedWords antonyms={antonyms} synonyms={synonyms} />
     );
   }
 
@@ -110,6 +122,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
           ))}
         </div>
       </div>
+      {relatedWordsBlock}
     </div>
   );
 };
