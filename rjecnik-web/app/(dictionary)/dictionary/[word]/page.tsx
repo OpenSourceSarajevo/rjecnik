@@ -95,13 +95,6 @@ const Page = async ({ params }: { params: { word: string } }) => {
     );
   }
 
-  let relatedWordsBlock = null;
-  if (antonyms.length > 0 || synonyms.length > 0) {
-    relatedWordsBlock = (
-      <RelatedWords antonyms={antonyms} synonyms={synonyms} />
-    );
-  }
-
   return (
     <div className={style.wrapper}>
       <div className={style.nav}>
@@ -122,7 +115,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
           ))}
         </div>
       </div>
-      {relatedWordsBlock}
+      <RelatedWords antonyms={antonyms} synonyms={synonyms} />
     </div>
   );
 };

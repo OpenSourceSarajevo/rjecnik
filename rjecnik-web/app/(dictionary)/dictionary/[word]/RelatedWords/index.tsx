@@ -10,6 +10,10 @@ interface RelatedWordsProps {
 }
 
 const RelatedWords: React.FC<RelatedWordsProps> = ({ synonyms, antonyms }) => {
+  if (antonyms.length == 0 && synonyms.length == 0) {
+    return <></>;
+  }
+
   return (
     <section className={style.container}>
       {synonyms.length > 0 && (
