@@ -6,33 +6,34 @@ import { toDiacritical } from "@/utils/textTransformation";
 import ReturnNav from "@/app/components/ReturnNav";
 import ReportButton from "./ReportButton";
 import MeaningCard from "./MeaningCard";
+import RelatedWords from "./RelatedWords";
+import Forms from "./Forms";
 
 import style from "./page.module.css";
-import RelatedWords from "./RelatedWords";
 
-const NestedForms = ({ data }: { data: object }) => {
-  return Object.entries(data).map(([key, value], index) => (
-    <div className={style.formColumn} key={index}>
-      <h3 className={style.formTitle}>{toDiacritical(key)}</h3>
-      <Forms data={value} />
-    </div>
-  ));
-};
+// const NestedForms = ({ data }: { data: object }) => {
+//   return Object.entries(data).map(([key, value], index) => (
+//     <div className={style.formColumn} key={index}>
+//       <h3 className={style.formTitle}>{toDiacritical(key)}</h3>
+//       <Forms data={value} />
+//     </div>
+//   ));
+// };
 
-const Forms = ({ data }: { data: object }) => {
-  return (
-    <table className={style.formTable}>
-      <tbody>
-        {Object.entries(data).map(([key, value]) => (
-          <tr key={key}>
-            <td className={style.formKey}>{key}</td>
-            <td className={style.formValue}>{value}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
+// const Forms = ({ data }: { data: object }) => {
+//   return (
+//     <table className={style.formTable}>
+//       <tbody>
+//         {Object.entries(data).map(([key, value]) => (
+//           <tr key={key}>
+//             <td className={style.formKey}>{key}</td>
+//             <td className={style.formValue}>{value}</td>
+//           </tr>
+//         ))}
+//       </tbody>
+//     </table>
+//   );
+// };
 
 type WordDefinitions = {
   type: string | null;
@@ -50,8 +51,16 @@ type WordDetails = {
   definitions: WordDefinitions[];
   origins: string[] | null;
   alternatives: string[] | null;
+  forms: WordForm[];
   synonyms: string[];
   antonyms: string[];
+};
+
+type WordForm = {
+  form: string;
+  name: string;
+  value: string;
+  category: string;
 };
 
 const Origins = ({ origins }: { origins: string[] | null }) => {
@@ -75,7 +84,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
   const { data, error } = await supabase
     .from("words_v2")
     .select(
-      "id, headword, definitions, origins, alternatives, synonyms, antonyms"
+      "id, headword, definitions, origins, alternatives, forms, synonyms, antonyms"
     )
     .eq("headword", decodedHeadword)
     .maybeSingle<WordDetails>();
@@ -84,7 +93,8 @@ const Page = async ({ params }: { params: { word: string } }) => {
     notFound();
   }
 
-  const { id, headword, origins, alternatives, synonyms, antonyms } = data;
+  const { id, headword, origins, alternatives, forms, synonyms, antonyms } =
+    data;
 
   let wordBlock = <h1 className={style.word}>{headword}</h1>;
   if (alternatives && alternatives?.length > 0) {
@@ -115,6 +125,7 @@ const Page = async ({ params }: { params: { word: string } }) => {
           ))}
         </div>
       </div>
+      <Forms forms={forms} />
       <RelatedWords antonyms={antonyms} synonyms={synonyms} />
     </div>
   );
