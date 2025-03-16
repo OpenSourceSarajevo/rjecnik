@@ -11,6 +11,12 @@
   gap: 1.5rem;
 }
 
+@media (max-width: 768px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}
+
 .column {
   background-color: #374151;
   border-radius: 0.75rem;
