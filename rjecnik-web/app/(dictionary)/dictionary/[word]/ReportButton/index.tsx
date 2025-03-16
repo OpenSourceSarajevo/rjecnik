@@ -22,10 +22,10 @@ const ReportButton = ({ word }: { word: string }) => {
     <a href={issueUrl} target="_blank">
       <button
         className={style.button}
-        aria-label={`Prijavi problem za riječ ${word}`}
+        aria-label={`Prijavi grešku za riječ ${word}`}
       >
         <Flag className={style.icon} />
-        <span>Prijavi problem</span>
+        <span>Prijavi grešku</span>
       </button>
     </a>
   );
