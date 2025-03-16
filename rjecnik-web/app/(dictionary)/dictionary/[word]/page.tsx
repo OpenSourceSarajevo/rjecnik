@@ -11,30 +11,6 @@ import Forms from "./Forms";
 
 import style from "./page.module.css";
 
-// const NestedForms = ({ data }: { data: object }) => {
-//   return Object.entries(data).map(([key, value], index) => (
-//     <div className={style.formColumn} key={index}>
-//       <h3 className={style.formTitle}>{toDiacritical(key)}</h3>
-//       <Forms data={value} />
-//     </div>
-//   ));
-// };
-
-// const Forms = ({ data }: { data: object }) => {
-//   return (
-//     <table className={style.formTable}>
-//       <tbody>
-//         {Object.entries(data).map(([key, value]) => (
-//           <tr key={key}>
-//             <td className={style.formKey}>{key}</td>
-//             <td className={style.formValue}>{value}</td>
-//           </tr>
-//         ))}
-//       </tbody>
-//     </table>
-//   );
-// };
-
 type WordDefinitions = {
   type: string | null;
   gender: string | null;
