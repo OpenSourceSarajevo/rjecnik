@@ -3,32 +3,30 @@ import React from "react";
 import style from "./Alert.module.css";
 
 const Alert = () => {
-  const githubUrl =
-		process.env.NEXT_PUBLIC_GITHUB_REPOSITORY! + "/issues";
+  const githubUrl = process.env.NEXT_PUBLIC_GITHUB_REPOSITORY! + "/issues";
 
   return (
-		<div className={`${style.alert} ${style.warning}`}>
-			<div className={style.warning}>
-				<WarningIcon />
-			</div>
-			<span className="alert-message">
-				Riječi za aplikaciju su preuzete iz{" "}
-				<a
-					className={style.link}
-					href="https://archive.org/details/RjenikBosanskogJezikaInstitutZaJezikSarajevo2007."
-					target="_blank"
-				>
-					{" "}
-					Rječnika bosanskog jezika
-				</a>{" "}
-				koristeći software za čitanje i procesiranje pdf-a što je
-				uzrokovalo da podaci imaju mnogo grešaka. Sve probleme možete
-				prijaviti na{" "}
-				<a className={style.link} href={githubUrl} target="_blank">
-					GitHub-u
-				</a>
-			</span>
-		</div>
+    <div className={`${style.alert} ${style.warning}`}>
+      <div className={style.warning}>
+        <WarningIcon />
+      </div>
+      <span className="alert-message">
+        Riječi za aplikaciju su preuzete iz{" "}
+        <a
+          className={style.link}
+          href="https://archive.org/details/RjenikBosanskogJezikaInstitutZaJezikSarajevo2007."
+          target="_blank"
+        >
+          {" "}
+          Rječnika bosanskog jezika
+        </a>{" "}
+        koristeći software za čitanje i procesiranje pdf-a što je uzrokovalo da
+        podaci imaju mnogo grešaka. Sve greške možete prijaviti na{" "}
+        <a className={style.link} href={githubUrl} target="_blank">
+          GitHub-u
+        </a>
+      </span>
+    </div>
   );
 };
 
