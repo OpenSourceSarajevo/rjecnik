@@ -9,6 +9,18 @@
   margin-bottom: 4rem;
 }
 
+@media (max-width: 768px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 425px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .hero {
   padding-top: 4rem;
   text-align: center;
