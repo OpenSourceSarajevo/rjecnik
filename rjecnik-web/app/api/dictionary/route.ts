@@ -20,22 +20,15 @@ type Definition = {
 export async function GET(request: NextRequest) {
   const pageNumber = +request.nextUrl.searchParams.get("pageNumber")!;
   const pageSize = +request.nextUrl.searchParams.get("pageSize")!;
-  const word = request.nextUrl.searchParams.get("word");
+  const word = request.nextUrl.searchParams.get("word") ?? "";
 
   const supabase = createClient();
 
-  var query = supabase
-    .from("words_v2")
-    .select("id, headword, definitions")
-    .order("headword", { ascending: true });
-
-  if (word!!) {
-    query = query.ilike("headword", `%${word}%`);
-  }
-
-  query = query.range(pageNumber * pageSize, (pageNumber + 1) * pageSize - 1);
-
-  const { data, error } = await query;
+  const { data, error } = await supabase.rpc("search_words_ranked", {
+    search_term: word,
+    limit_value: pageSize,
+    offset_value: pageNumber * pageSize,
+  });
 
   if (error) throw error;
 
