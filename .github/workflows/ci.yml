@@ -1,3 +1,5 @@
+name: Rjecnik Web CI
+
 on:
   push:
     paths:

@@ -19,4 +19,4 @@ jobs:
         with:
           version: latest
 
-      - run: supabase functions deploy --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+      - run: supabase functions deploy --project-ref nwyjnudalgevahaaqpmt

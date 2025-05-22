@@ -1,13 +1,12 @@
-name: "Keep Supabase Alive"
+name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron:  '0 12 * * *'
-
+    - cron: "0 12 * * *"
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    
+
     steps:
       - run: curl -i -X GET "https://rjecnik-liard.vercel.app/api/dictionary?pageNumber=0&page"
