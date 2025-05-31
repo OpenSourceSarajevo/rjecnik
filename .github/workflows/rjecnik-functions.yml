@@ -3,7 +3,7 @@ name: Deploy Supabase Functions
 on:
   push:
     paths:
-      - rjecnik-functions/*
+      - supabase/functions/*
   workflow_dispatch:
 
 jobs:
