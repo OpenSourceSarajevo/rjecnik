@@ -53,10 +53,11 @@ const Origins = ({ origins }: { origins: string[] | null }) => {
   );
 };
 
-const Page = async ({ params }: { params: { word: string } }) => {
-  const decodedHeadword = decodeURIComponent(params.word);
+const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
+  const { word } = await params;
+  const decodedHeadword = decodeURIComponent(word);
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("words_v2")
     .select(

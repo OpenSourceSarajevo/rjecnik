@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   const pageSize = +request.nextUrl.searchParams.get("pageSize")!;
   const word = request.nextUrl.searchParams.get("word") ?? "";
 
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase.rpc("search_words_ranked", {
     search_term: word,
