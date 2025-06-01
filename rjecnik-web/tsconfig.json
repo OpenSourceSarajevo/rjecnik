@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,8 +22,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "rjecnik-web/next-env.d.ts",
@@ -28,5 +35,7 @@
     "rjecnik-web/.next/types/**/*.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["rjecnik-web/node_modules"]
+  "exclude": [
+    "rjecnik-web/node_modules"
+  ]
 }

@@ -10,8 +10,8 @@ const getIssueReportUrl = (word: string, url: string): string => {
   );
 };
 
-const ReportButton = ({ word }: { word: string }) => {
-  const headersList = headers();
+const ReportButton = async ({ word }: { word: string }) => {
+  const headersList = await headers();
 
   const host = headersList.get("host");
 
