@@ -6,9 +6,42 @@
   margin: 10px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.7rem;
+  gap: 1rem;
+}
+
 .card h2 {
   font-weight: 600;
-  margin-bottom: 0.7rem;
+  margin: 0;
+  flex: 1;
+}
+
+.definitionCount {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: fit-content;
+}
+
+.definitionPreview {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  opacity: 0.8;
+  font-style: italic;
+  text-wrap: balance;
 }
 
 .card p {
@@ -25,7 +58,18 @@
     padding: 1rem 2.5rem;
   }
 
-  .card h2 {
+  .header {
     margin-bottom: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .definitionCount {
+    font-size: 0.75rem;
+  }
+
+  .definitionPreview {
+    font-size: 0.85rem;
   }
 }

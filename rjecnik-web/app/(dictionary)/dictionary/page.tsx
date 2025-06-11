@@ -96,14 +96,22 @@ const Dictionary = () => {
         <Search className={style.icon} size={20} />
       </div>
       <div className={style.list}>
-        {data.map((item) => (
-          <Card
-            key={item.id}
-            id={item.id}
-            title={item.headword}
-            description={""}
-          />
-        ))}
+        {data.map((item) => {
+          const firstDefinition = item.definitions.length > 0 
+            ? item.definitions[0].definition 
+            : undefined;
+          
+          return (
+            <Card
+              key={item.id}
+              id={item.id}
+              title={item.headword}
+              description={""}
+              definitionsCount={item.definitions.length}
+              firstDefinition={firstDefinition}
+            />
+          );
+        })}
       </div>
     </div>
   );
