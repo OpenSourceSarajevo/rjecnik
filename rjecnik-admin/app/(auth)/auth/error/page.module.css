@@ -1,0 +1,36 @@
+/* Page.module.css */
+
+.container {
+  display: flex;
+  min-height: 100svh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 2.5rem;
+  }
+}
+
+.cardWrapper {
+  width: 100%;
+  max-width: 24rem; /* equivalent to max-w-sm */
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem; /* text-2xl */
+}
+
+.message {
+  font-size: 0.875rem;
+  color: var(--muted-foreground); /* Replace with actual color or use a CSS variable */
+}

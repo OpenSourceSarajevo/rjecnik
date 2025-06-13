@@ -1,0 +1,174 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.loginCard {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  padding: 3.5rem;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.header {
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #202124;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: #5f6368;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.description {
+  color: #80868b;
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.googleButton {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  border: 2px solid #e8eaed;
+  border-radius: 12px;
+  background: white;
+  color: #3c4043;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.googleButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(66, 133, 244, 0.1),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.googleButton:hover::before {
+  left: 100%;
+}
+
+.googleButton:hover {
+  border-color: #4285f4;
+  box-shadow: 0 8px 25px rgba(66, 133, 244, 0.2);
+  transform: translateY(-2px);
+}
+
+.googleButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.2);
+}
+
+.googleButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buttonIcon {
+  width: 24px;
+  height: 24px;
+  background: #4285f4;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.loadingSpinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e8eaed;
+  border-top: 2px solid #4285f4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .loginCard {
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .googleButton {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .loginCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
