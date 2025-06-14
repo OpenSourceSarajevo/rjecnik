@@ -50,7 +50,16 @@ async function hashText(text: string): Promise<string> {
   return hashArray.map(b => b.toString(16).padStart(2, "0")).join("")
 }
 
+export const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_ANON_KEY")!
@@ -59,15 +68,15 @@ Deno.serve(async (req) => {
   const { text, source, url, user_email } = await req.json()
 
   if (!text) {
-    return new Response(JSON.stringify({ error: "Missing 'text' field" }), { status: 400 })
+    return new Response(JSON.stringify({ error: "Missing 'text' field" }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   if (!source) {
-    return new Response(JSON.stringify({ error: "Missing 'source' field" }), { status: 400 })
+    return new Response(JSON.stringify({ error: "Missing 'source' field" }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   if (!user_email) {
-    return new Response(JSON.stringify({ error: "Missing 'user_email' field" }), { status: 400 })
+    return new Response(JSON.stringify({ error: "Missing 'user_email' field" }), { status: 400,headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   const textHash = await hashText(text)
@@ -78,11 +87,11 @@ Deno.serve(async (req) => {
     .eq("text_hash", textHash)
  
   if (dupCheckError) {
-    return new Response(JSON.stringify({ error: dupCheckError.message }), { status: 500 })
+    return new Response(JSON.stringify({ error: dupCheckError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   if (existing && existing.length > 0) {
-    return new Response(JSON.stringify({ error: "Duplicate text already ingested" }), { status: 409 })
+    return new Response(JSON.stringify({ error: "Duplicate text already ingested" }), { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   const sentences = splitIntoSentences(text)
@@ -95,7 +104,7 @@ Deno.serve(async (req) => {
     .in("headword", wordList)
 
   if (wordFetchError) {
-    return new Response(JSON.stringify({ error: wordFetchError.message }), { status: 500 })
+    return new Response(JSON.stringify({ error: wordFetchError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
  
   const existingSet = new Set((existingWords || []).map(row => row.headword))  
@@ -107,7 +116,7 @@ Deno.serve(async (req) => {
     .in("headword", wordList)
 
   if (fetchNewError) {
-    return new Response(JSON.stringify({ error: fetchNewError.message }), { status: 500 })
+    return new Response(JSON.stringify({ error: fetchNewError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   const newWordMap = new Map(
@@ -140,7 +149,7 @@ Deno.serve(async (req) => {
   if (toInsert.length > 0) {
     const { error: insertError } = await supabase.from("words_new").insert(toInsert)
     if (insertError) {
-      return new Response(JSON.stringify({ error: insertError.message }), { status: 500 })
+      return new Response(JSON.stringify({ error: insertError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
     }
   }
 
@@ -151,7 +160,7 @@ Deno.serve(async (req) => {
       .eq("headword", word.headword)
 
     if (updateError) {
-      return new Response(JSON.stringify({ error: updateError.message }), { status: 500 })
+      return new Response(JSON.stringify({ error: updateError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
     }
   }
 
@@ -171,12 +180,12 @@ Deno.serve(async (req) => {
     .single()
     
   if (logError) {
-    return new Response(JSON.stringify({ error: logError.message }), { status: 500 })
+    return new Response(JSON.stringify({ error: logError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
   }
 
   return new Response(
     JSON.stringify(logEntry),
-    { headers: { "Content-Type": "application/json" } },
+    { headers: { ...corsHeaders, "Content-Type": "application/json" } },
   )
 })
 
