@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - rjecnik-web/*
+      - rjecnik-admin/*
   pull_request:
     paths:
       - rjecnik-web/*
+      - rjecnik-admin/*
 
 jobs:
   deploy:
@@ -15,6 +17,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+        project: ["./rjecnik-web", "./rjecnik-admin"]
 
     steps:
       - uses: actions/checkout@v2
@@ -24,13 +27,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: "./rjecnik-web"
+        working-directory: ${{ matrix.project }}
         run: npm ci
 
       - name: Lint
-        working-directory: "./rjecnik-web"
+        working-directory: ${{ matrix.project }}
         run: npm run lint
 
       - name: Build
-        working-directory: "./rjecnik-web"
+        working-directory: ${{ matrix.project }}
         run: npm run build --if-present
