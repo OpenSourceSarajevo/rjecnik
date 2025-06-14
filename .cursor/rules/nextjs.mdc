@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+* Use css modules and when importing call the import style (not styles)
+* Use English for code but Bosnian for user facing text
+
+* Use variables from globals.css when possible
