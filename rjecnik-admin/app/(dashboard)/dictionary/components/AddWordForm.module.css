@@ -1,0 +1,242 @@
+.container {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.header {
+  background-color: var(--color-primary);
+  padding: var(--spacing-4);
+  color: var(--color-white);
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+}
+
+.toggleButton {
+  padding: var(--spacing-1);
+  border-radius: 50%;
+  background-color: var(--color-primary-dark);
+  transition: background-color var(--transition-fast);
+}
+
+.toggleButton:hover {
+  background-color: var(--color-primary-light);
+}
+
+.form {
+  padding: var(--spacing-4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.gridTwoColumns {
+  grid-template-columns: 1fr 1fr;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-1);
+}
+
+.input {
+  width: 100%;
+  padding: var(--spacing-2);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 4rem;
+}
+
+.select {
+  width: 100%;
+  color: var(--color-black);
+  padding: var(--spacing-2);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  background-color: var(--color-white);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.dynamicField {
+  display: flex;
+  margin-bottom: var(--spacing-2);
+}
+
+.dynamicInput {
+  flex: 1;
+  padding: var(--spacing-2);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.dynamicInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.removeButton {
+  padding: var(--spacing-2) var(--spacing-3);
+  background-color: var(--color-error);
+  color: var(--color-white);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  transition: background-color var(--transition-fast);
+}
+
+.removeButton:hover {
+  background-color: #dc2626;
+}
+
+.addButton {
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--color-primary);
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-fast);
+}
+
+.addButton:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+}
+
+.tagField {
+  display: flex;
+  align-items: center;
+}
+
+.tagInput {
+  padding: var(--spacing-2);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.tagInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
+}
+
+.cancelButton {
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-700);
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-fast);
+}
+
+.cancelButton:hover {
+  background-color: var(--color-gray-200);
+}
+
+.submitButton {
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-primary);
+  color: var(--color-black);
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-fast);
+}
+
+.submitButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+@media (max-width: 768px) {
+  .gridTwoColumns {
+    grid-template-columns: 1fr;
+  }
+  
+  .tagContainer {
+    flex-direction: column;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+}
+
+.definitionBox {
+    border: 1px solid var(--color-gray-300);
+    padding: var(--spacing-4);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-4);
+    background-color: var(--color-gray-100);
+}
+
+.addDefinitionButton {
+    background: none;
+    border: 1px dashed var(--color-primary);
+    color: var(--color-primary);
+    width: 100%;
+    padding: var(--spacing-2);
+    border-radius: var(--border-radius-md);
+    margin-top: var(--spacing-2);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.removeDefinitionButton {
+    background-color: var(--color-error);
+    color: var(--color-white);
+    border: none;
+    padding: var(--spacing-2);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    margin-top: var(--spacing-2);
+}

@@ -5,5 +5,5 @@ alwaysApply: true
 ---
 * Use css modules and when importing call the import style (not styles)
 * Use English for code but Bosnian for user facing text
-
 * Use variables from globals.css when possible
+* If components are not sharable (not used or going to be used in multiple components or pages) place them close to the page that uses them.
