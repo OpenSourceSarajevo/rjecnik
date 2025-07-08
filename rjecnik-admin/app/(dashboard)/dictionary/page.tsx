@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import WordCard from './components/WordCard';
-import AddWordForm from './components/AddWordForm';
 import { Search } from 'lucide-react';
 import { Word } from "@/app/api/dictionary/route"
 import style from './page.module.css';
+import Link from "next/link";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -49,21 +49,17 @@ const Page: React.FC = () => {
 
   // CRUD operations remain client-side for now for simplicity,
   // but should ideally be moved to API endpoints as well.
-  const handleAddWord = (newWord: Omit<Word, 'id'>) => {
-    const wordToAdd: Word = {
-		...newWord,
-		id: Math.floor(Math.random() * 10000),
-	};
-    setWords(prev => [wordToAdd, ...prev]);
-  };
-
   const handleUpdateWord = (id: number, updatedWord: Word) => {
 		setWords((prev) => prev.map((w) => (w.id === id ? updatedWord : w)));
   };
 
   return (
     <div className={style.container}>
-      <AddWordForm addWord={handleAddWord} />
+      <div className={style.headerRow}>
+        <Link href="/dictionary/add" className={style.addButton}>
+          Dodaj novu riječ
+        </Link>
+      </div>
       <div className={style.searchAndFilters}>
         <div className={style.searchRow}>
           <div className={style.searchContainer}>

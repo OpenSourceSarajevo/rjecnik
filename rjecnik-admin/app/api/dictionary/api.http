@@ -1,0 +1,36 @@
+###
+GET http://localhost:3000/api/dictionary?pageNumber=0&pageSize=10
+
+###
+POST http://localhost:3000/api/dictionary
+Content-Type: application/json
+
+{
+    "headword": "aba",
+    "definitions": [
+        {
+            "type": "imenica", 
+            "gender": "ženski", 
+            "examples": null, 
+            "definition": "grubo sukno od vune; odjeća od abe, gunj, ogrtač; pejor. - staro, poderano, ružno odijelo, dronjci", 
+            "part_of_speech": null, 
+            "pronunciation_ipa": null, 
+            "pronunciation_audio": null,
+            "synonyms": [],
+            "antonyms": []
+        }
+    ],
+    "forms": [
+        {
+            "form": "jednina", 
+            "name": "nominativ", 
+            "value": "aba", 
+            "category": "padež"
+        }
+    ],
+    "alternatives": [],
+    "origins": ["arapski"],
+    "synonyms": [],
+    "antonyms": [],
+    "frequency": 0
+}
