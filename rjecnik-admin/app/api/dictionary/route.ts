@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 
   const validBody = parseResult.data;
 
-  const { data, error } = await supabase.from("words_v2_test")
+  const { data, error } = await supabase.from("words_v2")
     .insert([validBody])
     .select();
 
