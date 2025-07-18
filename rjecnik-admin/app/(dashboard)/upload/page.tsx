@@ -74,21 +74,26 @@ export default function Page() {
     setIsSubmitting(true);
 
     try {
-      // Get current user
       const { data: { user }, error: userError } = await supabase.auth.getUser();
+      const {
+			data: { session },
+		} = await supabase.auth.getSession();
       
       if (userError || !user?.email) {
         addToast("error", "Greška: Korisnik nije autentifikovan");
         return;
       }
 
-      // Call the Supabase function
+      console.log(session?.access_token);
+
       const { error } = await supabase.functions.invoke("data-ingestion", {
         body: {
           text,
           source: source || null,
           url: url || null,
-          user_email: user.email,
+        },
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
         },
       });
 

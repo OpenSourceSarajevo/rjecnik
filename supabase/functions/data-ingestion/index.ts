@@ -62,10 +62,20 @@ Deno.serve(async (req) => {
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_ANON_KEY")!
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    {
+      global: {
+        headers: { Authorization: req.headers.get('Authorization')! },
+      },
+    }
   )
 
-  const { text, source, url, user_email } = await req.json()
+  const authHeader = req.headers.get('Authorization')!
+  const token = authHeader.replace('Bearer ', '')
+  const { data: { user } } = await supabase.auth.getUser(token)
+
+  const user_email = user.email;
+  const { text, source, url } = await req.json()
 
   if (!text) {
     return new Response(JSON.stringify({ error: "Missing 'text' field" }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
@@ -134,14 +144,15 @@ Deno.serve(async (req) => {
         headword: w.word,
         count: w.count + existing.count,
         examples: mergedExamples,
-        is_new: existing.is_new 
+        is_new: existing.is_new
       })
     } else {
       toInsert.push({
         headword: w.word,
         examples: w.examples,
         count: w.count,
-        is_new: w.new
+        is_new: w.new,
+        created_by: user_email
       })
     }
   }
@@ -170,7 +181,7 @@ Deno.serve(async (req) => {
         source: source || null,
         url: url || null,
         text_hash: textHash,
-        user_email: user_email,
+        created_by: user_email,
         word_count: result.length,
         new_word_count: result.filter(w => w.new).length,
         sentence_count: sentences.length
