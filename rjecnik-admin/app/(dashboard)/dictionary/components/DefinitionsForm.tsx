@@ -2,21 +2,13 @@ import React, { useState } from "react";
 import style from "./DefinitionsForm.module.css";
 import WordTypeSelect from "@/app/(dashboard)/components/WordTypeSelect";
 import GenderSelect from "@/app/(dashboard)/components/GenderSelect";
+import { Definition } from "@/app/api/dictionary/route";
 
-type DefinitionType = {
-  type: string;
-  gender: string;
-  examples: string[];
-  definition: string;
-  part_of_speech: string | null;
-  synonyms: string[];
-  antonyms: string[];
-};
 
 type Props = {
-  definitions: DefinitionType[];
-  setDefinitions: React.Dispatch<React.SetStateAction<DefinitionType[]>>;
-  className?: string;
+	definitions: Definition[];
+	setDefinitions: React.Dispatch<React.SetStateAction<Definition[]>>;
+	className?: string;
 };
 
 const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, className }) => {
@@ -30,7 +22,20 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
         <button
           type="button"
           className={style.addBlockButton}
-          onClick={() => setDefinitions(defs => [...defs, { type: '', gender: '', examples: [], definition: '', part_of_speech: '', synonyms: [], antonyms: [] }])}
+          onClick={() => setDefinitions(defs => [
+            ...defs,
+            {
+              type: '',
+              gender: '',
+              examples: [],
+              definition: '',
+              part_of_speech: null,
+              synonyms: [],
+              antonyms: [],
+              pronunciation_ipa: null,
+              pronunciation_audio: null,
+            }
+          ])}
         >
           +
         </button>
@@ -47,20 +52,20 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
               {openIdx === idx && (
                 <div className={`${style.blockItem} ${style.blockItemColumn} ${style.accordionContent}`}>
                   <WordTypeSelect
-                    value={defObj.type}
+                    value={defObj.type || ''}
                     onChange={(value) => {
                       const newDefs = [...definitions];
-                      newDefs[idx] = { ...newDefs[idx], type: value };
+                      newDefs[idx] = { ...newDefs[idx], type: value || null };
                       setDefinitions(newDefs);
                     }}
                     className={style.input}
                   />
                   {(defObj.type === "imenica" || defObj.type === "pridjev") && (
                     <GenderSelect
-                      value={defObj.gender}
+                      value={defObj.gender || ''}
                       onChange={(value) => {
                         const newDefs = [...definitions];
-                        newDefs[idx] = { ...newDefs[idx], gender: value };
+                        newDefs[idx] = { ...newDefs[idx], gender: value || null };
                         setDefinitions(newDefs);
                       }}
                       className={style.input}
@@ -128,7 +133,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                   />
                   <input
                     type="text"
-                    value={defObj.synonyms.join(', ')}
+                    value={(defObj.synonyms || []).join(', ')}
                     className={style.input}
                     placeholder="Sinonimi (zarezom odvojeni)"
                     onChange={e => {
@@ -139,7 +144,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                   />
                   <input
                     type="text"
-                    value={defObj.antonyms.join(', ')}
+                    value={(defObj.antonyms || []).join(', ')}
                     className={style.input}
                     placeholder="Antonimi (zarezom odvojeni)"
                     onChange={e => {

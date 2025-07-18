@@ -45,7 +45,7 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
                     type="text"
                     value={formObj.form}
                     className={style.input}
-                    placeholder="Form (npr. jednina)"
+                    placeholder="Oblik (npr. jednina)"
                     onChange={e => {
                       const newForms = [...forms];
                       newForms[idx] = { ...newForms[idx], form: e.target.value };
@@ -56,7 +56,7 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
                     type="text"
                     value={formObj.name}
                     className={style.input}
-                    placeholder="Name (npr. nominativ)"
+                    placeholder="Naziv (npr. nominativ)"
                     onChange={e => {
                       const newForms = [...forms];
                       newForms[idx] = { ...newForms[idx], name: e.target.value };
@@ -67,7 +67,7 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
                     type="text"
                     value={formObj.value}
                     className={style.input}
-                    placeholder="Value (npr. aba)"
+                    placeholder="Vrijednost (npr. aba)"
                     onChange={e => {
                       const newForms = [...forms];
                       newForms[idx] = { ...newForms[idx], value: e.target.value };
@@ -78,7 +78,7 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
                     type="text"
                     value={formObj.category}
                     className={style.input}
-                    placeholder="Category (npr. padež)"
+                    placeholder="Kategorija (npr. padež)"
                     onChange={e => {
                       const newForms = [...forms];
                       newForms[idx] = { ...newForms[idx], category: e.target.value };

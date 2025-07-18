@@ -1,36 +1,69 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import ToastContainer, { Toast } from "@/app/components/Toast";
-import { v4 as uuidv4 } from "uuid";
 import DefinitionsForm from "../components/DefinitionsForm";
 import FormsForm from "../components/FormsForm";
 import OriginsForm from "../components/OriginsForm";
 import AlternativesForm from "../components/AlternativesForm";
-import { Definition } from "@/app/api/dictionary/route";
+import style from "../add/page.module.css";
+import { Word, Definition } from "@/app/api/dictionary/route";
 
-import style from "./page.module.css";
+export default function UpdateWordPage() {
+  const router = useRouter();
+  const params = useParams();
+  const { id } = params;
 
-export default function AddWordPage() {
   const [headword, setHeadword] = useState("");
   const [headwordError, setHeadwordError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const [step, setStep] = useState(1); // Stepper state
-
+  const [step, setStep] = useState(1);
   const [definitions, setDefinitions] = useState<Definition[]>([]);
   const [origins, setOrigins] = useState<string[]>([]);
   const [alternatives, setAlternatives] = useState<string[]>([]);
-  type FormType = {
-    form: string;
-    name: string;
-    value: string;
-    category: string;
+  const [forms, setFormsRaw] = useState<NonNullable<Word["forms"]> | null>([]);
+  // Wrapper to match FormsForm expected setter signature
+  const setForms: React.Dispatch<React.SetStateAction<{ form: string; name: string; value: string; category: string; }[]>> = (value) => {
+    if (typeof value === "function") {
+      setFormsRaw(prev => (value(prev ?? [])));
+    } else {
+      setFormsRaw(value);
+    }
   };
-  const [forms, setForms] = useState<FormType[]>([]);
+
+  // Fetch word by id
+  useEffect(() => {
+    if (!id) return;
+    setLoading(true);
+    fetch(`/api/dictionary?id=${id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          setHeadword(data.headword || "");
+          setDefinitions(data.definitions || []);
+          setFormsRaw(data.forms ?? []);
+          setOrigins(data.origins || []);
+          setAlternatives(data.alternatives || []);
+        } else {
+          setToasts(prev => [
+            ...prev,
+            { id: Date.now().toString(), type: "error", message: data.error || "Greška pri učitavanju riječi." }
+          ]);
+        }
+      })
+      .catch(() => {
+        setToasts(prev => [
+          ...prev,
+          { id: Date.now().toString(), type: "error", message: "Greška pri učitavanju riječi." }
+        ]);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
 
   const handleRemoveToast = (id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts(prev => prev.filter(t => t.id !== id));
   };
 
   const handleNext = () => {
@@ -39,10 +72,10 @@ export default function AddWordPage() {
       return;
     }
     setHeadwordError(false);
-    setStep((prev) => Math.min(prev + 1, 3));
+    setStep(prev => Math.min(prev + 1, 3));
   };
   const handleBack = () => {
-    setStep((prev) => Math.max(prev - 1, 1));
+    setStep(prev => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,63 +93,45 @@ export default function AddWordPage() {
     try {
       const payload = {
         headword,
-        definitions: definitions.map((d) => ({
+        definitions: definitions.map((d: Definition) => ({
           ...d,
           type: d.type || null,
           gender: d.gender || null,
-          examples: d.examples,
+          examples: d.examples?.length ? d.examples : [],
           part_of_speech: d.part_of_speech || null,
-          pronunciation_ipa: null,
-          pronunciation_audio: null,
+          pronunciation_ipa: d.pronunciation_ipa || null,
+          pronunciation_audio: d.pronunciation_audio || null,
           synonyms: d.synonyms,
           antonyms: d.antonyms,
         })),
-        forms: forms,
-        alternatives: alternatives,
-        origins: origins,
-        synonyms: definitions.flatMap((d) => d.synonyms),
-        antonyms: definitions.flatMap((d) => d.antonyms),
+        forms: forms ?? [],
+        alternatives,
+        origins,
+        synonyms: definitions.flatMap((d: Definition) => d.synonyms),
+        antonyms: definitions.flatMap((d: Definition) => d.antonyms),
       };
-      
-      const res = await fetch("/api/dictionary", {
-        method: "POST",
+      const res = await fetch(`/api/dictionary?id=${id}`, {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok || data.error) {
-        setToasts((prev) => [
+        setToasts(prev => [
           ...prev,
-          {
-            id: uuidv4(),
-            type: "error",
-            message: data.error ? String(data.error) : `Greška: ${res.status}`,
-          },
+          { id: Date.now().toString(), type: "error", message: data.error ? String(data.error) : `Greška: ${res.status}` },
         ]);
         return;
       }
-      setToasts((prev) => [
+      setToasts(prev => [
         ...prev,
-        {
-          id: uuidv4(),
-          type: "success",
-          message: "Riječ uspješno dodana!",
-        },
+        { id: Date.now().toString(), type: "success", message: "Riječ uspješno ažurirana!" },
       ]);
-      setHeadword("");
-      setDefinitions([]);
-      setForms([]);
-      setOrigins([]);
-      setAlternatives([]);
-      setStep(1);
-    } catch (err) {
-      setToasts((prev) => [
+      router.push("/dictionary");
+    } catch (err: unknown) {
+      setToasts(prev => [
         ...prev,
-        {
-          id: uuidv4(),
-          type: "error",
-          message: "Greška prilikom slanja: " + (err instanceof Error ? err.message : String(err)),
-        },
+        { id: Date.now().toString(), type: "error", message: "Greška prilikom slanja: " + (err instanceof Error ? err.message : String(err)) },
       ]);
     } finally {
       setLoading(false);
@@ -126,8 +141,8 @@ export default function AddWordPage() {
   return (
     <div className={style.container}>
       <ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
-      <h1 className={style.title}>Dodaj novu riječ</h1>
-      <form onSubmit={handleSubmit} className={style.form}>
+      <h1 className={style.title}>Ažuriraj riječ</h1>
+      <form className={style.form} onSubmit={handleSubmit}>
         <div className={style.stepper}>
           <div className={step >= 1 ? style.lineActive : style.line}></div>
           <div className={step >= 2 ? style.lineActive : style.line}></div>
@@ -162,7 +177,7 @@ export default function AddWordPage() {
         {step === 3 && (
           <>
             <div className={style.sectionLabel}>Oblici</div>
-            <FormsForm forms={forms} setForms={setForms} className={style.block} />
+            <FormsForm forms={forms ?? []} setForms={setForms} className={style.block} />
           </>
         )}
         <div className={style.buttonRow}>
@@ -178,7 +193,7 @@ export default function AddWordPage() {
           )}
           {step === 3 && (
             <button type="submit" className={style.button} disabled={loading}>
-              {loading ? "Dodavanje..." : "Dodaj"}
+              {loading ? "Ažuriranje..." : "Ažuriraj"}
             </button>
           )}
         </div>

@@ -3,16 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import { z } from "zod";
 
-export type Word = {
-  id: number;
-  headword: string;
-  definitions: Definition[];
-  forms?: { form: string; name: string; value: string; category: string }[] | null;
-  alternatives?: string[] | null;
-  origins?: string[] | null;
-};
-
-type Definition = {
+export type Definition = {
   type: string | null;
   gender: string | null;
   examples: string[] | null;
@@ -24,7 +15,32 @@ type Definition = {
   antonyms?: string[] | null;
 };
 
+export type Word = {
+  id: number;
+  headword: string;
+  definitions: Definition[];
+  forms?: { form: string; name: string; value: string; category: string }[] | null;
+  alternatives?: string[] | null;
+  origins?: string[] | null;
+};
+
+const WORDS_TABLE: string = "words_v2";
+
 export async function GET(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+  if (id) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from(WORDS_TABLE)
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 404 });
+    }
+    return NextResponse.json(data);
+  }
   const pageNumber = +request.nextUrl.searchParams.get("pageNumber")!;
   const pageSize = +request.nextUrl.searchParams.get("pageSize")!;
   const word = request.nextUrl.searchParams.get("word") ?? "";
@@ -95,7 +111,7 @@ export async function POST(request: NextRequest) {
 
   const validBody = parseResult.data;
 
-  const { data, error } = await supabase.from("words_v2")
+  const { data, error } = await supabase.from(WORDS_TABLE)
     .insert([validBody])
     .select();
 
@@ -104,4 +120,37 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json(data[0], { status: 201 });
+}
+
+export async function PATCH(request: NextRequest) {
+  const supabase = await createClient();
+  const session = await supabase.auth.getSession();
+  if (session.error || !session.data.session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const access_token = session.data.session.access_token;
+  const jwt = jwtDecode<{ user_permission?: string }>(access_token);
+  const user_permission = jwt.user_permission;
+  if (user_permission !== "Dictionary.ReadWrite") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  const id = request.nextUrl.searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
+  const body = await request.json();
+  const parseResult = WordInputSchema.safeParse(body);
+  if (!parseResult.success) {
+    return NextResponse.json({ error: "Invalid body", details: parseResult.error.errors }, { status: 400 });
+  }
+  const validBody = parseResult.data;
+  const { data, error } = await supabase
+    .from(WORDS_TABLE)
+    .update(validBody)
+    .eq("id", id)
+    .select();
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+  return NextResponse.json(data[0], { status: 200 });
 }

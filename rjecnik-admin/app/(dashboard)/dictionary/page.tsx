@@ -47,11 +47,6 @@ const Page: React.FC = () => {
     fetchWords(currentPage, searchTerm);
   }, [currentPage, searchTerm, fetchWords]);
 
-  // CRUD operations remain client-side for now for simplicity,
-  // but should ideally be moved to API endpoints as well.
-  const handleUpdateWord = (id: number, updatedWord: Word) => {
-		setWords((prev) => prev.map((w) => (w.id === id ? updatedWord : w)));
-  };
 
   return (
     <div className={style.container}>
@@ -85,7 +80,7 @@ const Page: React.FC = () => {
           <>
             <div className={style.wordsList}>
               {words.map(word => (
-                <WordCard key={word.id} word={word} updateWord={handleUpdateWord} />
+                <WordCard key={word.id} word={word} />
               ))}
             </div>
             
