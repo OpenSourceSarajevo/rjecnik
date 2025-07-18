@@ -95,8 +95,9 @@ export async function POST(request: NextRequest) {
   }
 
   const access_token = session.data.session.access_token;
-  const jwt = jwtDecode<{ user_permission?: string }>(access_token);
+  const jwt = jwtDecode<{ user_permission?: string; email?: string }>(access_token);
   const user_permission = jwt.user_permission;
+  const user_email = session.data.session.user.email || jwt.email;
 
   if (user_permission !== "Dictionary.ReadWrite") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -109,7 +110,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid body", details: parseResult.error.errors }, { status: 400 });
   }
 
-  const validBody = parseResult.data;
+  const validBody = {
+    ...parseResult.data,
+    created_by: user_email,
+    created_at: new Date().toISOString(),
+    updated_by: user_email,
+    updated_at: new Date().toISOString(),
+  };
 
   const { data, error } = await supabase.from(WORDS_TABLE)
     .insert([validBody])
@@ -129,8 +136,9 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const access_token = session.data.session.access_token;
-  const jwt = jwtDecode<{ user_permission?: string }>(access_token);
+  const jwt = jwtDecode<{ user_permission?: string; email?: string }>(access_token);
   const user_permission = jwt.user_permission;
+  const user_email = session.data.session.user.email || jwt.email;
   if (user_permission !== "Dictionary.ReadWrite") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
@@ -143,7 +151,11 @@ export async function PATCH(request: NextRequest) {
   if (!parseResult.success) {
     return NextResponse.json({ error: "Invalid body", details: parseResult.error.errors }, { status: 400 });
   }
-  const validBody = parseResult.data;
+  const validBody = {
+    ...parseResult.data,
+    updated_by: user_email,
+    updated_at: new Date().toISOString(),
+  };
   const { data, error } = await supabase
     .from(WORDS_TABLE)
     .update(validBody)
