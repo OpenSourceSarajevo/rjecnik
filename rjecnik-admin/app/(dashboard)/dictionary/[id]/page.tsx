@@ -24,10 +24,19 @@ export default function UpdateWordPage() {
   const [origins, setOrigins] = useState<string[]>([]);
   const [alternatives, setAlternatives] = useState<string[]>([]);
   const [forms, setFormsRaw] = useState<NonNullable<Word["forms"]> | null>([]);
+
+  // Temp state until synonyms and antonyms get migrated to definitions
+  const [synonyms, setSynonyms] = useState<string[]>([]);
+  const [antonyms, setAntonyms] = useState<string[]>([]);
+
   // Wrapper to match FormsForm expected setter signature
-  const setForms: React.Dispatch<React.SetStateAction<{ form: string; name: string; value: string; category: string; }[]>> = (value) => {
+  const setForms: React.Dispatch<
+    React.SetStateAction<
+      { form: string; name: string; value: string; category: string }[]
+    >
+  > = (value) => {
     if (typeof value === "function") {
-      setFormsRaw(prev => (value(prev ?? [])));
+      setFormsRaw((prev) => value(prev ?? []));
     } else {
       setFormsRaw(value);
     }
@@ -38,32 +47,42 @@ export default function UpdateWordPage() {
     if (!id) return;
     setLoading(true);
     fetch(`/api/dictionary?id=${id}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data && !data.error) {
           setHeadword(data.headword || "");
           setDefinitions(data.definitions || []);
           setFormsRaw(data.forms ?? []);
           setOrigins(data.origins || []);
           setAlternatives(data.alternatives || []);
+          setSynonyms(data.synonyms || []);
+          setAntonyms(data.antonyms || []);
         } else {
-          setToasts(prev => [
+          setToasts((prev) => [
             ...prev,
-            { id: Date.now().toString(), type: "error", message: data.error || "Greška pri učitavanju riječi." }
+            {
+              id: Date.now().toString(),
+              type: "error",
+              message: data.error || "Greška pri učitavanju riječi.",
+            },
           ]);
         }
       })
       .catch(() => {
-        setToasts(prev => [
+        setToasts((prev) => [
           ...prev,
-          { id: Date.now().toString(), type: "error", message: "Greška pri učitavanju riječi." }
+          {
+            id: Date.now().toString(),
+            type: "error",
+            message: "Greška pri učitavanju riječi.",
+          },
         ]);
       })
       .finally(() => setLoading(false));
   }, [id]);
 
   const handleRemoveToast = (id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
+    setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
   const handleNext = () => {
@@ -72,10 +91,10 @@ export default function UpdateWordPage() {
       return;
     }
     setHeadwordError(false);
-    setStep(prev => Math.min(prev + 1, 3));
+    setStep((prev) => Math.min(prev + 1, 3));
   };
   const handleBack = () => {
-    setStep(prev => Math.max(prev - 1, 1));
+    setStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,8 +126,8 @@ export default function UpdateWordPage() {
         forms: forms ?? [],
         alternatives,
         origins,
-        synonyms: definitions.flatMap((d: Definition) => d.synonyms),
-        antonyms: definitions.flatMap((d: Definition) => d.antonyms),
+        synonyms: synonyms,
+        antonyms: antonyms,
       };
       const res = await fetch(`/api/dictionary?id=${id}`, {
         method: "PATCH",
@@ -117,21 +136,35 @@ export default function UpdateWordPage() {
       });
       const data = await res.json();
       if (!res.ok || data.error) {
-        setToasts(prev => [
+        setToasts((prev) => [
           ...prev,
-          { id: Date.now().toString(), type: "error", message: data.error ? String(data.error) : `Greška: ${res.status}` },
+          {
+            id: Date.now().toString(),
+            type: "error",
+            message: data.error ? String(data.error) : `Greška: ${res.status}`,
+          },
         ]);
         return;
       }
-      setToasts(prev => [
+      setToasts((prev) => [
         ...prev,
-        { id: Date.now().toString(), type: "success", message: "Riječ uspješno ažurirana!" },
+        {
+          id: Date.now().toString(),
+          type: "success",
+          message: "Riječ uspješno ažurirana!",
+        },
       ]);
       router.push("/dictionary");
     } catch (err: unknown) {
-      setToasts(prev => [
+      setToasts((prev) => [
         ...prev,
-        { id: Date.now().toString(), type: "error", message: "Greška prilikom slanja: " + (err instanceof Error ? err.message : String(err)) },
+        {
+          id: Date.now().toString(),
+          type: "error",
+          message:
+            "Greška prilikom slanja: " +
+            (err instanceof Error ? err.message : String(err)),
+        },
       ]);
     } finally {
       setLoading(false);
@@ -150,44 +183,77 @@ export default function UpdateWordPage() {
         </div>
         {step === 1 && (
           <>
-            <label htmlFor="headword" className={style.sectionLabel}>Riječ</label>
+            <label htmlFor="headword" className={style.sectionLabel}>
+              Riječ
+            </label>
             <input
               id="headword"
               type="text"
               value={headword}
-              onChange={e => {
+              onChange={(e) => {
                 setHeadword(e.target.value);
-                if (headwordError && e.target.value.trim()) setHeadwordError(false);
+                if (headwordError && e.target.value.trim())
+                  setHeadwordError(false);
               }}
-              className={headwordError ? `${style.input} ${style.inputError}` : style.input}
+              className={
+                headwordError
+                  ? `${style.input} ${style.inputError}`
+                  : style.input
+              }
               required
             />
             <div className={style.sectionLabel}>Porijeklo</div>
-            <OriginsForm origins={origins} setOrigins={setOrigins} className={style.block} />
+            <OriginsForm
+              origins={origins}
+              setOrigins={setOrigins}
+              className={style.block}
+            />
             <div className={style.sectionLabel}>Alternativni oblici</div>
-            <AlternativesForm alternatives={alternatives} setAlternatives={setAlternatives} className={style.block} />
+            <AlternativesForm
+              alternatives={alternatives}
+              setAlternatives={setAlternatives}
+              className={style.block}
+            />
           </>
         )}
         {step === 2 && (
           <>
             <div className={style.sectionLabel}>Definicije</div>
-            <DefinitionsForm definitions={definitions} setDefinitions={setDefinitions} className={style.block} />
+            <DefinitionsForm
+              definitions={definitions}
+              setDefinitions={setDefinitions}
+              className={style.block}
+            />
           </>
         )}
         {step === 3 && (
           <>
             <div className={style.sectionLabel}>Oblici</div>
-            <FormsForm forms={forms ?? []} setForms={setForms} className={style.block} />
+            <FormsForm
+              forms={forms ?? []}
+              setForms={setForms}
+              className={style.block}
+            />
           </>
         )}
         <div className={style.buttonRow}>
           {step > 1 && (
-            <button type="button" className={style.button} onClick={handleBack} disabled={loading}>
+            <button
+              type="button"
+              className={style.button}
+              onClick={handleBack}
+              disabled={loading}
+            >
               Nazad
             </button>
           )}
           {step < 3 && (
-            <button type="button" className={style.button} onClick={handleNext} disabled={loading}>
+            <button
+              type="button"
+              className={style.button}
+              onClick={handleNext}
+              disabled={loading}
+            >
               Dalje
             </button>
           )}
@@ -200,4 +266,4 @@ export default function UpdateWordPage() {
       </form>
     </div>
   );
-} 
+}
