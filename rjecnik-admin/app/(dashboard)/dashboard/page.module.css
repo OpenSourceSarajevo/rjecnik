@@ -1,3 +1,49 @@
 .title {
   color: var(--color-black);
 }
+
+.subTitle {
+  margin-top: 2.5rem;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.statsContainer {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.statBlock {  
+  color: var(--color-black);
+  min-height: 150px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 5px 0 10px -2px rgba(0, 0, 0, 0.2);
+   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 120px; 
+}
+
+.statLabel {
+  font-size: 1.6rem;
+}
+
+.statLabel::first-letter {
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 2.4rem; 
+  font-weight: 700;
+  margin-top: auto;
+}
+
+.typeBreakdownGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
