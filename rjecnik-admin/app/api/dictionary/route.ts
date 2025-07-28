@@ -28,6 +28,7 @@ const WORDS_TABLE: string = "words_v2";
 
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
+  const stats = request.nextUrl.searchParams.get("stats");
   if (id) {
     const supabase = await createClient();
     const { data, error } = await supabase
@@ -38,6 +39,19 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 404 });
+    }
+    return NextResponse.json(data);
+  }
+  // New: stats endpoint
+  if (stats === "true") {
+    const supabase = await createClient();
+    // Fetch from the view
+    const { data, error } = await supabase
+      .from('words_dashboard_stats')
+      .select('*')
+      .single();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
     return NextResponse.json(data);
   }
