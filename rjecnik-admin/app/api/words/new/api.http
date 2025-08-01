@@ -1,0 +1,2 @@
+GET http://localhost:3000/api/words/new?pageNumber=0&pageSize=10
+Content-Type: application/json
