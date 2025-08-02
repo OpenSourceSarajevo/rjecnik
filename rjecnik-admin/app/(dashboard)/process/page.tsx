@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import ToastContainer, { Toast } from "@/app/components/Toast";
 import { NewWord, WordProcessingStrategy } from "@/app/api/words/contracts";
@@ -16,6 +17,8 @@ export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const router = useRouter();
+
 
   const strategyTranslations: Record<WordProcessingStrategy, string> = {
 	"Frequency Only": "Samo frekvencija",
@@ -69,9 +72,6 @@ export default function Page() {
   }, [currentPage, fetchWords]);
   
   const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
-	// You could update local state or call an API here
-	console.log(`Update word ${id} to strategy: ${strategy}`);
-
 	const res = await fetch(
 		`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
 		{
@@ -107,6 +107,7 @@ export default function Page() {
   const handleRemoveToast = (id: string) => {
 	setToasts((prev) => prev.filter((t) => t.id !== id));
   };
+
   
   if (isLoading) {
     return <p>Učitavanje riječi...</p>
@@ -116,9 +117,18 @@ export default function Page() {
     return <p style={{ color: 'red' }}>{error}</p>
   }
 
+
   return (
 		<>
 			<ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
+
+			<button
+				className={style.processingButton}
+				onClick={() => router.push("/process/flow")}
+			>
+				Obradi riječi
+			</button>
+
 			<div className={style.container}>
 				<table className={style.table}>
 					<thead>
@@ -191,7 +201,6 @@ export default function Page() {
 					>
 						Prethodna
 					</button>
-
 					<button
 						onClick={() => setCurrentPage((p) => p + 1)}
 						disabled={!hasMore}
