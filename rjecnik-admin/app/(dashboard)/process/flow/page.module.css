@@ -1,0 +1,112 @@
+.processingView {
+  color: var(--color-black);
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+.processingView h2 {
+  font-size: 1.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.header {
+    display: flex;
+    margin-bottom: 0.75rem;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.info p, .info ul li {
+    margin-bottom: 0.5rem;
+}
+
+.processingWord {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.examples {
+  margin-bottom: 1.5rem;
+  padding-left: 1.2rem;
+}
+
+.examples li {
+  margin-bottom: 0.5rem;
+}
+
+.strategySelect {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray-300);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+
+.processingControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.processingControls select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.processingButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.processingButtons button {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #0070f3;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.processingButtons button:hover, .saveButton:hover {
+  background-color: #005dc1;
+}
+
+.processingButtons button:disabled, .saveButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.processingButtonBack {
+  background-color: #e53e3e;
+}
+
+.processingButtonBack:hover {
+  background-color: #c53030;
+}
+
+
+.saveButton {
+  margin-left: 1rem;
+  max-width: 10rem;
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #0070f3;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
