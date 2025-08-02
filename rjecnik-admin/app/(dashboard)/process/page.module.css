@@ -1,3 +1,96 @@
-.title {
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  font-size: 0.95rem;
+  background-color: var(--color-white);
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.table th {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-700);
+  font-weight: 600;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: var(--color-gray-50);
+}
+
+.tableRow:hover {
+  background-color: var(--color-gray-100);
+  transition: background-color 0.2s ease;
+}
+
+.tableRow td {
+  vertical-align: top;
+  word-break: break-word;
+  color: var(--color-gray-900);
+}
+
+.examplesList {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.examplesCell {
+  max-height: 3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  cursor: pointer;
+  color: var(--color-gray-900);
+  max-width: 250px; /* or whatever width works for your layout */
+}
+
+/* On hover: expand fully and wrap text */
+.examplesCell:hover {
+  white-space: normal;
+  max-height: none;
+  background-color: var(--color-gray-50);
+  padding: 0.5rem;
+  z-index: 2;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  position: absolute;
+}
+.strategySelect {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray-300);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-white);
   color: var(--color-black);
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-6);
+}
+
+.paginationInfo {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+  flex: 1; /* pushes buttons to the right */
+}
+
+.paginationControls {
+  display: flex;
+  gap: var(--spacing-2);
+  justify-content: flex-end;
+}
+
+.paginationButton {
+  white-space: nowrap;
 }

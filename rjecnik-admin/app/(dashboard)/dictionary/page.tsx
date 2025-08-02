@@ -35,9 +35,8 @@ const Page: React.FC = () => {
         setHasMore(false);
         setWords(data || []);
       }
-    } catch (err) {
+    } catch  {
       setError('Greška pri učitavanju riječi.');
-      console.error(err);
     } finally {
       setIsLoading(false);
     }
