@@ -22,6 +22,7 @@ export type Word = {
   forms?: { form: string; name: string; value: string; category: string }[] | null;
   alternatives?: string[] | null;
   origins?: string[] | null;
+  frequency: number;
 };
 
 const WORDS_TABLE: string = "words_v2";

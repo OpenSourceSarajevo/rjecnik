@@ -103,8 +103,6 @@ export default function Page() {
 				)
 			);
         }
-
-        
 	};
 
 	const handleRemoveToast = (id: string) => {
@@ -112,7 +110,31 @@ export default function Page() {
 	};
 
     const handleSaveStrategy = async (id: number, strategy: WordProcessingStrategy) => {
-        console.log(id, strategy);
+        const res = await fetch(
+			`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+		const data = await res.json();
+
+		if (!res.ok || data.error) {
+			setToasts((prev) => [
+				...prev,
+				{
+					id: uuidv4(),
+					type: "error",
+					message: data.error ?? `Greška: ${res.status}`,
+				},
+			]);
+			return;
+		}
+
+        setAssignedWords((prev) => prev.filter((word) => word.id !== id));
+		setProcessingIndex((prev) =>
+			prev < assignedWords.length - 1 ? prev : 0
+		);
     }
 
 	if (!currentWord) return <p>Nema riječi za obradu.</p>;
@@ -152,7 +174,7 @@ export default function Page() {
 					))}
 				</select>
 				<button
-                    className={style.saveButton}
+					className={style.saveButton}
 					onClick={() =>
 						handleSaveStrategy(
 							currentWord.id,
@@ -170,6 +192,9 @@ export default function Page() {
 				</p>
 				<p>
 					<strong>Pojavljivanja:</strong> {currentWord.count}
+				</p>
+				<p>
+					<strong>Nova:</strong> {currentWord.is_new ? "Da" : "Ne"}
 				</p>
 				<p>
 					<strong>Primjeri:</strong>
