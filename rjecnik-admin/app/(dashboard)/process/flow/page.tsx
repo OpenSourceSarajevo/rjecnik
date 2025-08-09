@@ -3,9 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { NewWord, WordProcessingStrategy } from "@/app/api/words/contracts";
-
 import ToastContainer, { Toast } from "@/app/components/Toast";
+
+import NewForm from "./components/NewForm";
+
 import style from "./page.module.css";
+import { Word, WordForm } from "@/app/api/dictionary/route";
+
 
 export default function Page() {
     const [assignedWords, setAssignedWords] = useState<NewWord[]>([]);
@@ -13,6 +17,8 @@ export default function Page() {
 	const [toasts, setToasts] = useState<Toast[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [selectedWord, setSelectedWord] = useState<Word | null>(null);
+	const [forms, setForms] = useState<WordForm[]>([]);
 
 	const currentWord = assignedWords[processingIndex];
 
@@ -110,11 +116,17 @@ export default function Page() {
 	};
 
     const handleSaveStrategy = async (id: number, strategy: WordProcessingStrategy) => {
+		let body: string | null = null;
+		if (strategy === "New Form") {
+			body = JSON.stringify({ headword: selectedWord?.headword, forms });
+		}
+
         const res = await fetch(
 			`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
+				body: body,
 			}
 		);
 		const data = await res.json();
@@ -128,6 +140,8 @@ export default function Page() {
 					message: data.error ?? `Greška: ${res.status}`,
 				},
 			]);
+			setForms([]);
+			setSelectedWord(null);
 			return;
 		}
 
@@ -226,6 +240,17 @@ export default function Page() {
 					Sljedeće
 				</button>
 			</div>
+			{currentWord.strategy === "New Form" && (
+				<div className={style.strategyDetails}>
+					<NewForm
+						word={currentWord}
+						forms={forms}
+						setForms={setForms}
+						selectedWord={selectedWord}
+						setSelectedWord={setSelectedWord}
+					/>
+				</div>
+			)}
 		</div>
 	);
 }

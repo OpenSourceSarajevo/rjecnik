@@ -110,3 +110,11 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
+.strategyDetails {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  background-color: var(--color-white);
+}

@@ -73,7 +73,16 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   }
 
   try {
-    const result = await handleStrategy(+id, strategy, { user_email });
+    const raw = await request.text();
+    const body = raw ? JSON.parse(raw) : null;
+
+    if (!body || typeof body !== "object") {
+      console.log("No body");
+      const result = await handleStrategy(+id, strategy, { user_email });
+      return NextResponse.json(result);
+    }
+    console.log("body");
+    const result = await handleStrategy(+id, strategy, { user_email, ...body });
     return NextResponse.json(result);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
