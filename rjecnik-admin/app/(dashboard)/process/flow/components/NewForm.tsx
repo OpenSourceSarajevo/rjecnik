@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { NewWord } from "@/app/api/words/contracts";
-import style from "./NewForm.module.css";
 import { Word, WordForm } from "@/app/api/dictionary/route";
+
+import style from "./NewForm.module.css";
 
 type NewFormProps = {
 	word: NewWord;
