@@ -1,6 +1,7 @@
 import { WordProcessingStrategy } from "@/app/api/words/contracts";
 import { applyFrequencyOnly } from "./frequencyOnly";
 import { applyRemoveNewWord } from "./removeNewWord";
+import { applyNewWordForm } from "./newWordForm";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type HandlerFn = (id: number, body: any) => Promise<any>;
@@ -10,7 +11,7 @@ const strategyMap: Record<WordProcessingStrategy, HandlerFn> = {
   Ignore: async () => ({}),
   "Frequency Only": applyFrequencyOnly,
   "New Example": async () => ({}),
-  "New Form": async () => ({}),
+  "New Form": applyNewWordForm,
   "Existing Form": async () => ({}),
   "New Headword": async () => ({}),
   Remove: applyRemoveNewWord,

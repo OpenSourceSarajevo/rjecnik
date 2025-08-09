@@ -15,11 +15,18 @@ export type Definition = {
   antonyms?: string[] | null;
 };
 
+export type WordForm = {
+  form: string;
+  name: string;
+  value: string;
+  category: string;
+};
+
 export type Word = {
   id: number;
   headword: string;
   definitions: Definition[];
-  forms?: { form: string; name: string; value: string; category: string }[] | null;
+  forms?: WordForm[] | null;
   alternatives?: string[] | null;
   origins?: string[] | null;
   frequency: number;
