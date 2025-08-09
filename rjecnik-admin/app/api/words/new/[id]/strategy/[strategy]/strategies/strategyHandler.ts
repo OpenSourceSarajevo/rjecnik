@@ -8,13 +8,13 @@ import { applyExistingWordForm } from "./existingWordForm";
 type HandlerFn = (id: number, body: any) => Promise<any>;
 
 const strategyMap: Record<WordProcessingStrategy, HandlerFn> = {
-  "New Definition": async () => ({}),
-  Ignore: async () => ({}),
+  // "New Definition": async () => ({}),
+  // Ignore: async () => ({}),
   "Frequency Only": applyFrequencyOnly,
-  "New Example": async () => ({}),
+  // "New Example": async () => ({}),
   "New Form": applyNewWordForm,
   "Existing Form": applyExistingWordForm,
-  "New Headword": async () => ({}),
+  // "New Headword": async () => ({}),
   Remove: applyRemoveNewWord,
 };
 

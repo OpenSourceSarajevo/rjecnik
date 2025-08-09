@@ -1,4 +1,12 @@
-export type WordProcessingStrategy = 'Frequency Only' | 'New Example' | 'New Definition' | 'New Form' | 'Existing Form' | 'New Headword' | 'Ignore' | 'Remove';
+export type WordProcessingStrategy = 
+  'Frequency Only' | 
+  // 'New Example' | 
+  // 'New Definition' | 
+  'New Form' | 
+  'Existing Form' | 
+  // 'New Headword' | 
+  // 'Ignore' | 
+  'Remove';
 
 export type NewWord = {
   id: number;
