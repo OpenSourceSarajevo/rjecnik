@@ -9,6 +9,7 @@ import NewForm from "./components/NewForm";
 
 import style from "./page.module.css";
 import { Word, WordForm } from "@/app/api/dictionary/route";
+import ExistingForm from "./components/ExistingForm";
 
 
 export default function Page() {
@@ -91,6 +92,9 @@ export default function Page() {
 			return;
 		}
 
+		setSelectedWord(null);
+		setForms([]);
+
         if (!strategy) {
             setAssignedWords((prev) =>
 				prev.filter((word) => word.id !== id)
@@ -99,7 +103,7 @@ export default function Page() {
 				prev < assignedWords.length - 1 ? prev : 0
 			);
         } else {
-             const updatedWord = data as NewWord;
+            const updatedWord = data as NewWord;
 
 			setAssignedWords((prevWords) =>
 				prevWords.map((word) =>
@@ -119,6 +123,9 @@ export default function Page() {
 		let body: string | null = null;
 		if (strategy === "New Form") {
 			body = JSON.stringify({ headword: selectedWord?.headword, forms });
+		}
+		else if (strategy === "Existing Form") {
+			body = JSON.stringify({ headword: selectedWord?.headword });
 		}
 
         const res = await fetch(
@@ -140,10 +147,11 @@ export default function Page() {
 					message: data.error ?? `Greška: ${res.status}`,
 				},
 			]);
-			setForms([]);
-			setSelectedWord(null);
 			return;
 		}
+
+		setForms([]);
+		setSelectedWord(null);
 
         setAssignedWords((prev) => prev.filter((word) => word.id !== id));
 		setProcessingIndex((prev) =>
@@ -246,6 +254,14 @@ export default function Page() {
 						word={currentWord}
 						forms={forms}
 						setForms={setForms}
+						selectedWord={selectedWord}
+						setSelectedWord={setSelectedWord}
+					/>
+				</div>
+			)}
+			{currentWord.strategy === "Existing Form" && (
+				<div className={style.strategyDetails}>
+					<ExistingForm
 						selectedWord={selectedWord}
 						setSelectedWord={setSelectedWord}
 					/>

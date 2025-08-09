@@ -2,11 +2,6 @@
     color: var(--color-black);
 }
 
-.word-form-manager {
-  font-family: sans-serif;
-  max-width: 600px;
-}
-
 .headword {
   font-size: 1.5rem;
   font-weight: bold;
