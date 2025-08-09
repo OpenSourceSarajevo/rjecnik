@@ -22,23 +22,23 @@ export default function Page() {
 
   const strategyTranslations: Record<WordProcessingStrategy, string> = {
 	"Frequency Only": "Samo frekvencija",
-	"New Example": "Novi primjer",
-	"New Definition": "Nova definicija",
+	// "New Example": "Novi primjer",
+	// "New Definition": "Nova definicija",
 	"New Form": "Novi oblik",
 	"Existing Form": "Postojeći oblik",
-	"New Headword": "Nova riječ",
-	Ignore: "Ignoriši",
+	// "New Headword": "Nova riječ",
+	// Ignore: "Ignoriši",
 	Remove: "Ukloni",
   };
 
   const strategies: WordProcessingStrategy[] = [
 	"Frequency Only",
-	"New Example",
-	"New Definition",
+	// "New Example",
+	// "New Definition",
 	"New Form",
 	"Existing Form",
-	"New Headword",
-	"Ignore",
+	// "New Headword",
+	// "Ignore",
 	"Remove",
   ];
 
