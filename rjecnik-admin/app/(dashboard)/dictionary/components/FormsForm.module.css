@@ -36,7 +36,7 @@
   padding: 0.7rem 1rem;
   font-size: 1rem;
   color: var(--text, #222);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .removeBlockButton {
@@ -91,6 +91,12 @@
   animation: fadeInAccordion 0.2s;
 }
 @keyframes fadeInAccordion {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: none; }
-} 
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

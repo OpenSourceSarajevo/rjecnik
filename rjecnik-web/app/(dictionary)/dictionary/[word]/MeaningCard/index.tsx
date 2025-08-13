@@ -1,4 +1,4 @@
-import style from "./MeaningCard.module.css";
+import style from './MeaningCard.module.css';
 
 type MeaningCardProps = {
   type: string | null;

@@ -71,7 +71,8 @@
 }
 
 /* Edit Form Styles */
-.editForm, .viewContent {
+.editForm,
+.viewContent {
   padding: var(--spacing-2);
 }
 
@@ -93,7 +94,9 @@
   color: var(--color-gray-700);
 }
 
-.input, .select, .textarea {
+.input,
+.select,
+.textarea {
   width: 100%;
   padding: var(--spacing-2) var(--spacing-3);
   border: 1px solid var(--color-gray-300);
@@ -138,7 +141,8 @@
   margin-top: var(--spacing-6);
 }
 
-.cancelButton, .saveButton {
+.cancelButton,
+.saveButton {
   display: flex;
   align-items: center;
   padding: var(--spacing-2) var(--spacing-4);
@@ -153,7 +157,6 @@
   border-color: var(--color-primary);
 }
 
-
 /* View Content Styles */
 .section {
   margin-bottom: var(--spacing-4);
@@ -167,7 +170,8 @@
   padding-bottom: var(--spacing-1);
 }
 
-.definition, .exampleItem {
+.definition,
+.exampleItem {
   color: var(--color-gray-700);
   line-height: var(--line-height-relaxed);
 }
@@ -211,11 +215,11 @@
   .grid {
     grid-template-columns: 1fr;
   }
-  
+
   .formActions {
     flex-direction: column;
   }
-  
+
   .metadata {
     flex-direction: column;
     gap: var(--spacing-1);
@@ -223,40 +227,40 @@
 }
 
 .definitionSection {
-    margin-bottom: var(--spacing-6);
-    padding-bottom: var(--spacing-4);
-    border-bottom: 1px solid var(--color-gray-100);
+  margin-bottom: var(--spacing-6);
+  padding-bottom: var(--spacing-4);
+  border-bottom: 1px solid var(--color-gray-100);
 }
 
 .definitionSection:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .sectionHeader {
-    display: flex;
-    align-items: baseline;
-    gap: var(--spacing-2);
-    margin-bottom: var(--spacing-2);
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
 }
 
 .gender {
-    font-size: var(--font-size-sm);
-    color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
 }
 
 .subSectionTitle {
-    font-weight: 500;
-    color: var(--color-gray-600);
-    margin-top: var(--spacing-4);
-    margin-bottom: var(--spacing-2);
+  font-weight: 500;
+  color: var(--color-gray-600);
+  margin-top: var(--spacing-4);
+  margin-bottom: var(--spacing-2);
 }
 
 .definitionBox {
-    border: 1px solid var(--color-gray-300);
-    padding: var(--spacing-4);
-    border-radius: var(--border-radius-md);
-    margin-bottom: var(--spacing-4);
-    background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-300);
+  padding: var(--spacing-4);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-4);
+  background-color: var(--color-gray-100);
 }

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import styles from "./page.module.css";
-import { useState, useEffect } from "react";
+import { motion } from 'framer-motion';
+import styles from './page.module.css';
+import { useState, useEffect } from 'react';
 
-import { sections } from "./sections.data";
+import { sections } from './sections.data';
 
 const PrivacyPolicy = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -12,8 +12,8 @@ const PrivacyPolicy = () => {
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const containerVariants = {
@@ -55,12 +55,10 @@ const PrivacyPolicy = () => {
         >
           <motion.div variants={itemVariants} className={styles.privacyHeader}>
             <h1 className={styles.privacyTitle}>Politika privatnosti</h1>
-            <p className={styles.privacyDate}>
-              Datum stupanja na snagu: 2025-02-16
-            </p>
+            <p className={styles.privacyDate}>Datum stupanja na snagu: 2025-02-16</p>
             <p className={styles.privacyIntro}>
-              Ova Politika privatnosti objašnjava kako prikupljamo, koristimo i
-              štitimo vaše podatke kada koristite Bosanski Online Rječnik.
+              Ova Politika privatnosti objašnjava kako prikupljamo, koristimo i štitimo vaše podatke
+              kada koristite Bosanski Online Rječnik.
             </p>
           </motion.div>
 

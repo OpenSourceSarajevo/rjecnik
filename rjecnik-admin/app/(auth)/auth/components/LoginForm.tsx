@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { signinWithGoogle } from "@/utils/actions";
-import React from "react";
+import { signinWithGoogle } from '@/utils/actions';
+import React from 'react';
 
-import style from "./LoginForm.module.css";
+import style from './LoginForm.module.css';
 
 const LoginForm = () => {
   return (
@@ -16,11 +16,8 @@ const LoginForm = () => {
 
         <form>
           <div>
-            <button
-              formAction={signinWithGoogle}
-              className={style.googleButton}
-            >
-              {"Continue with Google"}
+            <button formAction={signinWithGoogle} className={style.googleButton}>
+              {'Continue with Google'}
             </button>
           </div>
         </form>

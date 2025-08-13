@@ -1,7 +1,7 @@
-import { BookOpen } from "lucide-react";
+import { BookOpen } from 'lucide-react';
 
-import style from "./Header.module.css";
-import Link from "next/link";
+import style from './Header.module.css';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -9,11 +9,7 @@ const Header = () => {
       <nav className={`${style.container} ${style.nav}`}>
         <Link href="/">
           <div className={style.logo}>
-            <BookOpen
-              className="logo-icon"
-              size={24}
-              color="var(--color-primary)"
-            />
+            <BookOpen className="logo-icon" size={24} color="var(--color-primary)" />
             <span className={style.logoText}>Bosanski Rječnik</span>
           </div>
         </Link>

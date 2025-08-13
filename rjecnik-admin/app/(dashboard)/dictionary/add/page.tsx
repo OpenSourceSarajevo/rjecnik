@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import ToastContainer, { Toast } from "@/app/components/Toast";
-import { v4 as uuidv4 } from "uuid";
-import DefinitionsForm from "../components/DefinitionsForm";
-import FormsForm from "../components/FormsForm";
-import OriginsForm from "../components/OriginsForm";
-import AlternativesForm from "../components/AlternativesForm";
-import { Definition } from "@/app/api/dictionary/route";
+import React, { useState } from 'react';
+import ToastContainer, { Toast } from '@/app/components/Toast';
+import { v4 as uuidv4 } from 'uuid';
+import DefinitionsForm from '../components/DefinitionsForm';
+import FormsForm from '../components/FormsForm';
+import OriginsForm from '../components/OriginsForm';
+import AlternativesForm from '../components/AlternativesForm';
+import { Definition } from '@/app/api/dictionary/route';
 
-import style from "./page.module.css";
+import style from './page.module.css';
 
 export default function AddWordPage() {
-  const [headword, setHeadword] = useState("");
+  const [headword, setHeadword] = useState('');
   const [headwordError, setHeadwordError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -77,10 +77,10 @@ export default function AddWordPage() {
         synonyms: definitions.flatMap((d) => d.synonyms),
         antonyms: definitions.flatMap((d) => d.antonyms),
       };
-      
-      const res = await fetch("/api/dictionary", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+
+      const res = await fetch('/api/dictionary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
@@ -89,7 +89,7 @@ export default function AddWordPage() {
           ...prev,
           {
             id: uuidv4(),
-            type: "error",
+            type: 'error',
             message: data.error ? String(data.error) : `Greška: ${res.status}`,
           },
         ]);
@@ -99,11 +99,11 @@ export default function AddWordPage() {
         ...prev,
         {
           id: uuidv4(),
-          type: "success",
-          message: "Riječ uspješno dodana!",
+          type: 'success',
+          message: 'Riječ uspješno dodana!',
         },
       ]);
-      setHeadword("");
+      setHeadword('');
       setDefinitions([]);
       setForms([]);
       setOrigins([]);
@@ -114,8 +114,8 @@ export default function AddWordPage() {
         ...prev,
         {
           id: uuidv4(),
-          type: "error",
-          message: "Greška prilikom slanja: " + (err instanceof Error ? err.message : String(err)),
+          type: 'error',
+          message: 'Greška prilikom slanja: ' + (err instanceof Error ? err.message : String(err)),
         },
       ]);
     } finally {
@@ -135,12 +135,14 @@ export default function AddWordPage() {
         </div>
         {step === 1 && (
           <>
-            <label htmlFor="headword" className={style.sectionLabel}>Riječ</label>
+            <label htmlFor="headword" className={style.sectionLabel}>
+              Riječ
+            </label>
             <input
               id="headword"
               type="text"
               value={headword}
-              onChange={e => {
+              onChange={(e) => {
                 setHeadword(e.target.value);
                 if (headwordError && e.target.value.trim()) setHeadwordError(false);
               }}
@@ -150,13 +152,21 @@ export default function AddWordPage() {
             <div className={style.sectionLabel}>Porijeklo</div>
             <OriginsForm origins={origins} setOrigins={setOrigins} className={style.block} />
             <div className={style.sectionLabel}>Alternativni oblici</div>
-            <AlternativesForm alternatives={alternatives} setAlternatives={setAlternatives} className={style.block} />
+            <AlternativesForm
+              alternatives={alternatives}
+              setAlternatives={setAlternatives}
+              className={style.block}
+            />
           </>
         )}
         {step === 2 && (
           <>
             <div className={style.sectionLabel}>Definicije</div>
-            <DefinitionsForm definitions={definitions} setDefinitions={setDefinitions} className={style.block} />
+            <DefinitionsForm
+              definitions={definitions}
+              setDefinitions={setDefinitions}
+              className={style.block}
+            />
           </>
         )}
         {step === 3 && (
@@ -178,11 +188,11 @@ export default function AddWordPage() {
           )}
           {step === 3 && (
             <button type="submit" className={style.button} disabled={loading}>
-              {loading ? "Dodavanje..." : "Dodaj"}
+              {loading ? 'Dodavanje...' : 'Dodaj'}
             </button>
           )}
         </div>
       </form>
     </div>
   );
-} 
+}

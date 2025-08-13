@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
-import styles from "./page.module.css";
+import { motion } from 'framer-motion';
+import Header from '@/app/components/Header';
+import Footer from '@/app/components/Footer';
+import styles from './page.module.css';
 
-import { sections } from "./sections.data";
+import { sections } from './sections.data';
 
 const TermsConditions = () => {
   const containerVariants = {
@@ -41,19 +41,13 @@ const TermsConditions = () => {
         >
           <motion.div variants={itemVariants} className={styles.termsHeader}>
             <h1 className={styles.termsTitle}>Uslovi korištenja</h1>
-            <p className={styles.termsDate}>
-              Datum stupanja na snagu: 2025-02-16
-            </p>
+            <p className={styles.termsDate}>Datum stupanja na snagu: 2025-02-16</p>
           </motion.div>
 
           <div className={styles.termsSections}>
             <ol>
               {sections.map((section, index) => (
-                <motion.section
-                  key={index}
-                  variants={itemVariants}
-                  className={styles.termsSection}
-                >
+                <motion.section key={index} variants={itemVariants} className={styles.termsSection}>
                   <h2 id={section.title} className={styles.sectionTitle}>
                     <li>{section.title}</li>
                   </h2>

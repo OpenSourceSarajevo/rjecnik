@@ -10,16 +10,17 @@
 }
 
 .header {
-    display: flex;
-    margin-bottom: 0.75rem;
+  display: flex;
+  margin-bottom: 0.75rem;
 }
 
 .spacer {
-    flex: 1;
+  flex: 1;
 }
 
-.info p, .info ul li {
-    margin-bottom: 0.5rem;
+.info p,
+.info ul li {
+  margin-bottom: 0.5rem;
 }
 
 .processingWord {
@@ -45,7 +46,6 @@
   background-color: var(--color-white);
   color: var(--color-black);
 }
-
 
 .processingControls {
   display: flex;
@@ -79,11 +79,13 @@
   transition: background-color 0.2s ease;
 }
 
-.processingButtons button:hover, .saveButton:hover {
+.processingButtons button:hover,
+.saveButton:hover {
   background-color: #005dc1;
 }
 
-.processingButtons button:disabled, .saveButton:disabled {
+.processingButtons button:disabled,
+.saveButton:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
@@ -95,7 +97,6 @@
 .processingButtonBack:hover {
   background-color: #c53030;
 }
-
 
 .saveButton {
   margin-left: 1rem;

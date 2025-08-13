@@ -4,20 +4,20 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/rjecnik",
-        destination: "/dictionary",
+        source: '/rjecnik',
+        destination: '/dictionary',
       },
       {
-        source: "/rjecnik/:word",
-        destination: "/dictionary/:word",
+        source: '/rjecnik/:word',
+        destination: '/dictionary/:word',
       },
       {
-        source: "/privatnost",
-        destination: "/privacy",
+        source: '/privatnost',
+        destination: '/privacy',
       },
       {
-        source: "/uslovi-koristenja",
-        destination: "/terms",
+        source: '/uslovi-koristenja',
+        destination: '/terms',
       },
     ];
   },

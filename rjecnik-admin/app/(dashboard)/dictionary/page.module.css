@@ -267,20 +267,20 @@
   .searchRow {
     flex-direction: column;
   }
-  
+
   .filtersGrid {
     grid-template-columns: 1fr;
   }
-  
+
   .filtersFooter {
     flex-direction: column;
     gap: var(--spacing-3);
   }
-  
+
   .sortButtons {
     justify-content: center;
   }
-  
+
   .pagination {
     flex-direction: column;
     gap: var(--spacing-4);

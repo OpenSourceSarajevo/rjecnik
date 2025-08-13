@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./OriginsForm.module.css";
+import React from 'react';
+import style from './OriginsForm.module.css';
 
 type Props = {
   origins: string[];
@@ -13,7 +13,7 @@ const OriginsForm: React.FC<Props> = ({ origins, setOrigins, className }) => (
       <button
         type="button"
         className={style.addBlockButton}
-        onClick={() => setOrigins(o => [...o, ""])}
+        onClick={() => setOrigins((o) => [...o, ''])}
       >
         +
       </button>
@@ -26,7 +26,7 @@ const OriginsForm: React.FC<Props> = ({ origins, setOrigins, className }) => (
             value={origin}
             className={style.input}
             placeholder={`Porijeklo ${idx + 1}`}
-            onChange={e => {
+            onChange={(e) => {
               const newOrigins = [...origins];
               newOrigins[idx] = e.target.value;
               setOrigins(newOrigins);
@@ -36,7 +36,7 @@ const OriginsForm: React.FC<Props> = ({ origins, setOrigins, className }) => (
             type="button"
             className={style.removeBlockButton}
             aria-label="Ukloni porijeklo"
-            onClick={() => setOrigins(o => o.filter((_, i) => i !== idx))}
+            onClick={() => setOrigins((o) => o.filter((_, i) => i !== idx))}
           >
             ×
           </button>
@@ -46,4 +46,4 @@ const OriginsForm: React.FC<Props> = ({ origins, setOrigins, className }) => (
   </div>
 );
 
-export default OriginsForm; 
+export default OriginsForm;

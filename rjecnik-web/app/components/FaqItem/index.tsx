@@ -1,8 +1,8 @@
-"use client";
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+'use client';
+import { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
-import style from "./FaqItem.module.css";
+import style from './FaqItem.module.css';
 
 interface FaqItemProps {
   question: string;

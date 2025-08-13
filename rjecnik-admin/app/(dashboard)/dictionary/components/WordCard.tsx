@@ -21,7 +21,11 @@ const WordCard: React.FC<WordCardProps> = ({ word }) => {
           </p>
         </div>
         <div className={styles.actions}>
-          <Link href={`/dictionary/${word.id}`} className={styles.actionButton} title="Uredi na posebnoj stranici">
+          <Link
+            href={`/dictionary/${word.id}`}
+            className={styles.actionButton}
+            title="Uredi na posebnoj stranici"
+          >
             <Edit size={18} />
           </Link>
         </div>
@@ -30,4 +34,4 @@ const WordCard: React.FC<WordCardProps> = ({ word }) => {
   );
 };
 
-export default WordCard; 
+export default WordCard;

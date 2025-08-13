@@ -1,11 +1,7 @@
 //import { div, div, div, div } from "@/components/ui/div";
-import style from "./page.module.css";
+import style from './page.module.css';
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ error: string }>;
-}) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ error: string }> }) {
   const params = await searchParams;
 
   return (

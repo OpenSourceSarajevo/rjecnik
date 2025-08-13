@@ -1,4 +1,4 @@
-import style from "./Section.module.css";
+import style from './Section.module.css';
 
 interface SectionProps {
   id: string;
@@ -7,7 +7,7 @@ interface SectionProps {
   className?: string;
 }
 
-const Section = ({ id, title, children, className = "" }: SectionProps) => {
+const Section = ({ id, title, children, className = '' }: SectionProps) => {
   return (
     <section id={id} className={`${style.section} ${className}`}>
       <div className={style.container}>

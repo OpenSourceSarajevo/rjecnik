@@ -97,9 +97,9 @@
     right: var(--spacing-4);
     left: var(--spacing-4);
   }
-  
+
   .toast {
     min-width: auto;
     max-width: none;
   }
-} 
+}

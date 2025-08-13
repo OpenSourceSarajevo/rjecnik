@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
-import ToastContainer, { Toast } from "@/app/components/Toast";
-import style from "./page.module.css";
+import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
+import ToastContainer, { Toast } from '@/app/components/Toast';
+import style from './page.module.css';
 
 interface IngestionLog {
   id: number;
@@ -18,9 +18,9 @@ interface IngestionLog {
 }
 
 export default function Page() {
-  const [text, setText] = useState("");
-  const [source, setSource] = useState("");
-  const [url, setUrl] = useState("");
+  const [text, setText] = useState('');
+  const [source, setSource] = useState('');
+  const [url, setUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [recentUploads, setRecentUploads] = useState<IngestionLog[]>([]);
@@ -32,38 +32,38 @@ export default function Page() {
     fetchRecentUploads();
   }, []);
 
-  const addToast = (type: "success" | "error" | "info", message: string) => {
+  const addToast = (type: 'success' | 'error' | 'info', message: string) => {
     const id = Math.random().toString(36).substr(2, 9);
     const newToast: Toast = {
       id,
       type,
       message,
-      duration: type === "error" ? 7000 : 5000,
+      duration: type === 'error' ? 7000 : 5000,
     };
-    setToasts(prev => [...prev, newToast]);
+    setToasts((prev) => [...prev, newToast]);
   };
 
   const removeToast = (id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
 
   const fetchRecentUploads = async () => {
     try {
       const { data, error } = await supabase
-        .from("ingestion_log")
-        .select("*")
-        .order("created_at", { ascending: false })
+        .from('ingestion_log')
+        .select('*')
+        .order('created_at', { ascending: false })
         .limit(10);
 
       if (error) {
-        console.error("Error fetching recent uploads:", error);
-        addToast("error", "Greška pri učitavanju nedavnih uploada");
+        console.error('Error fetching recent uploads:', error);
+        addToast('error', 'Greška pri učitavanju nedavnih uploada');
       } else {
         setRecentUploads(data || []);
       }
     } catch (error) {
-      console.error("Error fetching recent uploads:", error);
-      addToast("error", "Greška pri učitavanju nedavnih uploada");
+      console.error('Error fetching recent uploads:', error);
+      addToast('error', 'Greška pri učitavanju nedavnih uploada');
     } finally {
       setIsLoading(false);
     }
@@ -74,19 +74,22 @@ export default function Page() {
     setIsSubmitting(true);
 
     try {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
       const {
-			data: { session },
-		} = await supabase.auth.getSession();
-      
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (userError || !user?.email) {
-        addToast("error", "Greška: Korisnik nije autentifikovan");
+        addToast('error', 'Greška: Korisnik nije autentifikovan');
         return;
       }
 
       console.log(session?.access_token);
 
-      const { error } = await supabase.functions.invoke("data-ingestion", {
+      const { error } = await supabase.functions.invoke('data-ingestion', {
         body: {
           text,
           source: source || null,
@@ -98,17 +101,17 @@ export default function Page() {
       });
 
       if (error) {
-        addToast("error", `Greška: ${error.message}`);
+        addToast('error', `Greška: ${error.message}`);
       } else {
-        addToast("success", "Tekst uspješno poslan!");
-        setText("");
-        setSource("");
-        setUrl("");
+        addToast('success', 'Tekst uspješno poslan!');
+        setText('');
+        setSource('');
+        setUrl('');
         // Refresh the recent uploads list
         fetchRecentUploads();
       }
     } catch (error) {
-      addToast("error", `Greška: ${error instanceof Error ? error.message : "Nepoznata greška"}`);
+      addToast('error', `Greška: ${error instanceof Error ? error.message : 'Nepoznata greška'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -121,9 +124,9 @@ export default function Page() {
   return (
     <div className={style.container}>
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-      
+
       <h1 className={style.title}>Učitaj Tekst</h1>
-      
+
       <div className={style.content}>
         <div className={style.formSection}>
           <h2>Učitaj Novi Tekst</h2>
@@ -140,7 +143,7 @@ export default function Page() {
                 rows={10}
               />
             </div>
-            
+
             <div className={style.formRow}>
               <div className={style.formGroup}>
                 <label htmlFor="source">Izvor</label>
@@ -153,7 +156,7 @@ export default function Page() {
                   className={style.input}
                 />
               </div>
-              
+
               <div className={style.formGroup}>
                 <label htmlFor="url">URL</label>
                 <input
@@ -166,13 +169,13 @@ export default function Page() {
                 />
               </div>
             </div>
-            
-            <button 
-              type="submit" 
+
+            <button
+              type="submit"
               disabled={isSubmitting || !text.trim()}
               className={style.submitButton}
             >
-              {isSubmitting ? "Slanje..." : "Pošalji Tekst"}
+              {isSubmitting ? 'Slanje...' : 'Pošalji Tekst'}
             </button>
           </form>
         </div>
@@ -200,7 +203,7 @@ export default function Page() {
                 <tbody>
                   {recentUploads.map((upload) => (
                     <tr key={upload.id}>
-                      <td>{upload.source || "-"}</td>
+                      <td>{upload.source || '-'}</td>
                       <td>{upload.word_count}</td>
                       <td>{upload.new_word_count}</td>
                       <td>{upload.sentence_count}</td>
@@ -217,7 +220,7 @@ export default function Page() {
                             Link
                           </a>
                         ) : (
-                          "-"
+                          '-'
                         )}
                       </td>
                     </tr>

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { CheckCircle, XCircle, Info, X } from "lucide-react";
-import style from "./Toast.module.css";
+import React, { useEffect, useState } from 'react';
+import { CheckCircle, XCircle, Info, X } from 'lucide-react';
+import style from './Toast.module.css';
 
 export interface Toast {
   id: string;
-  type: "success" | "error" | "info";
+  type: 'success' | 'error' | 'info';
   message: string;
   duration?: number;
 }
@@ -35,11 +35,11 @@ const ToastItem: React.FC<ToastProps> = ({ toast, onRemove }) => {
 
   const getIcon = () => {
     switch (toast.type) {
-      case "success":
+      case 'success':
         return <CheckCircle size={20} />;
-      case "error":
+      case 'error':
         return <XCircle size={20} />;
-      case "info":
+      case 'info':
         return <Info size={20} />;
       default:
         return <Info size={20} />;
@@ -47,13 +47,9 @@ const ToastItem: React.FC<ToastProps> = ({ toast, onRemove }) => {
   };
 
   return (
-    <div className={`${style.toast} ${style[toast.type]} ${isRemoving ? style.removing : ""}`}>
-      <div className={style.toastIcon}>
-        {getIcon()}
-      </div>
-      <div className={style.toastMessage}>
-        {toast.message}
-      </div>
+    <div className={`${style.toast} ${style[toast.type]} ${isRemoving ? style.removing : ''}`}>
+      <div className={style.toastIcon}>{getIcon()}</div>
+      <div className={style.toastMessage}>{toast.message}</div>
       <button className={style.toastClose} onClick={handleClose}>
         <X size={16} />
       </button>
@@ -76,4 +72,4 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove }) => 
   );
 };
 
-export default ToastContainer; 
+export default ToastContainer;

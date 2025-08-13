@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./GenderSelect.module.css";
+import React from 'react';
+import style from './GenderSelect.module.css';
 
 type Props = {
   value: string;
@@ -8,12 +8,12 @@ type Props = {
   placeholder?: string;
 };
 
-const GenderSelect: React.FC<Props> = ({ value, onChange, className, placeholder = "Spol" }) => {
+const GenderSelect: React.FC<Props> = ({ value, onChange, className, placeholder = 'Spol' }) => {
   return (
     <select
       value={value}
-      className={`${style.select} ${className || ""}`}
-      onChange={e => onChange(e.target.value)}
+      className={`${style.select} ${className || ''}`}
+      onChange={(e) => onChange(e.target.value)}
     >
       <option value="">{placeholder}</option>
       <option value="muški">Muški</option>
@@ -23,4 +23,4 @@ const GenderSelect: React.FC<Props> = ({ value, onChange, className, placeholder
   );
 };
 
-export default GenderSelect; 
+export default GenderSelect;

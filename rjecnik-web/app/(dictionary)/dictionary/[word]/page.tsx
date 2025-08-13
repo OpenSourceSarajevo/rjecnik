@@ -1,15 +1,15 @@
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
 
-import { createClient } from "@/utils/supabase/server";
-import { toDiacritical } from "@/utils/textTransformation";
+import { createClient } from '@/utils/supabase/server';
+import { toDiacritical } from '@/utils/textTransformation';
 
-import ReturnNav from "@/app/components/ReturnNav";
-import ReportButton from "./ReportButton";
-import MeaningCard from "./MeaningCard";
-import RelatedWords from "./RelatedWords";
-import Forms from "./Forms";
+import ReturnNav from '@/app/components/ReturnNav';
+import ReportButton from './ReportButton';
+import MeaningCard from './MeaningCard';
+import RelatedWords from './RelatedWords';
+import Forms from './Forms';
 
-import style from "./page.module.css";
+import style from './page.module.css';
 
 type WordDefinitions = {
   type: string | null;
@@ -59,25 +59,22 @@ const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
 
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from("words_v2")
-    .select(
-      "id, headword, definitions, origins, alternatives, forms, synonyms, antonyms"
-    )
-    .eq("headword", decodedHeadword)
+    .from('words_v2')
+    .select('id, headword, definitions, origins, alternatives, forms, synonyms, antonyms')
+    .eq('headword', decodedHeadword)
     .maybeSingle<WordDetails>();
 
   if (data === null) {
     notFound();
   }
 
-  const { id, headword, origins, alternatives, forms, synonyms, antonyms } =
-    data;
+  const { id, headword, origins, alternatives, forms, synonyms, antonyms } = data;
 
   let wordBlock = <h1 className={style.word}>{headword}</h1>;
   if (alternatives && alternatives?.length > 0) {
     wordBlock = (
       <h1 className={style.word}>
-        {headword}/{alternatives.join("/")}
+        {headword}/{alternatives.join('/')}
       </h1>
     );
   }
@@ -85,7 +82,7 @@ const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
   return (
     <div className={style.wrapper}>
       <div className={style.nav}>
-        <ReturnNav url={"/rjecnik"} />
+        <ReturnNav url={'/rjecnik'} />
         <div className={style.splitter} />
         <ReportButton word={headword} />
       </div>
