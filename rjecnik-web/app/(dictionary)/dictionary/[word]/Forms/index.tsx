@@ -1,6 +1,4 @@
-
-
-import style from "./Forms.module.css";
+import style from './Forms.module.css';
 
 type FormsProps = {
   forms: WordForm[];
@@ -15,7 +13,7 @@ type WordForm = {
 
 const getFormValue = (forms: WordForm[], padez: string) => {
   const form = forms.find((f) => f.name.toLowerCase() === padez.toLowerCase());
-  return form ? form.value : "-";
+  return form ? form.value : '-';
 };
 
 type FormsTableProps = {
@@ -46,21 +44,19 @@ const FormsTable = (props: FormsTableProps) => {
 
 const NounForms: React.FC<FormsProps> = ({ forms }) => {
   const PADEZI = [
-    "nominativ",
-    "genitiv",
-    "dativ",
-    "akuzativ",
-    "vokativ",
-    "lokativ",
-    "instrumental",
+    'nominativ',
+    'genitiv',
+    'dativ',
+    'akuzativ',
+    'vokativ',
+    'lokativ',
+    'instrumental',
   ];
 
   const singularForms = forms.filter(
-    (form) => form.form === "jednina" && form.category === "padež"
+    (form) => form.form === 'jednina' && form.category === 'padež'
   );
-  const pluralForms = forms.filter(
-    (form) => form.form === "množina" && form.category === "padež"
-  );
+  const pluralForms = forms.filter((form) => form.form === 'množina' && form.category === 'padež');
 
   return (
     <div className={style.container}>
@@ -79,88 +75,58 @@ const NounForms: React.FC<FormsProps> = ({ forms }) => {
 
 const VerbForms: React.FC<FormsProps> = ({ forms }) => {
   const VREMENA = [
-    "prezent",
-    "perfekt",
-    "aorist",
-    "imperfekt",
-    "pluskvamperfekt",
-    "futur i",
-    "futur ii",
+    'prezent',
+    'perfekt',
+    'aorist',
+    'imperfekt',
+    'pluskvamperfekt',
+    'futur i',
+    'futur ii',
   ];
 
   const firstPersonSingularForms = forms.filter(
-    (form) =>
-      form.form === "1. lice jednine" && form.category === "glagolsko vrijeme"
+    (form) => form.form === '1. lice jednine' && form.category === 'glagolsko vrijeme'
   );
   const secondPersonSingularForms = forms.filter(
-    (form) =>
-      form.form === "2. lice jednine" && form.category === "glagolsko vrijeme"
+    (form) => form.form === '2. lice jednine' && form.category === 'glagolsko vrijeme'
   );
   const thirdPersonSingularForms = forms.filter(
-    (form) =>
-      form.form === "3. lice jednine" && form.category === "glagolsko vrijeme"
+    (form) => form.form === '3. lice jednine' && form.category === 'glagolsko vrijeme'
   );
   const firstPersonPluralForms = forms.filter(
-    (form) =>
-      form.form === "1. lice množine" && form.category === "glagolsko vrijeme"
+    (form) => form.form === '1. lice množine' && form.category === 'glagolsko vrijeme'
   );
   const secondPersonPluralForms = forms.filter(
-    (form) =>
-      form.form === "2. lice množine" && form.category === "glagolsko vrijeme"
+    (form) => form.form === '2. lice množine' && form.category === 'glagolsko vrijeme'
   );
   const thirdPersonPluralForms = forms.filter(
-    (form) =>
-      form.form === "3. lice množine" && form.category === "glagolsko vrijeme"
+    (form) => form.form === '3. lice množine' && form.category === 'glagolsko vrijeme'
   );
   return (
     <div className={style.container}>
       <div className={style.section}>
         <div className={style.column}>
-          <FormsTable
-            title="1. Lice Jednine"
-            rows={VREMENA}
-            forms={firstPersonSingularForms}
-          />
+          <FormsTable title="1. Lice Jednine" rows={VREMENA} forms={firstPersonSingularForms} />
         </div>
 
         <div className={style.column}>
-          <FormsTable
-            title="1. Lice Množine"
-            rows={VREMENA}
-            forms={firstPersonPluralForms}
-          />
+          <FormsTable title="1. Lice Množine" rows={VREMENA} forms={firstPersonPluralForms} />
         </div>
 
         <div className={style.column}>
-          <FormsTable
-            title="2. Lice Jednine"
-            rows={VREMENA}
-            forms={secondPersonSingularForms}
-          />
+          <FormsTable title="2. Lice Jednine" rows={VREMENA} forms={secondPersonSingularForms} />
         </div>
 
         <div className={style.column}>
-          <FormsTable
-            title="2. Lice Množine"
-            rows={VREMENA}
-            forms={secondPersonPluralForms}
-          />
+          <FormsTable title="2. Lice Množine" rows={VREMENA} forms={secondPersonPluralForms} />
         </div>
 
         <div className={style.column}>
-          <FormsTable
-            title="3. Lice Jednine"
-            rows={VREMENA}
-            forms={thirdPersonSingularForms}
-          />
+          <FormsTable title="3. Lice Jednine" rows={VREMENA} forms={thirdPersonSingularForms} />
         </div>
 
         <div className={style.column}>
-          <FormsTable
-            title="3. Lice Množine"
-            rows={VREMENA}
-            forms={thirdPersonPluralForms}
-          />
+          <FormsTable title="3. Lice Množine" rows={VREMENA} forms={thirdPersonPluralForms} />
         </div>
       </div>
     </div>
@@ -168,14 +134,12 @@ const VerbForms: React.FC<FormsProps> = ({ forms }) => {
 };
 
 const Forms: React.FC<FormsProps> = ({ forms }) => {
-  const padezForms = forms.some((form) => form.category === "padež");
+  const padezForms = forms.some((form) => form.category === 'padež');
   if (padezForms) {
     return <NounForms forms={forms} />;
   }
 
-  const glagolForms = forms.some(
-    (form) => form.category === "glagolsko vrijeme"
-  );
+  const glagolForms = forms.some((form) => form.category === 'glagolsko vrijeme');
   if (glagolForms) {
     return <VerbForms forms={forms} />;
   }

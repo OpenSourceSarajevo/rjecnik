@@ -1,5 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
-import { NextRequest, NextResponse } from "next/server";
+import { createClient } from '@/utils/supabase/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 type Word = {
   id: number;
@@ -18,13 +18,13 @@ type Definition = {
 };
 
 export async function GET(request: NextRequest) {
-  const pageNumber = +request.nextUrl.searchParams.get("pageNumber")!;
-  const pageSize = +request.nextUrl.searchParams.get("pageSize")!;
-  const word = request.nextUrl.searchParams.get("word") ?? "";
+  const pageNumber = +request.nextUrl.searchParams.get('pageNumber')!;
+  const pageSize = +request.nextUrl.searchParams.get('pageSize')!;
+  const word = request.nextUrl.searchParams.get('word') ?? '';
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase.rpc("search_words_ranked", {
+  const { data, error } = await supabase.rpc('search_words_ranked', {
     search_term: word,
     limit_value: pageSize,
     offset_value: pageNumber * pageSize,

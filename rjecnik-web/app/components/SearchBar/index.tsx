@@ -1,6 +1,6 @@
-import { Search } from "lucide-react";
+import { Search } from 'lucide-react';
 
-import style from "./SearchBar.module.css";
+import style from './SearchBar.module.css';
 
 interface SearchBarProps {
   value: string;

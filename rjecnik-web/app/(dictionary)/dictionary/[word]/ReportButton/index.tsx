@@ -1,7 +1,7 @@
-import { headers } from "next/headers";
-import { Flag } from "lucide-react";
+import { headers } from 'next/headers';
+import { Flag } from 'lucide-react';
 
-import style from "./ReportButton.module.css";
+import style from './ReportButton.module.css';
 
 const getIssueReportUrl = (word: string, url: string): string => {
   return (
@@ -13,17 +13,14 @@ const getIssueReportUrl = (word: string, url: string): string => {
 const ReportButton = async ({ word }: { word: string }) => {
   const headersList = await headers();
 
-  const host = headersList.get("host");
+  const host = headersList.get('host');
 
   const url = `${host}/rjecnik/${word}`;
   const issueUrl = getIssueReportUrl(word, url);
 
   return (
     <a href={issueUrl} target="_blank">
-      <button
-        className={style.button}
-        aria-label={`Prijavi grešku za riječ ${word}`}
-      >
+      <button className={style.button} aria-label={`Prijavi grešku za riječ ${word}`}>
         <Flag className={style.icon} />
         <span>Prijavi grešku</span>
       </button>

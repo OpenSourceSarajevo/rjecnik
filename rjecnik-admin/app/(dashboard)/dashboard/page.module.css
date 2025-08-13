@@ -16,16 +16,16 @@
   gap: 1rem;
 }
 
-.statBlock {  
+.statBlock {
   color: var(--color-black);
   min-height: 150px;
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 5px 0 10px -2px rgba(0, 0, 0, 0.2);
-   display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 120px; 
+  height: 120px;
 }
 
 .statLabel {
@@ -37,7 +37,7 @@
 }
 
 .statValue {
-  font-size: 2.4rem; 
+  font-size: 2.4rem;
   font-weight: 700;
   margin-top: auto;
 }

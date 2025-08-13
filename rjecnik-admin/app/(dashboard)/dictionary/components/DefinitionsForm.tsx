@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import style from "./DefinitionsForm.module.css";
-import WordTypeSelect from "@/app/(dashboard)/components/WordTypeSelect";
-import GenderSelect from "@/app/(dashboard)/components/GenderSelect";
-import { Definition } from "@/app/api/dictionary/route";
-
+import React, { useState } from 'react';
+import style from './DefinitionsForm.module.css';
+import WordTypeSelect from '@/app/(dashboard)/components/WordTypeSelect';
+import GenderSelect from '@/app/(dashboard)/components/GenderSelect';
+import { Definition } from '@/app/api/dictionary/route';
 
 type Props = {
-	definitions: Definition[];
-	setDefinitions: React.Dispatch<React.SetStateAction<Definition[]>>;
-	className?: string;
+  definitions: Definition[];
+  setDefinitions: React.Dispatch<React.SetStateAction<Definition[]>>;
+  className?: string;
 };
 
 const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, className }) => {
@@ -22,35 +21,39 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
         <button
           type="button"
           className={style.addBlockButton}
-          onClick={() => setDefinitions(defs => [
-            ...defs,
-            {
-              type: '',
-              gender: '',
-              examples: [],
-              definition: '',
-              part_of_speech: null,
-              synonyms: [],
-              antonyms: [],
-              pronunciation_ipa: null,
-              pronunciation_audio: null,
-            }
-          ])}
+          onClick={() =>
+            setDefinitions((defs) => [
+              ...defs,
+              {
+                type: '',
+                gender: '',
+                examples: [],
+                definition: '',
+                part_of_speech: null,
+                synonyms: [],
+                antonyms: [],
+                pronunciation_ipa: null,
+                pronunciation_audio: null,
+              },
+            ])
+          }
         >
           +
         </button>
       </div>
       <div className={style.blocksList}>
         {definitions.map((defObj, idx) => {
-          const header = `${defObj.type || ""} - ${defObj.definition?.slice(0, 20) || "Nova definicija"}`;
+          const header = `${defObj.type || ''} - ${defObj.definition?.slice(0, 20) || 'Nova definicija'}`;
           return (
             <div key={idx} className={style.accordionItem}>
               <div className={style.accordionHeader} onClick={() => handleAccordion(idx)}>
                 <span>{header}</span>
-                <span>{openIdx === idx ? "▲" : "▼"}</span>
+                <span>{openIdx === idx ? '▲' : '▼'}</span>
               </div>
               {openIdx === idx && (
-                <div className={`${style.blockItem} ${style.blockItemColumn} ${style.accordionContent}`}>
+                <div
+                  className={`${style.blockItem} ${style.blockItemColumn} ${style.accordionContent}`}
+                >
                   <WordTypeSelect
                     value={defObj.type || ''}
                     onChange={(value) => {
@@ -60,7 +63,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                     }}
                     className={style.input}
                   />
-                  {(defObj.type === "imenica" || defObj.type === "pridjev") && (
+                  {(defObj.type === 'imenica' || defObj.type === 'pridjev') && (
                     <GenderSelect
                       value={defObj.gender || ''}
                       onChange={(value) => {
@@ -79,7 +82,10 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                         className={style.addBlockButton}
                         onClick={() => {
                           const newDefs = [...definitions];
-                          newDefs[idx] = { ...newDefs[idx], examples: [...(defObj.examples || []), ''] };
+                          newDefs[idx] = {
+                            ...newDefs[idx],
+                            examples: [...(defObj.examples || []), ''],
+                          };
                           setDefinitions(newDefs);
                         }}
                       >
@@ -94,7 +100,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                             value={ex}
                             className={style.input}
                             placeholder={`Primjer ${exIdx + 1}`}
-                            onChange={e => {
+                            onChange={(e) => {
                               const newDefs = [...definitions];
                               const newExamples = [...(defObj.examples || [])];
                               newExamples[exIdx] = e.target.value;
@@ -125,7 +131,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                     value={defObj.definition}
                     className={style.input}
                     placeholder="Definicija"
-                    onChange={e => {
+                    onChange={(e) => {
                       const newDefs = [...definitions];
                       newDefs[idx] = { ...newDefs[idx], definition: e.target.value };
                       setDefinitions(newDefs);
@@ -136,9 +142,12 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                     value={(defObj.synonyms || []).join(', ')}
                     className={style.input}
                     placeholder="Sinonimi (zarezom odvojeni)"
-                    onChange={e => {
+                    onChange={(e) => {
                       const newDefs = [...definitions];
-                      newDefs[idx] = { ...newDefs[idx], synonyms: e.target.value.split(',').map(s => s.trim()) };
+                      newDefs[idx] = {
+                        ...newDefs[idx],
+                        synonyms: e.target.value.split(',').map((s) => s.trim()),
+                      };
                       setDefinitions(newDefs);
                     }}
                   />
@@ -147,9 +156,12 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                     value={(defObj.antonyms || []).join(', ')}
                     className={style.input}
                     placeholder="Antonimi (zarezom odvojeni)"
-                    onChange={e => {
+                    onChange={(e) => {
                       const newDefs = [...definitions];
-                      newDefs[idx] = { ...newDefs[idx], antonyms: e.target.value.split(',').map(s => s.trim()) };
+                      newDefs[idx] = {
+                        ...newDefs[idx],
+                        antonyms: e.target.value.split(',').map((s) => s.trim()),
+                      };
                       setDefinitions(newDefs);
                     }}
                   />
@@ -157,8 +169,8 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                     type="button"
                     className={style.removeBlockButton}
                     aria-label="Ukloni definiciju"
-                    onClick={() => setDefinitions(defs => defs.filter((_, i) => i !== idx))}
-                    style={{alignSelf: 'flex-end'}}
+                    onClick={() => setDefinitions((defs) => defs.filter((_, i) => i !== idx))}
+                    style={{ alignSelf: 'flex-end' }}
                   >
                     ×
                   </button>
@@ -172,4 +184,4 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
   );
 };
 
-export default DefinitionsForm; 
+export default DefinitionsForm;

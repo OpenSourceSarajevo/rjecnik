@@ -1,6 +1,6 @@
-import Link from "next/link";
-import style from "./Footer.module.css";
-import { Github } from "lucide-react";
+import Link from 'next/link';
+import style from './Footer.module.css';
+import { Github } from 'lucide-react';
 
 const Footer = () => {
   return (

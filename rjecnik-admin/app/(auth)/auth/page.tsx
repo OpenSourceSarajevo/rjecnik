@@ -1,7 +1,7 @@
-import LoginForm from "./components/LoginForm";
-import React from "react";
+import LoginForm from './components/LoginForm';
+import React from 'react';
 
-import style from "./page.module.css";
+import style from './page.module.css';
 
 const Page = () => {
   return (

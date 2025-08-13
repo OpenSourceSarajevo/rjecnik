@@ -1,11 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { createClient } from '@/utils/supabase/server';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   const supabase = await createClient();
   const [statsRes, typeRes] = await Promise.all([
     supabase.from('words_dashboard_stats').select('*').single(),
-    supabase.from('words_by_type').select('*')
+    supabase.from('words_by_type').select('*'),
   ]);
 
   if (statsRes.error || typeRes.error) {
@@ -21,4 +21,4 @@ export async function GET() {
     stats: statsRes.data,
     type_breakdown: typeRes.data,
   });
-} 
+}

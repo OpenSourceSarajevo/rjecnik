@@ -1,6 +1,6 @@
-import { LucideIcon } from "lucide-react";
+import { LucideIcon } from 'lucide-react';
 
-import style from "./Feature.module.css";
+import style from './Feature.module.css';
 
 interface FeatureProps {
   Icon: LucideIcon;

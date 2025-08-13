@@ -1,5 +1,5 @@
-import Navbar from "./components/Navbar";
-import style from "./layout.module.css";
+import Navbar from './components/Navbar';
+import style from './layout.module.css';
 
 export default function RootLayout({
   children,

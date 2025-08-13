@@ -163,20 +163,20 @@
   .container {
     padding: var(--spacing-4);
   }
-  
+
   .formSection,
   .recentSection {
     padding: var(--spacing-6);
   }
-  
+
   .formRow {
     grid-template-columns: 1fr;
   }
-  
+
   .logsTable {
     font-size: var(--font-size-xs);
   }
-  
+
   .logsTable th,
   .logsTable td {
     padding: var(--spacing-3) var(--spacing-2);

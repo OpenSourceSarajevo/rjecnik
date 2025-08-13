@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Search } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
 
-import style from "./page.module.css";
-import Card from "../../components/Card";
-import ReturnNav from "../../components/ReturnNav";
-import Loader from "../../components/Loader";
+import style from './page.module.css';
+import Card from '../../components/Card';
+import ReturnNav from '../../components/ReturnNav';
+import Loader from '../../components/Loader';
 
 type Word = {
   id: number;
@@ -26,7 +26,7 @@ const Dictionary = () => {
   const [data, setData] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState<number>(0);
-  const [word, setWord] = useState("");
+  const [word, setWord] = useState('');
 
   const [fetchedAll, setFetchedAll] = useState(false);
 
@@ -34,8 +34,7 @@ const Dictionary = () => {
     const OFFSET_PIXEL = 1;
 
     if (
-      window.innerHeight + window.scrollY + OFFSET_PIXEL >=
-        document.body.offsetHeight &&
+      window.innerHeight + window.scrollY + OFFSET_PIXEL >= document.body.offsetHeight &&
       !fetchedAll
     ) {
       setPage((page) => page + 1);
@@ -43,24 +42,24 @@ const Dictionary = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []); // eslint-disable-line
 
   useEffect(() => {
     (async function getData() {
       var newData = await fetch(
-        "/api/dictionary?" +
+        '/api/dictionary?' +
           new URLSearchParams({
             pageNumber: page.toString(),
             pageSize: MAX_PER_PAGE.toString(),
             word: word,
           }),
         {
-          method: "GET",
+          method: 'GET',
         }
       ).then((res) => res?.json());
 
@@ -83,7 +82,7 @@ const Dictionary = () => {
   return (
     <div className={style.container}>
       <div className={style.nav}>
-        <ReturnNav url={"/"} />
+        <ReturnNav url={'/'} />
       </div>
       <div className={style.wrapper}>
         <input
@@ -97,16 +96,15 @@ const Dictionary = () => {
       </div>
       <div className={style.list}>
         {data.map((item) => {
-          const firstDefinition = item.definitions.length > 0 
-            ? item.definitions[0].definition 
-            : undefined;
-          
+          const firstDefinition =
+            item.definitions.length > 0 ? item.definitions[0].definition : undefined;
+
           return (
             <Card
               key={item.id}
               id={item.id}
               title={item.headword}
-              description={""}
+              description={''}
               definitionsCount={item.definitions.length}
               firstDefinition={firstDefinition}
             />

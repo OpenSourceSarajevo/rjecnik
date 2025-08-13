@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import ToastContainer, { Toast } from "@/app/components/Toast";
-import DefinitionsForm from "../components/DefinitionsForm";
-import FormsForm from "../components/FormsForm";
-import OriginsForm from "../components/OriginsForm";
-import AlternativesForm from "../components/AlternativesForm";
-import style from "../add/page.module.css";
-import { Word, Definition } from "@/app/api/dictionary/route";
+import React, { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import ToastContainer, { Toast } from '@/app/components/Toast';
+import DefinitionsForm from '../components/DefinitionsForm';
+import FormsForm from '../components/FormsForm';
+import OriginsForm from '../components/OriginsForm';
+import AlternativesForm from '../components/AlternativesForm';
+import style from '../add/page.module.css';
+import { Word, Definition } from '@/app/api/dictionary/route';
 
 export default function UpdateWordPage() {
   const router = useRouter();
   const params = useParams();
   const { id } = params;
 
-  const [headword, setHeadword] = useState("");
+  const [headword, setHeadword] = useState('');
   const [headwordError, setHeadwordError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -23,7 +23,7 @@ export default function UpdateWordPage() {
   const [definitions, setDefinitions] = useState<Definition[]>([]);
   const [origins, setOrigins] = useState<string[]>([]);
   const [alternatives, setAlternatives] = useState<string[]>([]);
-  const [forms, setFormsRaw] = useState<NonNullable<Word["forms"]> | null>([]);
+  const [forms, setFormsRaw] = useState<NonNullable<Word['forms']> | null>([]);
 
   // Temp state until synonyms and antonyms get migrated to definitions
   const [synonyms, setSynonyms] = useState<string[]>([]);
@@ -31,11 +31,9 @@ export default function UpdateWordPage() {
 
   // Wrapper to match FormsForm expected setter signature
   const setForms: React.Dispatch<
-    React.SetStateAction<
-      { form: string; name: string; value: string; category: string }[]
-    >
+    React.SetStateAction<{ form: string; name: string; value: string; category: string }[]>
   > = (value) => {
-    if (typeof value === "function") {
+    if (typeof value === 'function') {
       setFormsRaw((prev) => value(prev ?? []));
     } else {
       setFormsRaw(value);
@@ -50,7 +48,7 @@ export default function UpdateWordPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data && !data.error) {
-          setHeadword(data.headword || "");
+          setHeadword(data.headword || '');
           setDefinitions(data.definitions || []);
           setFormsRaw(data.forms ?? []);
           setOrigins(data.origins || []);
@@ -62,8 +60,8 @@ export default function UpdateWordPage() {
             ...prev,
             {
               id: Date.now().toString(),
-              type: "error",
-              message: data.error || "Greška pri učitavanju riječi.",
+              type: 'error',
+              message: data.error || 'Greška pri učitavanju riječi.',
             },
           ]);
         }
@@ -73,8 +71,8 @@ export default function UpdateWordPage() {
           ...prev,
           {
             id: Date.now().toString(),
-            type: "error",
-            message: "Greška pri učitavanju riječi.",
+            type: 'error',
+            message: 'Greška pri učitavanju riječi.',
           },
         ]);
       })
@@ -130,8 +128,8 @@ export default function UpdateWordPage() {
         antonyms: antonyms,
       };
       const res = await fetch(`/api/dictionary?id=${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       const data = await res.json();
@@ -140,7 +138,7 @@ export default function UpdateWordPage() {
           ...prev,
           {
             id: Date.now().toString(),
-            type: "error",
+            type: 'error',
             message: data.error ? String(data.error) : `Greška: ${res.status}`,
           },
         ]);
@@ -150,20 +148,18 @@ export default function UpdateWordPage() {
         ...prev,
         {
           id: Date.now().toString(),
-          type: "success",
-          message: "Riječ uspješno ažurirana!",
+          type: 'success',
+          message: 'Riječ uspješno ažurirana!',
         },
       ]);
-      router.push("/dictionary");
+      router.push('/dictionary');
     } catch (err: unknown) {
       setToasts((prev) => [
         ...prev,
         {
           id: Date.now().toString(),
-          type: "error",
-          message:
-            "Greška prilikom slanja: " +
-            (err instanceof Error ? err.message : String(err)),
+          type: 'error',
+          message: 'Greška prilikom slanja: ' + (err instanceof Error ? err.message : String(err)),
         },
       ]);
     } finally {
@@ -192,22 +188,13 @@ export default function UpdateWordPage() {
               value={headword}
               onChange={(e) => {
                 setHeadword(e.target.value);
-                if (headwordError && e.target.value.trim())
-                  setHeadwordError(false);
+                if (headwordError && e.target.value.trim()) setHeadwordError(false);
               }}
-              className={
-                headwordError
-                  ? `${style.input} ${style.inputError}`
-                  : style.input
-              }
+              className={headwordError ? `${style.input} ${style.inputError}` : style.input}
               required
             />
             <div className={style.sectionLabel}>Porijeklo</div>
-            <OriginsForm
-              origins={origins}
-              setOrigins={setOrigins}
-              className={style.block}
-            />
+            <OriginsForm origins={origins} setOrigins={setOrigins} className={style.block} />
             <div className={style.sectionLabel}>Alternativni oblici</div>
             <AlternativesForm
               alternatives={alternatives}
@@ -229,37 +216,23 @@ export default function UpdateWordPage() {
         {step === 3 && (
           <>
             <div className={style.sectionLabel}>Oblici</div>
-            <FormsForm
-              forms={forms ?? []}
-              setForms={setForms}
-              className={style.block}
-            />
+            <FormsForm forms={forms ?? []} setForms={setForms} className={style.block} />
           </>
         )}
         <div className={style.buttonRow}>
           {step > 1 && (
-            <button
-              type="button"
-              className={style.button}
-              onClick={handleBack}
-              disabled={loading}
-            >
+            <button type="button" className={style.button} onClick={handleBack} disabled={loading}>
               Nazad
             </button>
           )}
           {step < 3 && (
-            <button
-              type="button"
-              className={style.button}
-              onClick={handleNext}
-              disabled={loading}
-            >
+            <button type="button" className={style.button} onClick={handleNext} disabled={loading}>
               Dalje
             </button>
           )}
           {step === 3 && (
             <button type="submit" className={style.button} disabled={loading}>
-              {loading ? "Ažuriranje..." : "Ažuriraj"}
+              {loading ? 'Ažuriranje...' : 'Ažuriraj'}
             </button>
           )}
         </div>

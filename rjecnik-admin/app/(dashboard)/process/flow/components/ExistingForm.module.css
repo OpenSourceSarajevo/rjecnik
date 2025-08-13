@@ -1,7 +1,6 @@
 .container {
-    color: var(--color-black);
+  color: var(--color-black);
 }
-
 
 .headword {
   font-size: 1.5rem;

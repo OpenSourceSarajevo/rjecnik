@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./AlternativesForm.module.css";
+import React from 'react';
+import style from './AlternativesForm.module.css';
 
 type Props = {
   alternatives: string[];
@@ -13,20 +13,24 @@ const AlternativesForm: React.FC<Props> = ({ alternatives, setAlternatives, clas
       <button
         type="button"
         className={style.addBlockButton}
-        onClick={() => setAlternatives(a => [...a, ""])}
+        onClick={() => setAlternatives((a) => [...a, ''])}
       >
         +
       </button>
     </div>
     <div className={style.blocksList}>
       {alternatives.map((alt, idx) => (
-        <div key={idx} className={style.blockItem} style={{display: 'flex', alignItems: 'center'}}>
+        <div
+          key={idx}
+          className={style.blockItem}
+          style={{ display: 'flex', alignItems: 'center' }}
+        >
           <input
             type="text"
             value={alt}
             className={style.input}
             placeholder={`Alternativni oblik ${idx + 1}`}
-            onChange={e => {
+            onChange={(e) => {
               const newAlts = [...alternatives];
               newAlts[idx] = e.target.value;
               setAlternatives(newAlts);
@@ -36,7 +40,7 @@ const AlternativesForm: React.FC<Props> = ({ alternatives, setAlternatives, clas
             type="button"
             className={style.removeBlockButton}
             aria-label="Ukloni alternativni oblik"
-            onClick={() => setAlternatives(a => a.filter((_, i) => i !== idx))}
+            onClick={() => setAlternatives((a) => a.filter((_, i) => i !== idx))}
           >
             ×
           </button>
@@ -46,4 +50,4 @@ const AlternativesForm: React.FC<Props> = ({ alternatives, setAlternatives, clas
   </div>
 );
 
-export default AlternativesForm; 
+export default AlternativesForm;

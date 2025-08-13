@@ -1,8 +1,8 @@
-import React from "react";
-import Link from "next/link";
-import { ArrowLeftRight, ArrowRight } from "lucide-react";
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeftRight, ArrowRight } from 'lucide-react';
 
-import style from "./RelatedWords.module.css";
+import style from './RelatedWords.module.css';
 
 interface RelatedWordsProps {
   synonyms: string[];

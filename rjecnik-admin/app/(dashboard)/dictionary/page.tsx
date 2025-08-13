@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import WordCard from './components/WordCard';
 import { Search } from 'lucide-react';
-import { Word } from "@/app/api/dictionary/route"
+import { Word } from '@/app/api/dictionary/route';
 import style from './page.module.css';
-import Link from "next/link";
+import Link from 'next/link';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -22,12 +22,14 @@ const Page: React.FC = () => {
     setError(null);
     try {
       // Fetch one extra to check if there are more pages
-      const response = await fetch(`/api/dictionary?pageNumber=${page - 1}&pageSize=${ITEMS_PER_PAGE + 1}&word=${search}`);
+      const response = await fetch(
+        `/api/dictionary?pageNumber=${page - 1}&pageSize=${ITEMS_PER_PAGE + 1}&word=${search}`
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      
+
       if (data.length > ITEMS_PER_PAGE) {
         setHasMore(true);
         setWords(data.slice(0, ITEMS_PER_PAGE));
@@ -35,7 +37,7 @@ const Page: React.FC = () => {
         setHasMore(false);
         setWords(data || []);
       }
-    } catch  {
+    } catch {
       setError('Greška pri učitavanju riječi.');
     } finally {
       setIsLoading(false);
@@ -45,7 +47,6 @@ const Page: React.FC = () => {
   useEffect(() => {
     fetchWords(currentPage, searchTerm);
   }, [currentPage, searchTerm, fetchWords]);
-
 
   return (
     <div className={style.container}>
@@ -78,41 +79,36 @@ const Page: React.FC = () => {
         ) : words.length > 0 ? (
           <>
             <div className={style.wordsList}>
-              {words.map(word => (
+              {words.map((word) => (
                 <WordCard key={word.id} word={word} />
               ))}
             </div>
-            
-              <div className={style.pagination}>
-                <div className={style.paginationInfo}>
-                  Stranica {currentPage}
-                </div>
-                <div className={style.paginationControls}>
-                  <button
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
-                    className={`${style.paginationButton} ${currentPage === 1 ? style.disabled : ''}`}
-                  >
-                    Prethodna
-                  </button>
-                  
-                  <button
-                    onClick={() => setCurrentPage(p => p + 1)}
-                    disabled={!hasMore}
-                    className={`${style.paginationButton} ${!hasMore ? style.disabled : ''}`}
-                  >
-                    Sljedeća
-                  </button>
-                </div>
+
+            <div className={style.pagination}>
+              <div className={style.paginationInfo}>Stranica {currentPage}</div>
+              <div className={style.paginationControls}>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className={`${style.paginationButton} ${currentPage === 1 ? style.disabled : ''}`}
+                >
+                  Prethodna
+                </button>
+
+                <button
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                  disabled={!hasMore}
+                  className={`${style.paginationButton} ${!hasMore ? style.disabled : ''}`}
+                >
+                  Sljedeća
+                </button>
               </div>
+            </div>
           </>
         ) : (
           <div className={style.emptyState}>
             <p className={style.emptyStateText}>Nema riječi koje odgovaraju vašim kriterijima.</p>
-            <button
-              onClick={() => setSearchTerm('')}
-              className={style.emptyStateButton}
-            >
+            <button onClick={() => setSearchTerm('')} className={style.emptyStateButton}>
               Očisti pretragu
             </button>
           </div>

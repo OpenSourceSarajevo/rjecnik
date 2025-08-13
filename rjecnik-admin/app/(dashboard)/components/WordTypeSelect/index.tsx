@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./WordTypeSelect.module.css";
+import React from 'react';
+import style from './WordTypeSelect.module.css';
 
 type Props = {
   value: string;
@@ -8,12 +8,17 @@ type Props = {
   placeholder?: string;
 };
 
-const WordTypeSelect: React.FC<Props> = ({ value, onChange, className, placeholder = "Vrsta riječi" }) => {
+const WordTypeSelect: React.FC<Props> = ({
+  value,
+  onChange,
+  className,
+  placeholder = 'Vrsta riječi',
+}) => {
   return (
     <select
       value={value}
-      className={`${style.select} ${className || ""}`}
-      onChange={e => onChange(e.target.value)}
+      className={`${style.select} ${className || ''}`}
+      onChange={(e) => onChange(e.target.value)}
     >
       <option value="">{placeholder}</option>
       <option value="imenica">Imenica</option>
@@ -30,4 +35,4 @@ const WordTypeSelect: React.FC<Props> = ({ value, onChange, className, placehold
   );
 };
 
-export default WordTypeSelect; 
+export default WordTypeSelect;
