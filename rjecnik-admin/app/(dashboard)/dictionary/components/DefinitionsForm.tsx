@@ -3,6 +3,7 @@ import style from './DefinitionsForm.module.css';
 import WordTypeSelect from '@/app/(dashboard)/components/WordTypeSelect';
 import GenderSelect from '@/app/(dashboard)/components/GenderSelect';
 import { Definition } from '@/app/api/dictionary/route';
+import Button from '@/app/components/Button';
 
 type Props = {
   definitions: Definition[];
@@ -18,9 +19,8 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
   return (
     <div className={`${style.blockSection} ${className}`}>
       <div className={style.blockHeader}>
-        <button
+        <Button
           type="button"
-          className={style.addBlockButton}
           onClick={() =>
             setDefinitions((defs) => [
               ...defs,
@@ -39,7 +39,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
           }
         >
           +
-        </button>
+        </Button>
       </div>
       <div className={style.blocksList}>
         {definitions.map((defObj, idx) => {
@@ -77,9 +77,8 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                   <div className={`${style.blockSection} ${style.blockSectionNoPad}`}>
                     <div className={style.blockHeader}>
                       <span>Primjeri</span>
-                      <button
+                      <Button
                         type="button"
-                        className={style.addBlockButton}
                         onClick={() => {
                           const newDefs = [...definitions];
                           newDefs[idx] = {
@@ -90,7 +89,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                         }}
                       >
                         +
-                      </button>
+                      </Button>
                     </div>
                     <div className={style.blocksList}>
                       {(defObj.examples || []).map((ex, exIdx) => (
@@ -108,7 +107,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                               setDefinitions(newDefs);
                             }}
                           />
-                          <button
+                          <Button
                             type="button"
                             className={style.removeBlockButton}
                             aria-label="Ukloni primjer"
@@ -121,7 +120,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                             }}
                           >
                             ×
-                          </button>
+                          </Button>
                         </div>
                       ))}
                     </div>
@@ -165,15 +164,14 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                       setDefinitions(newDefs);
                     }}
                   />
-                  <button
+                  <Button
                     type="button"
                     className={style.removeBlockButton}
                     aria-label="Ukloni definiciju"
                     onClick={() => setDefinitions((defs) => defs.filter((_, i) => i !== idx))}
-                    style={{ alignSelf: 'flex-end' }}
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>

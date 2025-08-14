@@ -6,6 +6,7 @@ import { Search } from 'lucide-react';
 import { Word } from '@/app/api/dictionary/route';
 import style from './page.module.css';
 import Link from 'next/link';
+import Button from '@/app/components/Button';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -87,21 +88,16 @@ const Page: React.FC = () => {
             <div className={style.pagination}>
               <div className={style.paginationInfo}>Stranica {currentPage}</div>
               <div className={style.paginationControls}>
-                <button
+                <Button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className={`${style.paginationButton} ${currentPage === 1 ? style.disabled : ''}`}
                 >
                   Prethodna
-                </button>
+                </Button>
 
-                <button
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                  disabled={!hasMore}
-                  className={`${style.paginationButton} ${!hasMore ? style.disabled : ''}`}
-                >
+                <Button onClick={() => setCurrentPage((p) => p + 1)} disabled={!hasMore}>
                   Sljedeća
-                </button>
+                </Button>
               </div>
             </div>
           </>

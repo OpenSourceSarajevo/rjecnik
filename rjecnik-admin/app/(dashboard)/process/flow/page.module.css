@@ -71,31 +71,6 @@
   flex: 1;
   padding: 0.75rem;
   font-size: 1rem;
-  border: none;
-  background-color: #0070f3;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.processingButtons button:hover,
-.saveButton:hover {
-  background-color: #005dc1;
-}
-
-.processingButtons button:disabled,
-.saveButton:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.processingButtonBack {
-  background-color: #e53e3e;
-}
-
-.processingButtonBack:hover {
-  background-color: #c53030;
 }
 
 .saveButton {
@@ -104,10 +79,6 @@
   flex: 1;
   padding: 0.75rem;
   font-size: 1rem;
-  border: none;
-  background-color: #0070f3;
-  color: white;
-  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }

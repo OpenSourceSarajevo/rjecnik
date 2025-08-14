@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './AlternativesForm.module.css';
+import Button from '@/app/components/Button';
 
 type Props = {
   alternatives: string[];
@@ -10,13 +11,13 @@ type Props = {
 const AlternativesForm: React.FC<Props> = ({ alternatives, setAlternatives, className }) => (
   <div className={`${style.blockSection} ${className}`}>
     <div className={style.blockHeader}>
-      <button
+      <Button
         type="button"
         className={style.addBlockButton}
         onClick={() => setAlternatives((a) => [...a, ''])}
       >
         +
-      </button>
+      </Button>
     </div>
     <div className={style.blocksList}>
       {alternatives.map((alt, idx) => (
@@ -36,14 +37,14 @@ const AlternativesForm: React.FC<Props> = ({ alternatives, setAlternatives, clas
               setAlternatives(newAlts);
             }}
           />
-          <button
+          <Button
             type="button"
             className={style.removeBlockButton}
             aria-label="Ukloni alternativni oblik"
             onClick={() => setAlternatives((a) => a.filter((_, i) => i !== idx))}
           >
             ×
-          </button>
+          </Button>
         </div>
       ))}
     </div>

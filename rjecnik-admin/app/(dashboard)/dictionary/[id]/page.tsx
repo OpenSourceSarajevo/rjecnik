@@ -7,8 +7,10 @@ import DefinitionsForm from '../components/DefinitionsForm';
 import FormsForm from '../components/FormsForm';
 import OriginsForm from '../components/OriginsForm';
 import AlternativesForm from '../components/AlternativesForm';
-import style from '../add/page.module.css';
 import { Word, Definition } from '@/app/api/dictionary/route';
+import Button from '@/app/components/Button';
+
+import style from '../add/page.module.css';
 
 export default function UpdateWordPage() {
   const router = useRouter();
@@ -221,19 +223,19 @@ export default function UpdateWordPage() {
         )}
         <div className={style.buttonRow}>
           {step > 1 && (
-            <button type="button" className={style.button} onClick={handleBack} disabled={loading}>
+            <Button type="button" onClick={handleBack} disabled={loading}>
               Nazad
-            </button>
+            </Button>
           )}
           {step < 3 && (
-            <button type="button" className={style.button} onClick={handleNext} disabled={loading}>
+            <Button type="button" onClick={handleNext} disabled={loading}>
               Dalje
-            </button>
+            </Button>
           )}
           {step === 3 && (
-            <button type="submit" className={style.button} disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? 'Ažuriranje...' : 'Ažuriraj'}
-            </button>
+            </Button>
           )}
         </div>
       </form>

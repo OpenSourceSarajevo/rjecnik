@@ -10,6 +10,7 @@ import NewForm from './components/NewForm';
 import style from './page.module.css';
 import { Word, WordForm } from '@/app/api/dictionary/route';
 import ExistingForm from './components/ExistingForm';
+import Button from '@/app/components/Button';
 
 export default function Page() {
   const [assignedWords, setAssignedWords] = useState<NewWord[]>([]);
@@ -172,13 +173,13 @@ export default function Page() {
             </option>
           ))}
         </select>
-        <button
+        <Button
           className={style.saveButton}
           onClick={() => handleSaveStrategy(currentWord.id, currentWord.strategy!)}
           disabled={!currentWord.strategy}
         >
           Sačuvaj
-        </button>
+        </Button>
       </div>
       <div className={style.info}>
         <p>
@@ -201,18 +202,18 @@ export default function Page() {
       </div>
 
       <div className={style.processingButtons}>
-        <button
+        <Button
           onClick={() => setProcessingIndex((prev) => Math.max(0, prev - 1))}
           disabled={processingIndex === 0}
         >
           Nazad
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setProcessingIndex((prev) => Math.min(prev + 1, assignedWords.length - 1))}
           disabled={processingIndex >= assignedWords.length - 1}
         >
           Sljedeće
-        </button>
+        </Button>
       </div>
       {currentWord.strategy === 'New Form' && (
         <div className={style.strategyDetails}>

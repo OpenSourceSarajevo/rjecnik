@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
 import style from './page.module.css';
+import Button from '@/app/components/Button';
 
 const ITEMS_PER_PAGE = 14;
 
@@ -176,20 +177,15 @@ export default function Page() {
       <div className={style.pagination}>
         <div className={style.paginationInfo}>Stranica {currentPage}</div>
         <div className={style.paginationControls}>
-          <button
+          <Button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className={`${style.paginationButton} ${currentPage === 1 ? style.disabled : ''}`}
           >
             Prethodna
-          </button>
-          <button
-            onClick={() => setCurrentPage((p) => p + 1)}
-            disabled={!hasMore}
-            className={`${style.paginationButton} ${!hasMore ? style.disabled : ''}`}
-          >
+          </Button>
+          <Button onClick={() => setCurrentPage((p) => p + 1)} disabled={!hasMore}>
             Sljedeća
-          </button>
+          </Button>
         </div>
       </div>
     </>

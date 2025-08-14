@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import style from './page.module.css';
+import Button from '@/app/components/Button';
 
 interface IngestionLog {
   id: number;
@@ -170,13 +171,13 @@ export default function Page() {
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={isSubmitting || !text.trim()}
               className={style.submitButton}
             >
               {isSubmitting ? 'Slanje...' : 'Pošalji Tekst'}
-            </button>
+            </Button>
           </form>
         </div>
 

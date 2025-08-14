@@ -10,6 +10,7 @@ import AlternativesForm from '../components/AlternativesForm';
 import { Definition } from '@/app/api/dictionary/route';
 
 import style from './page.module.css';
+import Button from '@/app/components/Button';
 
 export default function AddWordPage() {
   const [headword, setHeadword] = useState('');
@@ -177,19 +178,19 @@ export default function AddWordPage() {
         )}
         <div className={style.buttonRow}>
           {step > 1 && (
-            <button type="button" className={style.button} onClick={handleBack} disabled={loading}>
+            <Button type="button" onClick={handleBack} disabled={loading}>
               Nazad
-            </button>
+            </Button>
           )}
           {step < 3 && (
-            <button type="button" className={style.button} onClick={handleNext} disabled={loading}>
+            <Button type="button" onClick={handleNext} disabled={loading}>
               Dalje
-            </button>
+            </Button>
           )}
           {step === 3 && (
-            <button type="submit" className={style.button} disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? 'Dodavanje...' : 'Dodaj'}
-            </button>
+            </Button>
           )}
         </div>
       </form>

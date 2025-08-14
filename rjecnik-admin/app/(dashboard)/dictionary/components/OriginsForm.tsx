@@ -1,5 +1,6 @@
 import React from 'react';
 import style from './OriginsForm.module.css';
+import Button from '@/app/components/Button';
 
 type Props = {
   origins: string[];
@@ -10,13 +11,13 @@ type Props = {
 const OriginsForm: React.FC<Props> = ({ origins, setOrigins, className }) => (
   <div className={`${style.blockSection} ${className}`}>
     <div className={style.blockHeader}>
-      <button
+      <Button
         type="button"
         className={style.addBlockButton}
         onClick={() => setOrigins((o) => [...o, ''])}
       >
         +
-      </button>
+      </Button>
     </div>
     <div className={style.blocksList}>
       {origins.map((origin, idx) => (
@@ -32,14 +33,13 @@ const OriginsForm: React.FC<Props> = ({ origins, setOrigins, className }) => (
               setOrigins(newOrigins);
             }}
           />
-          <button
-            type="button"
+          <Button
             className={style.removeBlockButton}
             aria-label="Ukloni porijeklo"
             onClick={() => setOrigins((o) => o.filter((_, i) => i !== idx))}
           >
             ×
-          </button>
+          </Button>
         </div>
       ))}
     </div>

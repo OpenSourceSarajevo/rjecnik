@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NewWord } from '@/app/api/words/contracts';
 import style from './NewForm.module.css';
 import { Word, WordForm } from '@/app/api/dictionary/route';
+import Button from '@/app/components/Button';
 
 type NewFormProps = {
   word: NewWord;
@@ -141,9 +142,7 @@ const NewForm: React.FC<NewFormProps> = ({
                     />
                   </label>
 
-                  <button onClick={handleAddForm} className={style.button}>
-                    Dodaj oblik
-                  </button>
+                  <Button onClick={handleAddForm}>Dodaj oblik</Button>
                 </div>
               </div>
               <div className={style.formSection}>

@@ -216,33 +216,6 @@
   gap: var(--spacing-1);
 }
 
-.paginationButton {
-  padding: var(--spacing-1) var(--spacing-3);
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-sm);
-  transition: all var(--transition-fast);
-}
-
-.paginationButton.active {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-}
-
-.paginationButton.inactive {
-  background-color: var(--color-gray-200);
-  color: var(--color-gray-700);
-}
-
-.paginationButton.inactive:hover {
-  background-color: var(--color-gray-300);
-}
-
-.paginationButton.disabled {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-400);
-  cursor: not-allowed;
-}
-
 .emptyState {
   text-align: center;
   padding: var(--spacing-10) 0;
@@ -294,8 +267,8 @@
 }
 
 .addButton {
-  background: var(--primary, #0070f3);
-  color: var(--on-primary, #fff);
+  background: var(--color-primary-light);
+  color: var(--color-white);
   border: none;
   padding: 0.5rem 1.25rem;
   border-radius: 4px;

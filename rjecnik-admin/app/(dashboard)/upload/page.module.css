@@ -89,24 +89,11 @@
 }
 
 .submitButton {
-  background: var(--color-primary-light);
-  color: var(--color-white);
-  border: none;
-  padding: var(--spacing-5) var(--spacing-10);
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  cursor: pointer;
   transition: background-color var(--transition-fast);
   align-self: flex-start;
 }
 
-.submitButton:hover:not(:disabled) {
-  background: var(--color-primary);
-}
-
 .submitButton:disabled {
-  background: var(--color-gray-400);
   cursor: not-allowed;
 }
 

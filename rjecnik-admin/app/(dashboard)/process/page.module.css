@@ -1,3 +1,7 @@
+.processingButton {
+  margin: 0.5rem;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -82,15 +86,11 @@
 .paginationInfo {
   font-size: var(--font-size-sm);
   color: var(--color-gray-600);
-  flex: 1; /* pushes buttons to the right */
+  flex: 1;
 }
 
 .paginationControls {
   display: flex;
   gap: var(--spacing-2);
   justify-content: flex-end;
-}
-
-.paginationButton {
-  white-space: nowrap;
 }

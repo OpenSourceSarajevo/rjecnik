@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import style from './FormsForm.module.css';
+import Button from '@/app/components/Button';
 
 type FormType = {
   form: string;
@@ -22,15 +23,14 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
   return (
     <div className={`${style.blockSection} ${className}`}>
       <div className={style.blockHeader}>
-        <button
+        <Button
           type="button"
-          className={style.addBlockButton}
           onClick={() =>
             setForms((forms) => [...forms, { form: '', name: '', value: '', category: '' }])
           }
         >
           +
-        </button>
+        </Button>
       </div>
       <div className={style.blocksList}>
         {forms.map((formObj, idx) => {
@@ -89,15 +89,14 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
                       setForms(newForms);
                     }}
                   />
-                  <button
+                  <Button
                     type="button"
                     className={style.removeBlockButton}
                     aria-label="Ukloni oblik"
                     onClick={() => setForms((forms) => forms.filter((_, i) => i !== idx))}
-                    style={{ alignSelf: 'flex-end' }}
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
