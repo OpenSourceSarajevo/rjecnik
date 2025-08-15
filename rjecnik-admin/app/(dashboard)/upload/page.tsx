@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import style from './page.module.css';
@@ -29,26 +29,7 @@ export default function Page() {
 
   const supabase = createClient();
 
-  useEffect(() => {
-    fetchRecentUploads();
-  }, []);
-
-  const addToast = (type: 'success' | 'error' | 'info', message: string) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const newToast: Toast = {
-      id,
-      type,
-      message,
-      duration: type === 'error' ? 7000 : 5000,
-    };
-    setToasts((prev) => [...prev, newToast]);
-  };
-
-  const removeToast = (id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
-
-  const fetchRecentUploads = async () => {
+  const fetchRecentUploads = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('ingestion_log')
@@ -68,6 +49,25 @@ export default function Page() {
     } finally {
       setIsLoading(false);
     }
+  }, [supabase]);
+
+  useEffect(() => {
+    fetchRecentUploads();
+  }, [fetchRecentUploads]);
+
+  const addToast = (type: 'success' | 'error' | 'info', message: string) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    const newToast: Toast = {
+      id,
+      type,
+      message,
+      duration: type === 'error' ? 7000 : 5000,
+    };
+    setToasts((prev) => [...prev, newToast]);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
