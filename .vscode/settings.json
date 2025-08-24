@@ -1,4 +1,5 @@
 {
+  "css.lint.validProperties": ["composes"],
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
