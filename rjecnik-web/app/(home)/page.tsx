@@ -1,13 +1,13 @@
 'use client';
 
-import { BookText, BookType, Keyboard, Volume2 } from 'lucide-react';
+import { BookText, BookType, Keyboard, ListChecks, Shuffle, Volume2 } from 'lucide-react';
 
 import Feature from '../components/Feature';
 import Section from '../components/Section';
 import FaqItem from '../components/FaqItem';
-import SearchBar from '@/app/components/SearchBar';
 
 import style from './page.module.css';
+import { title } from 'process';
 
 const Home = () => {
   const faq = [
@@ -42,6 +42,18 @@ const Home = () => {
       soon: true,
     },
     {
+      Icon: ListChecks,
+      title: 'Forme riječi',
+      description: 'Oblici riječi: glagolska vremena, padeži, rodovi i brojevi',
+      soon: true,
+    },
+    {
+      Icon: Shuffle,
+      title: 'Sinonimi i Antonimi',
+      description: 'Slične i suprotne riječi za obogaćivanje rječnika',
+      soon: true,
+    },
+    {
       Icon: Volume2,
       title: 'Izgovor',
       description: 'Audio zapisi izvornih govornika za pravilno učenje izgovora',
@@ -61,10 +73,6 @@ const Home = () => {
         <Section id="hero" title="" className={style.hero}>
           <div className={style.textCenter}>
             <h1 className={style.heroTitle}>Bosanski Online Rječnik</h1>
-          </div>
-
-          <div className={style.mb4}>
-            <SearchBar value={''} onChange={() => {}} />
           </div>
 
           <div className={style.featuresGrid}>
