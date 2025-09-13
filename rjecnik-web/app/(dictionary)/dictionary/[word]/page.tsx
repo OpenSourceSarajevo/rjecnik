@@ -11,7 +11,7 @@ import Forms from './Forms';
 
 import style from './page.module.css';
 
-type WordDefinitions = {
+type WordDefinition = {
   type: string | null;
   gender: string | null;
   examples: string[] | null;
@@ -19,17 +19,17 @@ type WordDefinitions = {
   part_of_speech: string | null;
   pronunciation_ipa: string | null;
   pronunciation_audio: string | null;
+  synonyms: string[];
+  antonyms: string[];
 };
 
 type WordDetails = {
   id: number;
   headword: string;
-  definitions: WordDefinitions[];
+  definitions: WordDefinition[];
   origins: string[] | null;
   alternatives: string[] | null;
   forms: WordForm[];
-  synonyms: string[];
-  antonyms: string[];
 };
 
 type WordForm = {
@@ -60,7 +60,7 @@ const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('words_v2')
-    .select('id, headword, definitions, origins, alternatives, forms, synonyms, antonyms')
+    .select('id, headword, definitions, origins, alternatives, forms')
     .eq('headword', decodedHeadword)
     .maybeSingle<WordDetails>();
 
@@ -68,7 +68,19 @@ const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
     notFound();
   }
 
-  const { id, headword, origins, alternatives, forms, synonyms, antonyms } = data;
+  const { headword, origins, alternatives, forms } = data;
+
+  const synonymsSet = data.definitions.reduce((acc, def) => {
+    def.synonyms.forEach((syn) => acc.add(syn));
+    return acc;
+  }, new Set<string>());
+  const synonyms = Array.from(synonymsSet);
+
+  const antonymsSet = data.definitions.reduce((acc, def) => {
+    def.antonyms.forEach((ant) => acc.add(ant));
+    return acc;
+  }, new Set<string>());
+  const antonyms = Array.from(antonymsSet);
 
   let wordBlock = <h1 className={style.word}>{headword}</h1>;
   if (alternatives && alternatives?.length > 0) {
