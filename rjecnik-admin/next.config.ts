@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
+const nextConfig: NextConfig = {  
   images: {
     remotePatterns: [
       {
@@ -9,6 +9,27 @@ const nextConfig: NextConfig = {
         pathname: '**',
       },
     ],
+  },
+  
+  async rewrites() {
+    return [
+      {
+        source: '/kontrolna-tabla',
+        destination: '/dashboard',
+      },
+      {
+        source: '/rjecnik',
+        destination: '/dictionary',
+      },
+      {
+        source: '/ucitaj-tekst',
+        destination: '/upload',
+      },
+      {
+        source: '/obrada-rijeci',
+        destination: '/process',
+      },
+    ];
   },
 };
 

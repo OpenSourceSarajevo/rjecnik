@@ -2,19 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   async rewrites() {
-    return [      
-      {
-        source: '/kontrolna-tabla',
-        destination: '/dashboard',
-      },
-      {
-        source: '/ucitaj-tekst',
-        destination: '/upload',
-      },
-      {
-        source: '/obrada-rijeci',
-        destination: '/process',
-      },      
+    return [
       {
         source: '/rjecnik',
         destination: '/dictionary',
