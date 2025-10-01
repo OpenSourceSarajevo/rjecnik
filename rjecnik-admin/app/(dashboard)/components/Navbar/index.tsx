@@ -75,10 +75,10 @@ const Navbar: React.FC = () => {
   const { name, avatar_url } = user_metadata;
 
   const navItems = [
-    { path: '/dashboard', icon: LayoutDashboard, label: 'Kontrolna tabla' },
-    { path: '/dictionary', icon: Book, label: 'Rječnik' },
-    { path: '/upload', icon: Upload, label: 'Učitaj tekst' },
-    { path: '/process', icon: Database, label: 'Obradi riječi' },
+    { path: '/kontrolna-tabla', icon: LayoutDashboard, label: 'Kontrolna tabla' },
+    { path: '/rjecnik', icon: Book, label: 'Rječnik' },
+    { path: '/ucitaj-tekst', icon: Upload, label: 'Učitaj tekst' },
+    { path: '/obradi-rijeci', icon: Database, label: 'Obradi riječi' },
   ];
 
   return (

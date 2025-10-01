@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
         destination: '/upload',
       },
       {
-        source: '/obrada-rijeci',
+        source: '/obradi-rijeci',
         destination: '/process',
       },
     ];

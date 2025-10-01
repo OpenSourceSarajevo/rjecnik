@@ -33,5 +33,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard', '/upload', '/process', '/dictionary'],
+  matcher: ['/dashboard', '/upload', '/process', '/dictionary', '/kontrolna-tabla', '/ucitaj-tekst', '/obradi-rijeci', '/rjecnik'],
 };
