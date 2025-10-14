@@ -7,7 +7,6 @@ import Section from '../components/Section';
 import FaqItem from '../components/FaqItem';
 
 import style from './page.module.css';
-import { title } from 'process';
 
 const Home = () => {
   const faq = [
@@ -72,7 +71,7 @@ const Home = () => {
       <main>
         <Section id="hero" title="" className={style.hero}>
           <div className={style.textCenter}>
-            <h1 className={style.heroTitle}>Bosanski Online Rječnik</h1>
+            <h1 className={style.heroTitle}>Rječnik Bosanskog Jezika</h1>
           </div>
 
           <div className={style.featuresGrid}>

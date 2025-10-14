@@ -7,8 +7,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Rjecnik',
-  description: 'Rjecnik Bosanskog jezika',
+  title: 'Rječnik',
+  description: 'Rječnik Bosanskog Jezika',
 };
 
 export default function RootLayout({
