@@ -3,12 +3,12 @@ import style from './MeaningCard.module.css';
 type MeaningCardProps = {
   type: string | null;
   gender: string | null;
-  definition: string;
+  definition: string | null;
   examples: string[] | null;
 };
 
 const Examples = ({ examples }: { examples: string[] | null }) => {
-  if (!examples) return <></>;
+  if (!examples || examples.length === 0) return null;
 
   return (
     <>
@@ -24,21 +24,23 @@ const Examples = ({ examples }: { examples: string[] | null }) => {
 const MeaningCard = (props: MeaningCardProps) => {
   const { type, gender, definition, examples } = props;
 
-  let wordType = <p className={style.wordType}>{type}</p>;
-  if (gender) {
-    wordType = (
-      <p className={style.wordType}>
-        {type}, {gender} rod
-      </p>
-    );
+  const safeType = typeof type === 'string' ? type.trim() : '';
+  const safeDefinition = typeof definition === 'string' ? definition.trim() : '';
+
+  if (!safeType && !safeDefinition) {
+    return null;
   }
+
+  const typeLabel = safeType ? (gender ? `${safeType}, ${gender} rod` : safeType) : null;
 
   return (
     <div className={style.definitionCard}>
-      <div className={style.definitionHeader}>
-        <span className={style.wordType}>{wordType}</span>
-      </div>
-      {definition}
+      {typeLabel && (
+        <div className={style.definitionHeader}>
+          <span className={style.wordType}>{typeLabel}</span>
+        </div>
+      )}
+      {safeDefinition && <p>{safeDefinition}</p>}
       <Examples examples={examples} />
     </div>
   );

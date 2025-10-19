@@ -15,9 +15,10 @@ const Card = (props: CardProps) => {
   const word = encodeURIComponent(title);
 
   // Truncate definition to 60 characters
+  const MAX_DEF_LENGTH = 60;
   const truncatedDefinition =
-    firstDefinition && firstDefinition.length > 60
-      ? firstDefinition.substring(0, 60) + '...'
+    firstDefinition && firstDefinition.length > MAX_DEF_LENGTH
+      ? firstDefinition.substring(0, MAX_DEF_LENGTH) + '...'
       : firstDefinition;
 
   return (

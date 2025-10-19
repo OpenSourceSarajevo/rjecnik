@@ -99,13 +99,17 @@ const Dictionary = () => {
           const firstDefinition =
             item.definitions.length > 0 ? item.definitions[0].definition : undefined;
 
+          const definitionsCount = item.definitions.filter(
+            (i) => i.definition && i.definition.length > 0
+          ).length;
+
           return (
             <Card
               key={item.id}
               id={item.id}
               title={item.headword}
               description={''}
-              definitionsCount={item.definitions.length}
+              definitionsCount={definitionsCount > 0 ? definitionsCount : undefined}
               firstDefinition={firstDefinition}
             />
           );

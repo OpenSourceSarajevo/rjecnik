@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 
 import { createClient } from '@/utils/supabase/server';
-import { toDiacritical } from '@/utils/textTransformation';
 
 import ReturnNav from '@/app/components/ReturnNav';
 import ReportButton from './ReportButton';
@@ -105,7 +104,6 @@ const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
         </div>
 
         <div className={style.section}>
-          <h2 className={style.sectionTitle}>Značenja</h2>
           {data.definitions.map((details, index) => (
             <MeaningCard key={index} {...details} />
           ))}
