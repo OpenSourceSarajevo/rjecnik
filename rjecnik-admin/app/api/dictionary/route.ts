@@ -8,6 +8,7 @@ export type Definition = {
   gender: string | null;
   examples: string[] | null;
   definition: string;
+  hidden_definition: string;
   part_of_speech: string | null;
   pronunciation_ipa: string | null;
   pronunciation_audio: string | null;
@@ -81,6 +82,7 @@ const WordInputSchema = z.object({
       gender: z.string().nullable(),
       examples: z.array(z.string()).nullable(),
       definition: z.string(),
+      hidden_definition: z.string(),
       part_of_speech: z.string().nullable(),
       pronunciation_ipa: z.string().nullable(),
       pronunciation_audio: z.string().nullable(),
