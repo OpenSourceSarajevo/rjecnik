@@ -14,12 +14,12 @@ const Header = () => {
           </div>
         </Link>
         <div className={style.navLinks}>
-          <a href="/#o-projektu" className={style.navLink}>
+          <Link href="/#o-projektu" className={style.navLink}>
             O projektu
-          </a>
-          <a href="/#faq" className={style.navLink}>
+          </Link>
+          <Link href="/#faq" className={style.navLink}>
             FAQ
-          </a>
+          </Link>
           <Link href="/rjecnik" className={`${style.btn} ${style.btnPrimary}`}>
             Rječnik
           </Link>
