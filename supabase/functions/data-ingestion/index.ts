@@ -10,7 +10,8 @@ function splitIntoSentences(text: string): string[] {
 }
 
 function extractWords(sentence: string): string[] {
-  return sentence.toLowerCase().match(/\b[\p{L}\p{M}\p{N}']+\b/gu) || []
+  const words = sentence.toLowerCase().match(/\b[\p{L}\p{M}\p{N}']+\b/gu) || []
+  return words.filter(word => !/^\d+$/.test(word))
 }
 
 function buildWordMap(sentences: string[]) {
