@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
+import { IgnoreType, NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 
 import NewForm from './components/NewForm';
@@ -10,6 +10,7 @@ import NewForm from './components/NewForm';
 import style from './page.module.css';
 import { Word, WordForm } from '@/app/api/dictionary/route';
 import ExistingForm from './components/ExistingForm';
+import IgnoreForm from './components/IgnoreForm';
 import Button from '@/app/components/Button';
 
 export default function Page() {
@@ -20,6 +21,7 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
   const [forms, setForms] = useState<WordForm[]>([]);
+  const [ignoreType, setIgnoreType] = useState<IgnoreType>('ostalo');
 
   const currentWord = assignedWords[processingIndex];
 
@@ -30,7 +32,7 @@ export default function Page() {
     'New Form': 'Novi oblik',
     'Existing Form': 'Postojeći oblik',
     // "New Headword": "Nova riječ",
-    // Ignore: "Ignoriši",
+    Ignore: 'Ignoriši',
     Remove: 'Ukloni',
   };
 
@@ -41,7 +43,7 @@ export default function Page() {
     'New Form',
     'Existing Form',
     // "New Headword",
-    // "Ignore",
+    'Ignore',
     'Remove',
   ];
 
@@ -87,6 +89,7 @@ export default function Page() {
 
     setSelectedWord(null);
     setForms([]);
+    setIgnoreType('ostalo');
 
     if (!strategy) {
       setAssignedWords((prev) => prev.filter((word) => word.id !== id));
@@ -112,6 +115,8 @@ export default function Page() {
       body = JSON.stringify({ headword: selectedWord?.headword, forms });
     } else if (strategy === 'Existing Form') {
       body = JSON.stringify({ headword: selectedWord?.headword });
+    } else if (strategy === 'Ignore') {
+      body = JSON.stringify({ type: ignoreType });
     }
 
     const res = await fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
@@ -135,6 +140,7 @@ export default function Page() {
 
     setForms([]);
     setSelectedWord(null);
+    setIgnoreType('ostalo');
 
     setAssignedWords((prev) => prev.filter((word) => word.id !== id));
     setProcessingIndex((prev) => (prev < assignedWords.length - 1 ? prev : 0));
@@ -229,6 +235,11 @@ export default function Page() {
       {currentWord.strategy === 'Existing Form' && (
         <div className={style.strategyDetails}>
           <ExistingForm selectedWord={selectedWord} setSelectedWord={setSelectedWord} />
+        </div>
+      )}
+      {currentWord.strategy === 'Ignore' && (
+        <div className={style.strategyDetails}>
+          <IgnoreForm ignoreType={ignoreType} setIgnoreType={setIgnoreType} />
         </div>
       )}
     </div>

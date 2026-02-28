@@ -26,7 +26,7 @@ export default function Page() {
     'New Form': 'Novi oblik',
     'Existing Form': 'Postojeći oblik',
     // "New Headword": "Nova riječ",
-    // Ignore: "Ignoriši",
+    Ignore: 'Ignoriši',
     Remove: 'Ukloni',
   };
 
@@ -37,7 +37,7 @@ export default function Page() {
     'New Form',
     'Existing Form',
     // "New Headword",
-    // "Ignore",
+    'Ignore',
     'Remove',
   ];
 

@@ -45,6 +45,13 @@ export async function PATCH(
     return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
   }
 
+  if (!data || data.length === 0) {
+    return NextResponse.json(
+      { error: 'Update failed: word not found or permission denied' },
+      { status: 404 }
+    );
+  }
+
   return NextResponse.json(data[0], { status: 200 });
 }
 

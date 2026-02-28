@@ -5,8 +5,10 @@ export type WordProcessingStrategy =
   | 'New Form'
   | 'Existing Form'
   // 'New Headword' |
-  // 'Ignore' |
+  | 'Ignore'
   | 'Remove';
+
+export type IgnoreType = 'ostalo' | 'ime' | 'strana_riječ' | 'skraćenica';
 
 export type NewWord = {
   id: number;
