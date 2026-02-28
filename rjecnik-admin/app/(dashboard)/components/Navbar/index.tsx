@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   Book,
   Upload,
@@ -31,6 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const getUser = async () => {
@@ -116,7 +117,7 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
             <li key={item.path}>
               <Link
                 href={item.path}
-                className={`${style.navItem} ${isCollapsed ? style.navItemCollapsed : ''}`}
+                className={`${style.navItem} ${isCollapsed ? style.navItemCollapsed : ''} ${pathname.startsWith(item.path) ? style.active : ''}`}
               >
                 <item.icon
                   className={`${style.navIcon} ${isCollapsed ? style.navIconCollapsed : ''}`}
