@@ -1,15 +1,9 @@
-import Navbar from './components/Navbar';
-import style from './layout.module.css';
+import SidebarLayout from './components/SidebarLayout';
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className={style.container}>
-      <Navbar />
-      <main className={style.main}>{children}</main>
-    </div>
-  );
+  return <SidebarLayout>{children}</SidebarLayout>;
 }

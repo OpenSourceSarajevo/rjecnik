@@ -9,6 +9,11 @@
   margin-left: 16rem;
   padding: var(--spacing-8);
   overflow: auto;
+  transition: margin-left var(--transition-normal);
+}
+
+.mainCollapsed {
+  margin-left: 4rem;
 }
 
 @media (max-width: 768px) {
