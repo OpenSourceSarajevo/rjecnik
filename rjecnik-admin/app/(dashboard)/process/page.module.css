@@ -1,5 +1,13 @@
-.processingButton {
-  margin: 0.5rem;
+.pageHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.totalCount {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
 }
 
 .table {

@@ -16,6 +16,7 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const router = useRouter();
 
@@ -45,22 +46,16 @@ export default function Page() {
     setIsLoading(true);
     setError(null);
     try {
-      // Fetch one extra to check if there are more pages
       const response = await fetch(
-        `/api/words/new?pageNumber=${page - 1}&pageSize=${ITEMS_PER_PAGE + 1}`
+        `/api/words/new?pageNumber=${page - 1}&pageSize=${ITEMS_PER_PAGE}`
       );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const data = await response.json();
-
-      if (data.length > ITEMS_PER_PAGE) {
-        setHasMore(true);
-        setWords(data.slice(0, ITEMS_PER_PAGE));
-      } else {
-        setHasMore(false);
-        setWords(data || []);
-      }
+      const { data, total } = await response.json();
+      setTotalCount(total);
+      setHasMore(total > page * ITEMS_PER_PAGE);
+      setWords(data || []);
     } catch {
       setError('Greška pri učitavanju riječi.');
     } finally {
@@ -116,9 +111,12 @@ export default function Page() {
     <>
       <ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
 
-      <button className={style.processingButton} onClick={() => router.push('/process/flow')}>
-        Obradi riječi
-      </button>
+      <div className={style.pageHeader}>
+        <Button onClick={() => router.push('/process/flow')}>Obradi riječi</Button>
+        {totalCount !== null && (
+          <span className={style.totalCount}>Ukupno: {totalCount}</span>
+        )}
+      </div>
 
       <div className={style.container}>
         <table className={style.table}>

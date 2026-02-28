@@ -24,9 +24,9 @@ export async function GET(request: NextRequest) {
   const pageNumber = +request.nextUrl.searchParams.get('pageNumber')!;
   const pageSize = +request.nextUrl.searchParams.get('pageSize')!;
 
-  const { data, error } = await supabase
+  const { data, error, count } = await supabase
     .from('words_new')
-    .select('*')
+    .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })
     .order('headword', { ascending: true })
     .range(pageNumber * pageSize, (pageNumber + 1) * pageSize);
@@ -35,5 +35,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json<NewWord[]>(data);
+  return NextResponse.json({ data: data as NewWord[], total: count ?? 0 });
 }
