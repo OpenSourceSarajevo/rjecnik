@@ -1,49 +1,73 @@
 .title {
-  color: var(--color-black);
+  color: var(--color-gray-900);
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-6);
 }
 
 .subTitle {
-  margin-top: 2.5rem;
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
+  margin-top: var(--spacing-10);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-gray-500);
+  margin-bottom: var(--spacing-4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .statsContainer {
-  margin-top: 1rem;
+  margin-top: var(--spacing-2);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: var(--spacing-4);
 }
 
 .statBlock {
-  color: var(--color-black);
-  min-height: 150px;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 5px 0 10px -2px rgba(0, 0, 0, 0.2);
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  padding: var(--spacing-6);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-gray-200);
+  border-top: 3px solid var(--color-primary-light);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 120px;
+  gap: var(--spacing-3);
+  min-height: 110px;
 }
 
 .statLabel {
-  font-size: 1.6rem;
-}
-
-.statLabel::first-letter {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-gray-500);
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .statValue {
-  font-size: 2.4rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  margin-top: auto;
+  color: var(--color-gray-900);
+  line-height: 1;
 }
 
 .typeBreakdownGrid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--spacing-3);
+}
+
+.typeBreakdownGrid .statBlock {
+  border-top-color: var(--color-gray-300);
+  min-height: 90px;
+  padding: var(--spacing-4);
+}
+
+.typeBreakdownGrid .statLabel {
+  font-size: var(--font-size-xs);
+}
+
+.typeBreakdownGrid .statValue {
+  font-size: var(--font-size-2xl);
 }

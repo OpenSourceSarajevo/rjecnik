@@ -86,17 +86,20 @@
   border-radius: var(--border-radius-lg);
   margin: 0 var(--spacing-4);
   transition: all var(--transition-fast);
-  color: var(--color-gray-300);
+  color: var(--color-gray-400);
+  border-left: 2px solid transparent;
 }
 
 .navItem:hover {
   background-color: var(--color-gray-800);
   color: var(--color-white);
+  border-left-color: var(--color-gray-600);
 }
 
 .navItem.active {
-  background-color: var(--color-primary-dark);
+  background-color: rgba(59, 130, 246, 0.15);
   color: var(--color-white);
+  border-left-color: var(--color-primary-light);
 }
 
 .navItemCollapsed {
