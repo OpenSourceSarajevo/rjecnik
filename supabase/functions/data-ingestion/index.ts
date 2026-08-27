@@ -75,6 +75,21 @@ Deno.serve(async (req) => {
   const token = authHeader.replace('Bearer ', '')
   const { data: { user } } = await supabase.auth.getUser(token)
 
+  if (!user) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+  }
+
+  let tokenPayload
+  try {
+    tokenPayload = JSON.parse(atob(token.split(".")[1] ?? ""))
+  } catch {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+  }
+
+  if (tokenPayload.user_permission !== "Dictionary.ReadWrite") {
+    return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+  }
+
   const user_email = user.email;
   const { text, source, url } = await req.json()
 
