@@ -8,11 +8,15 @@ interface CustomJwtPayload {
 }
 
 export async function middleware(req: NextRequest) {
+  const isApiRoute = req.nextUrl.pathname.startsWith('/api');
   const supabase = await createClient();
 
   const session = await supabase.auth.getSession();
 
   if (session.error || !session.data.session) {
+    if (isApiRoute) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     return NextResponse.redirect(new URL('/auth', req.url));
   }
 
@@ -26,6 +30,9 @@ export async function middleware(req: NextRequest) {
   const user_permission = jwt.user_permission;
 
   if (user_permission !== 'Dictionary.ReadWrite') {
+    if (isApiRoute) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     return new NextResponse('Forbidden', { status: 403 });
   }
 
@@ -33,5 +40,15 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard', '/upload', '/process', '/dictionary', '/kontrolna-tabla', '/ucitaj-tekst', '/obradi-rijeci', '/rjecnik'],
+  matcher: [
+    '/dashboard',
+    '/upload',
+    '/process',
+    '/dictionary',
+    '/kontrolna-tabla',
+    '/ucitaj-tekst',
+    '/obradi-rijeci',
+    '/rjecnik',
+    '/api/:path*',
+  ],
 };

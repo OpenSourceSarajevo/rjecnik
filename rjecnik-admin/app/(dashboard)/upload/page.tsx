@@ -88,8 +88,6 @@ export default function Page() {
         return;
       }
 
-      console.log(session?.access_token);
-
       const { error } = await supabase.functions.invoke('data-ingestion', {
         body: {
           text,

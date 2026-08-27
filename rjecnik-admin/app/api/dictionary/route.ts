@@ -57,8 +57,13 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json(data);
   }
-  const pageNumber = +request.nextUrl.searchParams.get('pageNumber')!;
-  const pageSize = +request.nextUrl.searchParams.get('pageSize')!;
+  const rawPageNumber = Number(request.nextUrl.searchParams.get('pageNumber'));
+  const rawPageSize = Number(request.nextUrl.searchParams.get('pageSize'));
+
+  const pageNumber = Number.isInteger(rawPageNumber) && rawPageNumber >= 0 ? rawPageNumber : 0;
+  const pageSize =
+    Number.isInteger(rawPageSize) && rawPageSize > 0 ? Math.min(rawPageSize, 100) : 20;
+
   const word = request.nextUrl.searchParams.get('word') ?? '';
 
   const supabase = await createClient();
