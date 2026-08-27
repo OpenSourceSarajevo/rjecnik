@@ -1,92 +1,205 @@
 .processingView {
-  color: var(--color-black);
-  padding: 2rem;
+  max-width: 760px;
   margin: 0 auto;
-}
-
-.processingView h2 {
-  font-size: 1.75rem;
-  padding-bottom: 0.5rem;
 }
 
 .header {
   display: flex;
-  margin-bottom: 0.75rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-6);
 }
 
-.spacer {
-  flex: 1;
+.title {
+  color: var(--color-gray-900);
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-.info p,
-.info ul li {
-  margin-bottom: 0.5rem;
+.subtitle {
+  margin-top: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
 }
 
-.processingWord {
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
+.progressTrack {
+  width: 10rem;
+  flex-shrink: 0;
+  height: 6px;
+  border-radius: var(--border-radius-sm);
+  background: var(--color-gray-200);
+  overflow: hidden;
+  margin-bottom: var(--spacing-2);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-primary-light);
+  border-radius: var(--border-radius-sm);
+  transition: width var(--transition-normal);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-8);
+}
+
+.wordHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.headword {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.metaChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.metaChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background: var(--color-gray-100);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-1) var(--spacing-2);
+}
+
+.metaChipAccent {
+  color: var(--color-secondary);
+  background: color-mix(in srgb, var(--color-secondary) 12%, var(--color-white));
+}
+
+.examplesBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
+  background: var(--color-gray-50);
+  border-radius: var(--border-radius-md);
+}
+
+.examplesLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gray-500);
 }
 
 .examples {
-  margin-bottom: 1.5rem;
-  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  padding-left: 1.1rem;
+  color: var(--color-gray-800);
+  font-size: var(--font-size-sm);
 }
 
-.examples li {
-  margin-bottom: 0.5rem;
+.strategyRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+.strategyLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-gray-700);
 }
 
 .strategySelect {
-  padding: 0.25rem 0.5rem;
+  flex: 1;
+  min-width: 10rem;
+  padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--border-radius);
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--color-gray-200);
   font-size: var(--font-size-sm);
+  font-family: inherit;
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-900);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.strategySelect:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
   background-color: var(--color-white);
-  color: var(--color-black);
 }
 
-.processingControls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.navButton {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 2rem;
+  gap: var(--spacing-2);
+  flex-shrink: 0;
 }
 
-.processingControls select {
-  padding: 0.5rem;
-  font-size: 1rem;
+.strategyDetails {
+  padding-top: var(--spacing-6);
+  border-top: 1px solid var(--color-gray-100);
 }
 
 .processingButtons {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-6);
 }
 
-.processingButtons button {
-  flex: 1;
-  padding: 0.75rem;
-  font-size: 1rem;
+.backButton {
+  composes: navButton;
 }
 
-.saveButton {
-  margin-left: 1rem;
-  max-width: 10rem;
-  flex: 1;
-  padding: 0.75rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+button.backButton {
+  background: var(--color-white);
+  color: var(--color-gray-700);
+  border: 1px solid var(--color-gray-200);
 }
 
-.strategyDetails {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border: 1px solid var(--color-gray-300);
-  border-radius: var(--border-radius);
-  background-color: var(--color-white);
+button.backButton:hover {
+  background: var(--color-gray-50);
+}
+
+.stateCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--spacing-12) var(--spacing-4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-white);
+  color: var(--color-gray-400);
+  text-align: center;
+}
+
+.stateCard p {
+  font-size: var(--font-size-sm);
+}
+
+.errorText {
+  color: var(--color-error);
 }

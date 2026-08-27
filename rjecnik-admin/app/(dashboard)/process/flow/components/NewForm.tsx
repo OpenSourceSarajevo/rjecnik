@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Search, X, Plus } from 'lucide-react';
 import { NewWord } from '@/app/api/words/contracts';
 import style from './NewForm.module.css';
 import { Word, WordForm } from '@/app/api/dictionary/route';
@@ -71,24 +72,28 @@ const NewForm: React.FC<NewFormProps> = ({
     <div className={`${style.container} ${className}`}>
       {!selectedWord && (
         <div className={style.searchSection}>
-          <label>Pronađi riječ:</label>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className={style.input}
-          />
+          <label>Pronađi riječ</label>
+          <div className={style.searchInputWrap}>
+            <Search size={16} className={style.searchIcon} />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className={style.input}
+              placeholder="Unesi riječ za pretragu..."
+            />
+          </div>
           <ul className={style.results}>
-            {results.map((word) => (
+            {results.map((w) => (
               <li
-                key={word.id}
+                key={w.id}
                 onClick={() => {
                   setIsLoading(true);
-                  setSelectedWord(word);
+                  setSelectedWord(w);
                 }}
                 className={style.resultItem}
               >
-                {word.headword}
+                {w.headword}
               </li>
             ))}
           </ul>
@@ -97,7 +102,20 @@ const NewForm: React.FC<NewFormProps> = ({
 
       {selectedWord && (
         <div>
-          <h3 className={style.headword}>Riječ: {selectedWord.headword}</h3>
+          <div className={style.selectedHeader}>
+            <h3 className={style.headword}>Riječ: {selectedWord.headword}</h3>
+            <Button
+              type="button"
+              className={style.changeButton}
+              onClick={() => {
+                setSelectedWord(null);
+                setQuery('');
+              }}
+            >
+              <X size={14} />
+              Promijeni riječ
+            </Button>
+          </div>
 
           {!isLoading && (
             <div className={style.forms}>
@@ -105,68 +123,77 @@ const NewForm: React.FC<NewFormProps> = ({
                 <h4 className={style.formsSectionHeading}>Dodajte novi oblik</h4>
                 <div className={style.formFields}>
                   <label className={style.formLabel}>
-                    Kategorija:
+                    Kategorija
                     <input
                       type="text"
                       value={newForm.category}
                       onChange={(e) => handleFormChange('category', e.target.value)}
-                      className={style.input}
+                      className={style.plainInput}
                     />
                   </label>
                   <label className={style.formLabel}>
-                    Oblik:
+                    Oblik
                     <input
                       type="text"
                       value={newForm.form}
                       onChange={(e) => handleFormChange('form', e.target.value)}
-                      className={style.input}
+                      className={style.plainInput}
                     />
                   </label>
                   <label className={style.formLabel}>
-                    Naziv:
+                    Naziv
                     <input
                       type="text"
                       value={newForm.name}
                       onChange={(e) => handleFormChange('name', e.target.value)}
-                      className={style.input}
+                      className={style.plainInput}
                     />
                   </label>
 
                   <label className={style.formLabel}>
-                    Vrijednost:
+                    Vrijednost
                     <input
                       type="text"
                       value={newForm.value}
                       onChange={(e) => handleFormChange('value', e.target.value)}
-                      className={style.input}
+                      className={style.plainInput}
                     />
                   </label>
 
-                  <Button onClick={handleAddForm}>Dodaj oblik</Button>
+                  <Button type="button" onClick={handleAddForm} className={style.addButton}>
+                    <Plus size={16} />
+                    Dodaj oblik
+                  </Button>
                 </div>
               </div>
               <div className={style.formSection}>
-                <h4 className={style.formsSectionHeading}>Postojući oblici</h4>
-                <table className={style.formsTable}>
-                  <thead>
-                    <tr className={style.tableHeader}>
-                      <th>Kategorija</th>
-                      <th>Oblik</th>
-                      <th>Naziv</th>
-                      <th>Vrijednost</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {forms?.map((f, i) => (
-                      <tr key={i} className={style.tableRow}>
-                        <td>{f.category}</td>
-                        <td>{f.form}</td>
-                        <td>{f.name}</td>
-                        <td>{f.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <h4 className={style.formsSectionHeading}>Postojeći oblici</h4>
+                {forms?.length ? (
+                  <div className={style.tableContainer}>
+                    <table className={style.formsTable}>
+                      <thead>
+                        <tr>
+                          <th>Kategorija</th>
+                          <th>Oblik</th>
+                          <th>Naziv</th>
+                          <th>Vrijednost</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {forms.map((f, i) => (
+                          <tr key={i}>
+                            <td>{f.category}</td>
+                            <td>{f.form}</td>
+                            <td>{f.name}</td>
+                            <td>{f.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className={style.emptyState}>Nema postojećih oblika.</p>
+                )}
               </div>
             </div>
           )}

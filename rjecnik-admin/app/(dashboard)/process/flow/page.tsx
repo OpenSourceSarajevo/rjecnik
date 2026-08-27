@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { ArrowLeft, ArrowRight, Save, PartyPopper, Hash, Sparkles } from 'lucide-react';
 import { IgnoreType, NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 
@@ -146,102 +147,151 @@ export default function Page() {
     setProcessingIndex((prev) => (prev < assignedWords.length - 1 ? prev : 0));
   };
 
-  if (!currentWord) return <p>Nema riječi za obradu.</p>;
-
   if (isLoading) {
-    return <p>Učitavanje riječi...</p>;
+    return (
+      <div className={style.stateCard}>
+        <p>Učitavanje riječi...</p>
+      </div>
+    );
   }
 
   if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
+    return (
+      <div className={style.stateCard}>
+        <p className={style.errorText}>{error}</p>
+      </div>
+    );
   }
+
+  if (!currentWord) {
+    return (
+      <div className={style.stateCard}>
+        <PartyPopper size={28} />
+        <p>Nema riječi za obradu. Sve dodijeljene riječi su obrađene.</p>
+      </div>
+    );
+  }
+
+  const progress =
+    assignedWords.length > 0 ? ((processingIndex + 1) / assignedWords.length) * 100 : 0;
 
   return (
     <div className={style.processingView}>
       <ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
+
       <div className={style.header}>
-        <h2>
-          Obrada riječi {processingIndex + 1} / {assignedWords.length}
-        </h2>
-        <div className={style.spacer}></div>
-        <select
-          id="strategy"
-          className={style.strategySelect}
-          value={(currentWord.strategy as string) || ''}
-          onChange={(e) =>
-            handleStrategyChange(currentWord.id, (e.target.value as WordProcessingStrategy) || null)
-          }
-        >
-          <option value="">Bez strategije</option>
-          {strategies.map((s) => (
-            <option key={s} value={s}>
-              {strategyTranslations[s]}
-            </option>
-          ))}
-        </select>
-        <Button
-          className={style.saveButton}
-          onClick={() => handleSaveStrategy(currentWord.id, currentWord.strategy!)}
-          disabled={!currentWord.strategy}
-        >
-          Sačuvaj
-        </Button>
+        <div>
+          <h1 className={style.title}>Obrada riječi</h1>
+          <p className={style.subtitle}>
+            Riječ {processingIndex + 1} od {assignedWords.length}
+          </p>
+        </div>
+        <div className={style.progressTrack}>
+          <div className={style.progressFill} style={{ width: `${progress}%` }} />
+        </div>
       </div>
-      <div className={style.info}>
-        <p>
-          <strong>Riječ:</strong> {currentWord.headword}
-        </p>
-        <p>
-          <strong>Pojavljivanja:</strong> {currentWord.count}
-        </p>
-        <p>
-          <strong>Nova:</strong> {currentWord.is_new ? 'Da' : 'Ne'}
-        </p>
-        <p>
-          <strong>Primjeri:</strong>
-        </p>
-        <ul>
-          {currentWord.examples.map((ex, i) => (
-            <li key={i}>{ex}</li>
-          ))}
-        </ul>
+
+      <div className={style.card}>
+        <div className={style.wordHeading}>
+          <h2 className={style.headword}>{currentWord.headword}</h2>
+          <div className={style.metaChips}>
+            <span className={style.metaChip}>
+              <Hash size={13} />
+              {currentWord.count} pojavljivanja
+            </span>
+            {currentWord.is_new && (
+              <span className={`${style.metaChip} ${style.metaChipAccent}`}>
+                <Sparkles size={13} />
+                Nova riječ
+              </span>
+            )}
+          </div>
+        </div>
+
+        {currentWord.examples.length > 0 && (
+          <div className={style.examplesBlock}>
+            <span className={style.examplesLabel}>Primjeri</span>
+            <ul className={style.examples}>
+              {currentWord.examples.map((ex, i) => (
+                <li key={i}>{ex}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className={style.strategyRow}>
+          <label htmlFor="strategy" className={style.strategyLabel}>
+            Strategija
+          </label>
+          <select
+            id="strategy"
+            className={style.strategySelect}
+            value={(currentWord.strategy as string) || ''}
+            onChange={(e) =>
+              handleStrategyChange(
+                currentWord.id,
+                (e.target.value as WordProcessingStrategy) || null
+              )
+            }
+          >
+            <option value="">Bez strategije</option>
+            {strategies.map((s) => (
+              <option key={s} value={s}>
+                {strategyTranslations[s]}
+              </option>
+            ))}
+          </select>
+          <Button
+            className={style.navButton}
+            onClick={() => handleSaveStrategy(currentWord.id, currentWord.strategy!)}
+            disabled={!currentWord.strategy}
+          >
+            <Save size={16} />
+            Sačuvaj
+          </Button>
+        </div>
+
+        {currentWord.strategy === 'New Form' && (
+          <div className={style.strategyDetails}>
+            <NewForm
+              word={currentWord}
+              forms={forms}
+              setForms={setForms}
+              selectedWord={selectedWord}
+              setSelectedWord={setSelectedWord}
+            />
+          </div>
+        )}
+        {currentWord.strategy === 'Existing Form' && (
+          <div className={style.strategyDetails}>
+            <ExistingForm selectedWord={selectedWord} setSelectedWord={setSelectedWord} />
+          </div>
+        )}
+        {currentWord.strategy === 'Ignore' && (
+          <div className={style.strategyDetails}>
+            <IgnoreForm ignoreType={ignoreType} setIgnoreType={setIgnoreType} />
+          </div>
+        )}
       </div>
 
       <div className={style.processingButtons}>
         <Button
           onClick={() => setProcessingIndex((prev) => Math.max(0, prev - 1))}
           disabled={processingIndex === 0}
+          className={style.backButton}
         >
+          <ArrowLeft size={16} />
           Nazad
         </Button>
         <Button
           onClick={() => setProcessingIndex((prev) => Math.min(prev + 1, assignedWords.length - 1))}
           disabled={processingIndex >= assignedWords.length - 1}
+          className={style.navButton}
         >
           Sljedeće
+          <ArrowRight size={16} />
         </Button>
       </div>
-      {currentWord.strategy === 'New Form' && (
-        <div className={style.strategyDetails}>
-          <NewForm
-            word={currentWord}
-            forms={forms}
-            setForms={setForms}
-            selectedWord={selectedWord}
-            setSelectedWord={setSelectedWord}
-          />
-        </div>
-      )}
-      {currentWord.strategy === 'Existing Form' && (
-        <div className={style.strategyDetails}>
-          <ExistingForm selectedWord={selectedWord} setSelectedWord={setSelectedWord} />
-        </div>
-      )}
-      {currentWord.strategy === 'Ignore' && (
-        <div className={style.strategyDetails}>
-          <IgnoreForm ignoreType={ignoreType} setIgnoreType={setIgnoreType} />
-        </div>
-      )}
     </div>
   );
 }

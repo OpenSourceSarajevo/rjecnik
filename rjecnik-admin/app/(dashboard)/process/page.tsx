@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import { ArrowLeft, ArrowRight, Wand2, Inbox } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
 import style from './page.module.css';
@@ -99,25 +100,43 @@ export default function Page() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  if (isLoading) {
-    return <p>Učitavanje riječi...</p>;
-  }
-
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
-
   return (
     <>
       <ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
 
-      <div className={style.pageHeader}>
-        <Button onClick={() => router.push('/process/flow')}>Obradi riječi</Button>
-        {totalCount !== null && (
-          <span className={style.totalCount}>Ukupno: {totalCount}</span>
-        )}
+      <div className={style.header}>
+        <div>
+          <h1 className={style.title}>Obradi riječi</h1>
+          <p className={style.subtitle}>Pregledaj nove riječi i dodijeli im strategiju obrade</p>
+        </div>
+        <Button onClick={() => router.push('/process/flow')} className={style.navButton}>
+          <Wand2 size={16} />
+          Obradi riječi
+        </Button>
       </div>
 
+      {totalCount !== null && !isLoading && !error && (
+        <div className={style.totalCount}>Ukupno: {totalCount}</div>
+      )}
+
+      {error ? (
+        <div className={style.stateCard}>
+          <p className={style.errorText}>{error}</p>
+        </div>
+      ) : isLoading ? (
+        <div className={style.container}>
+          <div className={style.skeletonTable}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className={`${style.skeletonRow} ${style.skeleton}`} />
+            ))}
+          </div>
+        </div>
+      ) : words.length === 0 ? (
+        <div className={style.stateCard}>
+          <Inbox size={28} />
+          <p>Nema novih riječi za obradu.</p>
+        </div>
+      ) : (
       <div className={style.container}>
         <table className={style.table}>
           <thead>
@@ -172,20 +191,31 @@ export default function Page() {
           </tbody>
         </table>
       </div>
-      <div className={style.pagination}>
-        <div className={style.paginationInfo}>Stranica {currentPage}</div>
-        <div className={style.paginationControls}>
-          <Button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-          >
-            Prethodna
-          </Button>
-          <Button onClick={() => setCurrentPage((p) => p + 1)} disabled={!hasMore}>
-            Sljedeća
-          </Button>
+      )}
+
+      {!isLoading && !error && words.length > 0 && (
+        <div className={style.pagination}>
+          <div className={style.paginationInfo}>Stranica {currentPage}</div>
+          <div className={style.paginationControls}>
+            <Button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className={style.navButton}
+            >
+              <ArrowLeft size={16} />
+              Prethodna
+            </Button>
+            <Button
+              onClick={() => setCurrentPage((p) => p + 1)}
+              disabled={!hasMore}
+              className={style.navButton}
+            >
+              Sljedeća
+              <ArrowRight size={16} />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
