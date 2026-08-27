@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Plus, X, ChevronDown } from 'lucide-react';
 import style from './DefinitionsForm.module.css';
 import WordTypeSelect from '@/app/(dashboard)/components/WordTypeSelect';
 import GenderSelect from '@/app/(dashboard)/components/GenderSelect';
@@ -21,6 +22,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
       <div className={style.blockHeader}>
         <Button
           type="button"
+          className={style.addBlockButton}
           onClick={() =>
             setDefinitions((defs) => [
               ...defs,
@@ -39,62 +41,99 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
             ])
           }
         >
-          +
+          <Plus size={14} />
+          Dodaj definiciju
         </Button>
       </div>
-      <div className={style.blocksList}>
-        {definitions.map((defObj, idx) => {
-          const header = `${defObj.type || ''} - ${defObj.definition?.slice(0, 20) || 'Nova definicija'}`;
-          return (
-            <div key={idx} className={style.accordionItem}>
-              <div className={style.accordionHeader} onClick={() => handleAccordion(idx)}>
-                <span>{header}</span>
-                <span>{openIdx === idx ? '▲' : '▼'}</span>
-              </div>
-              {openIdx === idx && (
-                <div
-                  className={`${style.blockItem} ${style.blockItemColumn} ${style.accordionContent}`}
+      {definitions.length === 0 ? (
+        <p className={style.emptyState}>Nema dodanih definicija.</p>
+      ) : (
+        <div className={style.blocksList}>
+          {definitions.map((defObj, idx) => {
+            const isOpen = openIdx === idx;
+            const preview = defObj.definition?.trim() || 'Nova definicija';
+            return (
+              <div key={idx} className={style.accordionItem}>
+                <button
+                  type="button"
+                  className={style.accordionHeader}
+                  onClick={() => handleAccordion(idx)}
+                  aria-expanded={isOpen}
                 >
-                  <WordTypeSelect
-                    value={defObj.type || ''}
-                    onChange={(value) => {
-                      const newDefs = [...definitions];
-                      newDefs[idx] = { ...newDefs[idx], type: value || null };
-                      setDefinitions(newDefs);
-                    }}
-                    className={style.input}
+                  <span className={style.accordionTitle}>
+                    {defObj.type && <span className={style.accordionType}>{defObj.type}</span>}
+                    {preview}
+                  </span>
+                  <ChevronDown
+                    size={16}
+                    className={isOpen ? style.accordionChevronOpen : style.accordionChevron}
                   />
-                  {(defObj.type === 'imenica' || defObj.type === 'pridjev') && (
-                    <GenderSelect
-                      value={defObj.gender || ''}
-                      onChange={(value) => {
-                        const newDefs = [...definitions];
-                        newDefs[idx] = { ...newDefs[idx], gender: value || null };
-                        setDefinitions(newDefs);
-                      }}
-                      className={style.input}
-                    />
-                  )}
-                  <div className={`${style.blockSection} ${style.blockSectionNoPad}`}>
-                    <div className={style.blockHeader}>
-                      <span>Primjeri</span>
-                      <Button
-                        type="button"
-                        onClick={() => {
+                </button>
+                {isOpen && (
+                  <div className={style.accordionContent}>
+                    <div className={style.fieldRow}>
+                      <div className={style.fieldGroup}>
+                        <label>Vrsta riječi</label>
+                        <WordTypeSelect
+                          value={defObj.type || ''}
+                          onChange={(value) => {
+                            const newDefs = [...definitions];
+                            newDefs[idx] = { ...newDefs[idx], type: value || null };
+                            setDefinitions(newDefs);
+                          }}
+                        />
+                      </div>
+                      {(defObj.type === 'imenica' || defObj.type === 'pridjev') && (
+                        <div className={style.fieldGroup}>
+                          <label>Rod</label>
+                          <GenderSelect
+                            value={defObj.gender || ''}
+                            onChange={(value) => {
+                              const newDefs = [...definitions];
+                              newDefs[idx] = { ...newDefs[idx], gender: value || null };
+                              setDefinitions(newDefs);
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={style.fieldGroup}>
+                      <label>Definicija</label>
+                      <textarea
+                        value={defObj.definition}
+                        className={style.textarea}
+                        placeholder="Unesi definiciju..."
+                        rows={3}
+                        onChange={(e) => {
                           const newDefs = [...definitions];
-                          newDefs[idx] = {
-                            ...newDefs[idx],
-                            examples: [...(defObj.examples || []), ''],
-                          };
+                          newDefs[idx] = { ...newDefs[idx], definition: e.target.value };
                           setDefinitions(newDefs);
                         }}
-                      >
-                        +
-                      </Button>
+                      />
                     </div>
-                    <div className={style.blocksList}>
+
+                    <div className={style.subSection}>
+                      <div className={style.subSectionHeader}>
+                        <span>Primjeri</span>
+                        <Button
+                          type="button"
+                          className={style.addExampleButton}
+                          onClick={() => {
+                            const newDefs = [...definitions];
+                            newDefs[idx] = {
+                              ...newDefs[idx],
+                              examples: [...(defObj.examples || []), ''],
+                            };
+                            setDefinitions(newDefs);
+                          }}
+                        >
+                          <Plus size={13} />
+                          Dodaj primjer
+                        </Button>
+                      </div>
                       {(defObj.examples || []).map((ex, exIdx) => (
-                        <div key={exIdx} className={`${style.blockItem} ${style.blockItemRow}`}>
+                        <div key={exIdx} className={style.exampleRow}>
                           <input
                             type="text"
                             value={ex}
@@ -110,7 +149,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                           />
                           <Button
                             type="button"
-                            className={style.removeBlockButton}
+                            className={style.removeExampleButton}
                             aria-label="Ukloni primjer"
                             onClick={() => {
                               const newDefs = [...definitions];
@@ -120,65 +159,66 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                               setDefinitions(newDefs);
                             }}
                           >
-                            ×
+                            <X size={16} />
                           </Button>
                         </div>
                       ))}
                     </div>
+
+                    <div className={style.fieldRow}>
+                      <div className={style.fieldGroup}>
+                        <label>Sinonimi</label>
+                        <input
+                          type="text"
+                          value={(defObj.synonyms || []).join(', ')}
+                          className={style.input}
+                          placeholder="Zarezom odvojeni"
+                          onChange={(e) => {
+                            const newDefs = [...definitions];
+                            newDefs[idx] = {
+                              ...newDefs[idx],
+                              synonyms: e.target.value.split(',').map((s) => s.trim()),
+                            };
+                            setDefinitions(newDefs);
+                          }}
+                        />
+                      </div>
+                      <div className={style.fieldGroup}>
+                        <label>Antonimi</label>
+                        <input
+                          type="text"
+                          value={(defObj.antonyms || []).join(', ')}
+                          className={style.input}
+                          placeholder="Zarezom odvojeni"
+                          onChange={(e) => {
+                            const newDefs = [...definitions];
+                            newDefs[idx] = {
+                              ...newDefs[idx],
+                              antonyms: e.target.value.split(',').map((s) => s.trim()),
+                            };
+                            setDefinitions(newDefs);
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={style.footerRow}>
+                      <Button
+                        type="button"
+                        className={style.removeBlockButton}
+                        onClick={() => setDefinitions((defs) => defs.filter((_, i) => i !== idx))}
+                      >
+                        <X size={14} />
+                        Ukloni definiciju
+                      </Button>
+                    </div>
                   </div>
-                  <input
-                    type="text"
-                    value={defObj.definition}
-                    className={style.input}
-                    placeholder="Definicija"
-                    onChange={(e) => {
-                      const newDefs = [...definitions];
-                      newDefs[idx] = { ...newDefs[idx], definition: e.target.value };
-                      setDefinitions(newDefs);
-                    }}
-                  />
-                  <input
-                    type="text"
-                    value={(defObj.synonyms || []).join(', ')}
-                    className={style.input}
-                    placeholder="Sinonimi (zarezom odvojeni)"
-                    onChange={(e) => {
-                      const newDefs = [...definitions];
-                      newDefs[idx] = {
-                        ...newDefs[idx],
-                        synonyms: e.target.value.split(',').map((s) => s.trim()),
-                      };
-                      setDefinitions(newDefs);
-                    }}
-                  />
-                  <input
-                    type="text"
-                    value={(defObj.antonyms || []).join(', ')}
-                    className={style.input}
-                    placeholder="Antonimi (zarezom odvojeni)"
-                    onChange={(e) => {
-                      const newDefs = [...definitions];
-                      newDefs[idx] = {
-                        ...newDefs[idx],
-                        antonyms: e.target.value.split(',').map((s) => s.trim()),
-                      };
-                      setDefinitions(newDefs);
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    className={style.removeBlockButton}
-                    aria-label="Ukloni definiciju"
-                    onClick={() => setDefinitions((defs) => defs.filter((_, i) => i !== idx))}
-                  >
-                    ×
-                  </Button>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

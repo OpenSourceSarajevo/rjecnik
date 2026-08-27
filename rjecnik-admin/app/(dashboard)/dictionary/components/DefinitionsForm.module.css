@@ -1,106 +1,251 @@
 .blockSection {
-  padding: 1rem;
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 8px;
-  background: var(--background-secondary, #fafbfc);
+  padding: var(--spacing-5);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-md);
+  background: var(--color-gray-50);
 }
 
 .blockHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  justify-content: flex-end;
 }
 
-.addBlockButton {
-  padding: 0.3rem 0.8rem;
-  font-size: 0.95rem;
+button.addBlockButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 1px solid var(--color-gray-200);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-sm);
 }
 
-.addBlockButton:hover {
-  background: var(--primary-hover, #005bb5);
+button.addBlockButton:hover {
+  background: var(--color-gray-100);
 }
 
 .blocksList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-3);
 }
 
-.blockItem {
-  padding: 0.7rem 1rem;
-  font-size: 1rem;
-  color: var(--text, #222);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+.blocksList:not(:empty) {
+  margin-top: var(--spacing-4);
 }
 
-.removeBlockButton {
-  font-size: 1.2rem;
-  margin-left: 0.7rem;
-}
-
-.removeBlockButton:hover {
-  color: var(--danger-hover, #b71c1c);
-}
-
-.input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 4px;
-  font-size: 1rem;
-  background: #fff;
-  color: var(--text, #222);
-  margin-bottom: 0.3rem;
-}
-
-.blockItemColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.blockItemRow {
-  display: flex;
-  align-items: center;
-}
-.blockSectionNoPad {
-  padding: 0;
-  border: none;
-  background: none;
+.emptyState {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
 }
 
 .accordionItem {
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 6px;
-  margin-bottom: 0.7rem;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius);
+  background: var(--color-white);
   overflow: hidden;
 }
-.accordionHeader {
-  cursor: pointer;
-  padding: 0.7rem 1rem;
-  background: var(--background-secondary, #fafbfc);
+
+button.accordionHeader {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  border: none;
+  border-radius: 0;
   font-weight: 500;
-  font-size: 1rem;
-  border-bottom: 1px solid var(--border-color, #e0e0e0);
-  transition: background 0.2s;
+  font-size: var(--font-size-sm);
+  text-align: left;
 }
-.accordionHeader:hover {
-  background: var(--primary, #e3f0ff);
+
+button.accordionHeader:hover {
+  background: var(--color-gray-50);
 }
+
+.accordionTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accordionType {
+  display: inline-block;
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-1) var(--spacing-2);
+  margin-right: var(--spacing-2);
+}
+
+.accordionChevron {
+  flex-shrink: 0;
+  display: flex;
+  color: var(--color-gray-400);
+  transition: transform var(--transition-fast);
+}
+
+.accordionChevronOpen {
+  composes: accordionChevron;
+  transform: rotate(180deg);
+}
+
 .accordionContent {
-  padding: 1rem;
-  animation: fadeInAccordion 0.2s;
+  padding: var(--spacing-5);
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  animation: fadeInAccordion 0.15s ease-out;
 }
+
 @keyframes fadeInAccordion {
   from {
     opacity: 0;
-    transform: translateY(-8px);
   }
   to {
     opacity: 1;
-    transform: none;
+  }
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.fieldGroup label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-gray-500);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  background: var(--color-gray-50);
+  color: var(--color-gray-900);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  background: var(--color-white);
+}
+
+.subSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.subSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subSectionHeader span {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+button.addExampleButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: transparent;
+  color: var(--color-primary);
+  border: none;
+  padding: 0;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+button.addExampleButton:hover {
+  text-decoration: underline;
+  background: transparent;
+}
+
+.exampleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+button.removeExampleButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  color: var(--color-gray-400);
+  border: none;
+  padding: 0;
+}
+
+button.removeExampleButton:hover {
+  background: color-mix(in srgb, var(--color-error) 10%, transparent);
+  color: var(--color-error);
+}
+
+.footerRow {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-2);
+  border-top: 1px solid var(--color-gray-100);
+}
+
+button.removeBlockButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: transparent;
+  color: var(--color-error);
+  border: none;
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-sm);
+}
+
+button.removeBlockButton:hover {
+  background: color-mix(in srgb, var(--color-error) 8%, transparent);
+}
+
+@media (max-width: 640px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
   }
 }

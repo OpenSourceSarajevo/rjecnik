@@ -1,55 +1,83 @@
 .blockSection {
-  padding: 1rem;
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 8px;
-  background: var(--background-secondary, #fafbfc);
+  padding: var(--spacing-5);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-md);
+  background: var(--color-gray-50);
 }
 
 .blockHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  justify-content: flex-end;
 }
 
-.addBlockButton {
-  padding: 0.3rem 0.8rem;
-  font-size: 0.95rem;
+button.addBlockButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 1px solid var(--color-gray-200);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-sm);
 }
 
-.addBlockButton:hover {
-  background: var(--primary-hover, #005bb5);
+button.addBlockButton:hover {
+  background: var(--color-gray-100);
 }
 
 .blocksList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
+}
+
+.blocksList:not(:empty) {
+  margin-top: var(--spacing-4);
 }
 
 .blockItem {
-  padding: 0.7rem 1rem;
-  font-size: 1rem;
-  color: var(--text, #222);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
 }
 
-.removeBlockButton {
-  font-size: 1.2rem;
-  margin-left: 0.7rem;
+button.removeBlockButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  color: var(--color-gray-400);
+  border: none;
+  padding: 0;
 }
 
-.removeBlockButton:hover {
-  color: var(--danger-hover, #b71c1c);
+button.removeBlockButton:hover {
+  background: color-mix(in srgb, var(--color-error) 10%, transparent);
+  color: var(--color-error);
 }
 
 .input {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--border-color, #e0e0e0);
-  border-radius: 4px;
-  font-size: 1rem;
-  background: #fff;
-  color: var(--text, #222);
-  margin-bottom: 0.3rem;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+.emptyState {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
 }
