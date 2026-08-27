@@ -1,6 +1,12 @@
+import path from 'path';
 import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {  
+const nextConfig: NextConfig = {
+  // Pin the workspace root explicitly — otherwise Next.js walks up from cwd looking
+  // for lockfiles and can lock onto an unrelated one (e.g. ~/package-lock.json),
+  // which causes flaky dev-server behavior (stale 404s, wrong static asset MIME types).
+  outputFileTracingRoot: path.join(__dirname),
+
   images: {
     remotePatterns: [
       {
