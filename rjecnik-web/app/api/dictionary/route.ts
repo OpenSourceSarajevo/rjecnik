@@ -17,9 +17,18 @@ type Definition = {
   pronunciation_audio: string | null;
 };
 
+const MAX_PAGE_SIZE = 50;
+
 export async function GET(request: NextRequest) {
-  const pageNumber = +request.nextUrl.searchParams.get('pageNumber')!;
-  const pageSize = +request.nextUrl.searchParams.get('pageSize')!;
+  const rawPageNumber = Number(request.nextUrl.searchParams.get('pageNumber'));
+  const rawPageSize = Number(request.nextUrl.searchParams.get('pageSize'));
+
+  const pageNumber = Number.isInteger(rawPageNumber) && rawPageNumber >= 0 ? rawPageNumber : 0;
+  const pageSize =
+    Number.isInteger(rawPageSize) && rawPageSize > 0
+      ? Math.min(rawPageSize, MAX_PAGE_SIZE)
+      : MAX_PAGE_SIZE;
+
   const word = request.nextUrl.searchParams.get('word') ?? '';
 
   const supabase = await createClient();

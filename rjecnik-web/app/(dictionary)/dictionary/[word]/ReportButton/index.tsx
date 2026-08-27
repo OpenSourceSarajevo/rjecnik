@@ -6,7 +6,7 @@ import style from './ReportButton.module.css';
 const getIssueReportUrl = (word: string, url: string): string => {
   return (
     process.env.NEXT_PUBLIC_GITHUB_REPOSITORY! +
-    `/issues/new?labels=data&projects=OpenSourceSarajevo/2&template=data.yml&title=[Data]: ${word}&rijec=${word}&url=${url}`
+    `/issues/new?labels=data&projects=OpenSourceSarajevo/2&template=data.yml&title=${encodeURIComponent(`[Data]: ${word}`)}&rijec=${encodeURIComponent(word)}&url=${encodeURIComponent(url)}`
   );
 };
 
