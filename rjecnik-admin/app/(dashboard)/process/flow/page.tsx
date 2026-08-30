@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Save, PartyPopper, Hash, Sparkles } from 'lucide-react';
 import { IgnoreType, NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
@@ -78,26 +78,35 @@ export default function Page() {
     'Remove',
   ];
 
-  const fetchAssignedWords = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch('/api/words/new/my');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setAssignedWords(data);
-    } catch {
-      setError('Greška pri učitavanju riječi.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchAssignedWords();
-  }, [fetchAssignedWords]);
+    let ignore = false;
+
+    Promise.resolve()
+      .then(() => {
+        setIsLoading(true);
+        setError(null);
+        return fetch('/api/words/new/my');
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!ignore) setAssignedWords(data);
+      })
+      .catch(() => {
+        if (!ignore) setError('Greška pri učitavanju riječi.');
+      })
+      .finally(() => {
+        if (!ignore) setIsLoading(false);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
     const res = await fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {

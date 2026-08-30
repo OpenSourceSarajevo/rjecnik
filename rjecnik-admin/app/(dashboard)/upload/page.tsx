@@ -40,7 +40,19 @@ export default function Page() {
 
   const supabase = createClient();
 
+  const addToast = (type: 'success' | 'error' | 'info', message: string) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    const newToast: Toast = {
+      id,
+      type,
+      message,
+      duration: type === 'error' ? 7000 : 5000,
+    };
+    setToasts((prev) => [...prev, newToast]);
+  };
+
   const fetchRecentUploads = useCallback(async () => {
+    setIsLoading(true);
     try {
       const { data, error } = await supabase
         .from('ingestion_log')
@@ -63,19 +75,8 @@ export default function Page() {
   }, [supabase]);
 
   useEffect(() => {
-    fetchRecentUploads();
+    Promise.resolve().then(() => fetchRecentUploads());
   }, [fetchRecentUploads]);
-
-  const addToast = (type: 'success' | 'error' | 'info', message: string) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const newToast: Toast = {
-      id,
-      type,
-      message,
-      duration: type === 'error' ? 7000 : 5000,
-    };
-    setToasts((prev) => [...prev, newToast]);
-  };
 
   const removeToast = (id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));

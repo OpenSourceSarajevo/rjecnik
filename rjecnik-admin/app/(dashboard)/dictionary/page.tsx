@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import WordCard from './components/WordCard';
 import { Search } from 'lucide-react';
 import { Word } from '@/app/api/dictionary/route';
@@ -19,45 +19,53 @@ const Page: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
-  const fetchWords = useCallback(async (page: number, search: string) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      // Fetch one extra to check if there are more pages
-      const response = await fetch(
-        `/api/dictionary?pageNumber=${page - 1}&pageSize=${ITEMS_PER_PAGE + 1}&word=${search}`
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-
-      if (data.length > ITEMS_PER_PAGE) {
-        setHasMore(true);
-        setWords(data.slice(0, ITEMS_PER_PAGE));
-      } else {
-        setHasMore(false);
-        setWords(data || []);
-      }
-    } catch {
-      setError('Greška pri učitavanju riječi.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    const timeout = setTimeout(() => setSearchTerm(inputValue), 300);
+    const timeout = setTimeout(() => {
+      setSearchTerm(inputValue);
+      setCurrentPage(1);
+    }, 300);
     return () => clearTimeout(timeout);
   }, [inputValue]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm]);
+    let ignore = false;
 
-  useEffect(() => {
-    fetchWords(currentPage, searchTerm);
-  }, [currentPage, searchTerm, fetchWords]);
+    Promise.resolve()
+      .then(() => {
+        setIsLoading(true);
+        setError(null);
+        // Fetch one extra to check if there are more pages
+        return fetch(
+          `/api/dictionary?pageNumber=${currentPage - 1}&pageSize=${ITEMS_PER_PAGE + 1}&word=${searchTerm}`
+        );
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (ignore) return;
+        if (data.length > ITEMS_PER_PAGE) {
+          setHasMore(true);
+          setWords(data.slice(0, ITEMS_PER_PAGE));
+        } else {
+          setHasMore(false);
+          setWords(data || []);
+        }
+      })
+      .catch(() => {
+        if (!ignore) setError('Greška pri učitavanju riječi.');
+      })
+      .finally(() => {
+        if (!ignore) setIsLoading(false);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [currentPage, searchTerm]);
 
   return (
     <div className={style.container}>
@@ -118,6 +126,7 @@ const Page: React.FC = () => {
               onClick={() => {
                 setInputValue('');
                 setSearchTerm('');
+                setCurrentPage(1);
               }}
               className={style.emptyStateButton}
             >

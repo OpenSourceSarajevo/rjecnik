@@ -33,17 +33,20 @@ const NewForm: React.FC<NewFormProps> = ({
   });
 
   useEffect(() => {
-    if (!query) {
-      setResults([]);
-      return;
-    }
-    const timeout = setTimeout(async () => {
-      const res = await fetch(
-        `/api/dictionary?pageNumber=0&pageSize=5&word=${encodeURIComponent(query)}`
-      );
-      const data = await res.json();
-      setResults(data);
-    }, 300);
+    const timeout = setTimeout(
+      async () => {
+        if (!query) {
+          setResults([]);
+          return;
+        }
+        const res = await fetch(
+          `/api/dictionary?pageNumber=0&pageSize=5&word=${encodeURIComponent(query)}`
+        );
+        const data = await res.json();
+        setResults(data);
+      },
+      query ? 300 : 0
+    );
 
     return () => clearTimeout(timeout);
   }, [query]);

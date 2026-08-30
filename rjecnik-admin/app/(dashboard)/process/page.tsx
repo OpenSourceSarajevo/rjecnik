@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Wand2, Inbox } from 'lucide-react';
@@ -43,30 +43,38 @@ export default function Page() {
     'Remove',
   ];
 
-  const fetchWords = useCallback(async (page: number) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(
-        `/api/words/new?pageNumber=${page - 1}&pageSize=${ITEMS_PER_PAGE}`
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const { data, total } = await response.json();
-      setTotalCount(total);
-      setHasMore(total > page * ITEMS_PER_PAGE);
-      setWords(data || []);
-    } catch {
-      setError('Greška pri učitavanju riječi.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchWords(currentPage);
-  }, [currentPage, fetchWords]);
+    let ignore = false;
+
+    Promise.resolve()
+      .then(() => {
+        setIsLoading(true);
+        setError(null);
+        return fetch(`/api/words/new?pageNumber=${currentPage - 1}&pageSize=${ITEMS_PER_PAGE}`);
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(({ data, total }) => {
+        if (ignore) return;
+        setTotalCount(total);
+        setHasMore(total > currentPage * ITEMS_PER_PAGE);
+        setWords(data || []);
+      })
+      .catch(() => {
+        if (!ignore) setError('Greška pri učitavanju riječi.');
+      })
+      .finally(() => {
+        if (!ignore) setIsLoading(false);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [currentPage]);
 
   const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
     const res = await fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
