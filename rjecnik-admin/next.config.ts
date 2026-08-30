@@ -54,6 +54,10 @@ const nextConfig: NextConfig = {
         source: '/obradi-rijeci',
         destination: '/process',
       },
+      {
+        source: '/ignorisane-rijeci',
+        destination: '/ignore',
+      },
     ];
   },
 };

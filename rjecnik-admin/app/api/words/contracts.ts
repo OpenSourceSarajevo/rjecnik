@@ -10,6 +10,14 @@ export type WordProcessingStrategy =
 
 export type IgnoreType = 'ostalo' | 'ime' | 'strana_riječ' | 'skraćenica';
 
+export type IgnoredWord = {
+  id: number;
+  headword: string;
+  type: IgnoreType;
+  inserted_at: string;
+  updated_at: string;
+};
+
 export type NewWord = {
   id: number;
   headword: string;

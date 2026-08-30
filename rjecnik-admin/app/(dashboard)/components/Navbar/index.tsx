@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  EyeOff,
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { User } from '@supabase/supabase-js';
@@ -97,6 +98,7 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/rjecnik', icon: Book, label: 'Rječnik' },
     { path: '/ucitaj-tekst', icon: Upload, label: 'Učitaj tekst' },
     { path: '/obradi-rijeci', icon: Database, label: 'Obradi riječi' },
+    { path: '/ignorisane-rijeci', icon: EyeOff, label: 'Ignorisane riječi' },
   ];
 
   return (
