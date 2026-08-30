@@ -1,14 +1,23 @@
-.blockSection {
-  padding: var(--spacing-5);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--border-radius-md);
-  background: var(--color-gray-50);
+.wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
-.blockHeader {
+.emptyState {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6) var(--spacing-4);
+  border: 1px dashed var(--color-gray-300);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+}
+
+.emptyState p {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
 }
 
 button.addBlockButton {
@@ -23,7 +32,13 @@ button.addBlockButton {
 }
 
 button.addBlockButton:hover {
-  background: var(--color-gray-100);
+  background: var(--color-gray-50);
+}
+
+.addBlockButtonInline {
+  composes: addBlockButton;
+  margin-top: var(--spacing-3);
+  align-self: flex-start;
 }
 
 .blocksList {
@@ -32,13 +47,88 @@ button.addBlockButton:hover {
   gap: var(--spacing-3);
 }
 
-.blocksList:not(:empty) {
+.caseToolToggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-3);
+}
+
+button.caseToolButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 1px solid var(--color-gray-200);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-sm);
+}
+
+button.caseToolButton:hover {
+  background: var(--color-gray-50);
+}
+
+.casePanel {
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-md);
+  background: var(--color-gray-50);
+  margin-bottom: var(--spacing-4);
+}
+
+.caseGrid {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-3);
+}
+
+.caseColumnLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gray-500);
+}
+
+.caseRowLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-700);
+  white-space: nowrap;
+}
+
+.casePanelFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
   margin-top: var(--spacing-4);
 }
 
-.emptyState {
+button.applyCaseButton {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-1) var(--spacing-3);
   font-size: var(--font-size-sm);
-  color: var(--color-gray-400);
+}
+
+button.applyCaseButton:hover {
+  background: var(--color-primary-dark);
+}
+
+@media (max-width: 640px) {
+  .caseGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .caseColumnLabel {
+    display: none;
+  }
+
+  .caseRowLabel {
+    font-weight: 600;
+    margin-top: var(--spacing-2);
+  }
 }
 
 .accordionItem {
@@ -102,6 +192,18 @@ button.accordionHeader:hover {
   to {
     opacity: 1;
   }
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.fieldGroup label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-gray-500);
 }
 
 .input {
