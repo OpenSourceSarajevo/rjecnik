@@ -8,7 +8,7 @@ type Props = {
   placeholder?: string;
 };
 
-const GenderSelect: React.FC<Props> = ({ value, onChange, className, placeholder = 'Spol' }) => {
+const GenderSelect: React.FC<Props> = ({ value, onChange, className, placeholder = 'Rod' }) => {
   return (
     <select
       value={value}
