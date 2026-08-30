@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, X, ChevronDown } from 'lucide-react';
+import { Plus, X, Copy, ChevronDown } from 'lucide-react';
 import style from './DefinitionsForm.module.css';
 import WordTypeSelect from '@/app/(dashboard)/components/WordTypeSelect';
 import GenderSelect from '@/app/(dashboard)/components/GenderSelect';
@@ -17,36 +17,40 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
   const handleAccordion = (idx: number) => {
     setOpenIdx(openIdx === idx ? null : idx);
   };
+  const handleAddDefinition = () =>
+    setDefinitions((defs) => [
+      ...defs,
+      {
+        type: '',
+        gender: '',
+        examples: [],
+        definition: '',
+        hidden_definition: '',
+        part_of_speech: null,
+        synonyms: [],
+        antonyms: [],
+        pronunciation_ipa: null,
+        pronunciation_audio: null,
+      },
+    ]);
+  const handleCopyDefinition = (idx: number) => {
+    setDefinitions((defs) => {
+      const copy = [...defs];
+      copy.splice(idx + 1, 0, { ...defs[idx] });
+      return copy;
+    });
+    setOpenIdx(idx + 1);
+  };
   return (
-    <div className={`${style.blockSection} ${className}`}>
-      <div className={style.blockHeader}>
-        <Button
-          type="button"
-          className={style.addBlockButton}
-          onClick={() =>
-            setDefinitions((defs) => [
-              ...defs,
-              {
-                type: '',
-                gender: '',
-                examples: [],
-                definition: '',
-                hidden_definition: '',
-                part_of_speech: null,
-                synonyms: [],
-                antonyms: [],
-                pronunciation_ipa: null,
-                pronunciation_audio: null,
-              },
-            ])
-          }
-        >
-          <Plus size={14} />
-          Dodaj definiciju
-        </Button>
-      </div>
+    <div className={`${style.wrapper} ${className}`}>
       {definitions.length === 0 ? (
-        <p className={style.emptyState}>Nema dodanih definicija.</p>
+        <div className={style.emptyState}>
+          <p>Nema dodanih definicija.</p>
+          <Button type="button" className={style.addBlockButton} onClick={handleAddDefinition}>
+            <Plus size={14} />
+            Dodaj definiciju
+          </Button>
+        </div>
       ) : (
         <div className={style.blocksList}>
           {definitions.map((defObj, idx) => {
@@ -205,6 +209,14 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                     <div className={style.footerRow}>
                       <Button
                         type="button"
+                        className={style.copyBlockButton}
+                        onClick={() => handleCopyDefinition(idx)}
+                      >
+                        <Copy size={14} />
+                        Kopiraj definiciju
+                      </Button>
+                      <Button
+                        type="button"
                         className={style.removeBlockButton}
                         onClick={() => setDefinitions((defs) => defs.filter((_, i) => i !== idx))}
                       >
@@ -218,6 +230,12 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
             );
           })}
         </div>
+      )}
+      {definitions.length > 0 && (
+        <Button type="button" className={style.addBlockButtonInline} onClick={handleAddDefinition}>
+          <Plus size={14} />
+          Dodaj definiciju
+        </Button>
       )}
     </div>
   );

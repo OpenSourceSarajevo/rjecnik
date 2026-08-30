@@ -1,14 +1,23 @@
-.blockSection {
-  padding: var(--spacing-5);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--border-radius-md);
-  background: var(--color-gray-50);
+.wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
-.blockHeader {
+.emptyState {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6) var(--spacing-4);
+  border: 1px dashed var(--color-gray-300);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+}
+
+.emptyState p {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
 }
 
 button.addBlockButton {
@@ -23,22 +32,19 @@ button.addBlockButton {
 }
 
 button.addBlockButton:hover {
-  background: var(--color-gray-100);
+  background: var(--color-gray-50);
+}
+
+.addBlockButtonInline {
+  composes: addBlockButton;
+  margin-top: var(--spacing-3);
+  align-self: flex-start;
 }
 
 .blocksList {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
-}
-
-.blocksList:not(:empty) {
-  margin-top: var(--spacing-4);
-}
-
-.emptyState {
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-400);
 }
 
 .accordionItem {
@@ -224,9 +230,25 @@ button.removeExampleButton:hover {
 
 .footerRow {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding-top: var(--spacing-2);
   border-top: 1px solid var(--color-gray-100);
+}
+
+button.copyBlockButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: transparent;
+  color: var(--color-gray-500);
+  border: none;
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-sm);
+}
+
+button.copyBlockButton:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
 }
 
 button.removeBlockButton {
