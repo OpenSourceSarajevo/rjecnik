@@ -7,7 +7,7 @@ interface CustomJwtPayload {
   user_permission?: string;
 }
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const isApiRoute = req.nextUrl.pathname.startsWith('/api');
   const supabase = await createClient();
 
