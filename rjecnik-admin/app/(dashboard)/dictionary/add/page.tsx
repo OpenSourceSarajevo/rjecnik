@@ -183,7 +183,7 @@ export default function AddWordPage() {
           {step === 1 && (
             <>
               <div className={style.fieldGroup}>
-                <label htmlFor="headword">Riječ *</label>
+                <label htmlFor="headword">Riječ</label>
                 <input
                   id="headword"
                   type="text"

@@ -156,9 +156,9 @@
 }
 
 .fieldGroup label {
-  font-weight: 500;
+  font-weight: 700;
   color: var(--color-gray-700);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-lg);
 }
 
 .input {
