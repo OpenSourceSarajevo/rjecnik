@@ -1,6 +1,20 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  // Pin the workspace root explicitly — otherwise Next.js walks up from cwd looking
+  // for lockfiles and can lock onto an unrelated one (e.g. ~/package-lock.json),
+  // which causes flaky dev-server behavior (stale 404s, wrong static asset MIME types).
+  // outputFileTracingRoot covers the webpack build; turbopack.root covers `next dev`
+  // (Turbopack is the default dev bundler as of Next.js 16).
+  outputFileTracingRoot: __dirname,
+  turbopack: {
+    root: __dirname,
+  },
   async headers() {
     return [
       {
