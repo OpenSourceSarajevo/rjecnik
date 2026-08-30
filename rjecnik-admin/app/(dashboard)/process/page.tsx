@@ -27,7 +27,7 @@ export default function Page() {
     // "New Definition": "Nova definicija",
     'New Form': 'Novi oblik',
     'Existing Form': 'Postojeći oblik',
-    // "New Headword": "Nova riječ",
+    'New Headword': 'Nova riječ',
     Ignore: 'Ignoriši',
     Remove: 'Ukloni',
   };
@@ -38,7 +38,7 @@ export default function Page() {
     // "New Definition",
     'New Form',
     'Existing Form',
-    // "New Headword",
+    'New Headword',
     'Ignore',
     'Remove',
   ];

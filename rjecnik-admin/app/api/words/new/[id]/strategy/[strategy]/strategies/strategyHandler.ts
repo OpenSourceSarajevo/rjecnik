@@ -4,6 +4,7 @@ import { applyRemoveNewWord } from './removeNewWord';
 import { applyNewWordForm } from './newWordForm';
 import { applyExistingWordForm } from './existingWordForm';
 import { applyIgnoreWord } from './ignoreWord';
+import { applyNewHeadwordForm } from './newHeadwordForm';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type HandlerFn = (id: number, body: any) => Promise<any>;
@@ -14,7 +15,7 @@ const strategyMap: Record<WordProcessingStrategy, HandlerFn> = {
   // "New Example": async () => ({}),
   'New Form': applyNewWordForm,
   'Existing Form': applyExistingWordForm,
-  // "New Headword": async () => ({}),
+  'New Headword': applyNewHeadwordForm,
   Ignore: applyIgnoreWord,
   Remove: applyRemoveNewWord,
 };

@@ -4,7 +4,7 @@ export type WordProcessingStrategy =
   // 'New Definition' |
   | 'New Form'
   | 'Existing Form'
-  // 'New Headword' |
+  | 'New Headword'
   | 'Ignore'
   | 'Remove';
 

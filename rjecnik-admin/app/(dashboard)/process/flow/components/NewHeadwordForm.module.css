@@ -1,0 +1,28 @@
+.container {
+  color: var(--color-gray-900);
+}
+
+.headword {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: var(--spacing-4);
+}
+
+.sectionHeading {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: var(--spacing-5);
+  margin-bottom: var(--spacing-3);
+}
+
+.sectionHeading:first-of-type {
+  margin-top: 0;
+}
+
+.block {
+  margin-top: 0;
+}

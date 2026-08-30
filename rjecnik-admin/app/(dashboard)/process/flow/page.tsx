@@ -9,10 +9,24 @@ import ToastContainer, { Toast } from '@/app/components/Toast';
 import NewForm from './components/NewForm';
 
 import style from './page.module.css';
-import { Word, WordForm } from '@/app/api/dictionary/route';
+import { Definition, Word, WordForm } from '@/app/api/dictionary/route';
 import ExistingForm from './components/ExistingForm';
+import NewHeadwordForm from './components/NewHeadwordForm';
 import IgnoreForm from './components/IgnoreForm';
 import Button from '@/app/components/Button';
+
+const emptyDefinition = (examples: string[]): Definition => ({
+  type: null,
+  gender: null,
+  examples,
+  definition: '',
+  hidden_definition: '',
+  part_of_speech: null,
+  pronunciation_ipa: null,
+  pronunciation_audio: null,
+  synonyms: [],
+  antonyms: [],
+});
 
 export default function Page() {
   const [assignedWords, setAssignedWords] = useState<NewWord[]>([]);
@@ -23,6 +37,9 @@ export default function Page() {
   const [selectedWord, setSelectedWord] = useState<Word | null>(null);
   const [forms, setForms] = useState<WordForm[]>([]);
   const [ignoreType, setIgnoreType] = useState<IgnoreType>('ostalo');
+  const [newHeadwordDefinitions, setNewHeadwordDefinitions] = useState<Definition[]>([]);
+  const [newHeadwordOrigins, setNewHeadwordOrigins] = useState<string[]>([]);
+  const [newHeadwordAlternatives, setNewHeadwordAlternatives] = useState<string[]>([]);
 
   const currentWord = assignedWords[processingIndex];
 
@@ -32,7 +49,7 @@ export default function Page() {
     // "New Definition": "Nova definicija",
     'New Form': 'Novi oblik',
     'Existing Form': 'Postojeći oblik',
-    // "New Headword": "Nova riječ",
+    'New Headword': 'Nova riječ',
     Ignore: 'Ignoriši',
     Remove: 'Ukloni',
   };
@@ -43,7 +60,7 @@ export default function Page() {
     // "New Definition",
     'New Form',
     'Existing Form',
-    // "New Headword",
+    'New Headword',
     'Ignore',
     'Remove',
   ];
@@ -91,6 +108,13 @@ export default function Page() {
     setSelectedWord(null);
     setForms([]);
     setIgnoreType('ostalo');
+    setNewHeadwordOrigins([]);
+    setNewHeadwordAlternatives([]);
+    setNewHeadwordDefinitions(
+      strategy === 'New Headword' && currentWord?.id === id
+        ? [emptyDefinition(currentWord.examples)]
+        : []
+    );
 
     if (!strategy) {
       setAssignedWords((prev) => prev.filter((word) => word.id !== id));
@@ -116,6 +140,13 @@ export default function Page() {
       body = JSON.stringify({ headword: selectedWord?.headword, forms });
     } else if (strategy === 'Existing Form') {
       body = JSON.stringify({ headword: selectedWord?.headword });
+    } else if (strategy === 'New Headword') {
+      body = JSON.stringify({
+        definitions: newHeadwordDefinitions,
+        origins: newHeadwordOrigins,
+        alternatives: newHeadwordAlternatives,
+        forms,
+      });
     } else if (strategy === 'Ignore') {
       body = JSON.stringify({ type: ignoreType });
     }
@@ -142,6 +173,9 @@ export default function Page() {
     setForms([]);
     setSelectedWord(null);
     setIgnoreType('ostalo');
+    setNewHeadwordDefinitions([]);
+    setNewHeadwordOrigins([]);
+    setNewHeadwordAlternatives([]);
 
     setAssignedWords((prev) => prev.filter((word) => word.id !== id));
     setProcessingIndex((prev) => (prev < assignedWords.length - 1 ? prev : 0));
@@ -244,7 +278,11 @@ export default function Page() {
           <Button
             className={style.navButton}
             onClick={() => handleSaveStrategy(currentWord.id, currentWord.strategy!)}
-            disabled={!currentWord.strategy}
+            disabled={
+              !currentWord.strategy ||
+              (currentWord.strategy === 'New Headword' &&
+                !newHeadwordDefinitions.some((d) => d.definition.trim()))
+            }
           >
             <Save size={16} />
             Sačuvaj
@@ -265,6 +303,21 @@ export default function Page() {
         {currentWord.strategy === 'Existing Form' && (
           <div className={style.strategyDetails}>
             <ExistingForm selectedWord={selectedWord} setSelectedWord={setSelectedWord} />
+          </div>
+        )}
+        {currentWord.strategy === 'New Headword' && (
+          <div className={style.strategyDetails}>
+            <NewHeadwordForm
+              headword={currentWord.headword}
+              definitions={newHeadwordDefinitions}
+              setDefinitions={setNewHeadwordDefinitions}
+              origins={newHeadwordOrigins}
+              setOrigins={setNewHeadwordOrigins}
+              alternatives={newHeadwordAlternatives}
+              setAlternatives={setNewHeadwordAlternatives}
+              forms={forms}
+              setForms={setForms}
+            />
           </div>
         )}
         {currentWord.strategy === 'Ignore' && (
