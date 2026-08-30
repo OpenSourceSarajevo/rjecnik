@@ -41,6 +41,7 @@
   box-shadow: var(--shadow-sm);
   font-size: var(--font-size-sm);
   font-family: inherit;
+  color: var(--color-gray-900);
   background-color: var(--color-white);
   transition: all var(--transition-fast);
 }

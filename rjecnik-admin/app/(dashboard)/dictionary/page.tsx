@@ -14,6 +14,7 @@ const Page: React.FC = () => {
   const [words, setWords] = useState<Word[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
@@ -46,6 +47,15 @@ const Page: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const timeout = setTimeout(() => setSearchTerm(inputValue), 300);
+    return () => clearTimeout(timeout);
+  }, [inputValue]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  useEffect(() => {
     fetchWords(currentPage, searchTerm);
   }, [currentPage, searchTerm, fetchWords]);
 
@@ -65,8 +75,8 @@ const Page: React.FC = () => {
             <input
               type="text"
               placeholder="Pretraži riječi..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               className={style.searchInput}
             />
           </div>
@@ -104,7 +114,13 @@ const Page: React.FC = () => {
         ) : (
           <div className={style.emptyState}>
             <p className={style.emptyStateText}>Nema riječi koje odgovaraju vašim kriterijima.</p>
-            <button onClick={() => setSearchTerm('')} className={style.emptyStateButton}>
+            <button
+              onClick={() => {
+                setInputValue('');
+                setSearchTerm('');
+              }}
+              className={style.emptyStateButton}
+            >
               Očisti pretragu
             </button>
           </div>
