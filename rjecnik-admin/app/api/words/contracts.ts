@@ -1,7 +1,7 @@
 export type WordProcessingStrategy =
   | 'Frequency Only'
   // 'New Example' |
-  // 'New Definition' |
+  | 'New Definition'
   | 'New Form'
   | 'Existing Form'
   | 'New Headword'

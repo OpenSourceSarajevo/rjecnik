@@ -12,8 +12,17 @@ import style from './page.module.css';
 import { Definition, Word, WordForm } from '@/app/api/dictionary/route';
 import ExistingForm from './components/ExistingForm';
 import NewHeadwordForm from './components/NewHeadwordForm';
+import AddDefinitionForm, { NewDefinitionDraft } from './components/AddDefinitionForm';
 import IgnoreForm from './components/IgnoreForm';
 import Button from '@/app/components/Button';
+
+const emptyDefinitionDraft = (): NewDefinitionDraft => ({
+  type: '',
+  gender: '',
+  definition: '',
+  examples: [],
+  updateFrequency: true,
+});
 
 const emptyDefinition = (examples: string[]): Definition => ({
   type: null,
@@ -40,6 +49,9 @@ export default function Page() {
   const [newHeadwordDefinitions, setNewHeadwordDefinitions] = useState<Definition[]>([]);
   const [newHeadwordOrigins, setNewHeadwordOrigins] = useState<string[]>([]);
   const [newHeadwordAlternatives, setNewHeadwordAlternatives] = useState<string[]>([]);
+  const [newDefinitionDraft, setNewDefinitionDraft] = useState<NewDefinitionDraft>(
+    emptyDefinitionDraft()
+  );
 
   const currentWord = assignedWords[processingIndex];
 
@@ -47,6 +59,7 @@ export default function Page() {
     'Frequency Only': 'Samo frekvencija',
     // "New Example": "Novi primjer",
     // "New Definition": "Nova definicija",
+    'New Definition': 'Nova definicija',
     'New Form': 'Novi oblik',
     'Existing Form': 'Postojeći oblik',
     'New Headword': 'Nova riječ',
@@ -57,7 +70,7 @@ export default function Page() {
   const strategies: WordProcessingStrategy[] = [
     'Frequency Only',
     // "New Example",
-    // "New Definition",
+    'New Definition',
     'New Form',
     'Existing Form',
     'New Headword',
@@ -115,6 +128,7 @@ export default function Page() {
         ? [emptyDefinition(currentWord.examples)]
         : []
     );
+    setNewDefinitionDraft(emptyDefinitionDraft());
 
     if (!strategy) {
       setAssignedWords((prev) => prev.filter((word) => word.id !== id));
@@ -147,6 +161,17 @@ export default function Page() {
         alternatives: newHeadwordAlternatives,
         forms,
       });
+    } else if (strategy === 'New Definition') {
+      body = JSON.stringify({
+        headword: selectedWord?.headword,
+        definition: {
+          type: newDefinitionDraft.type || null,
+          gender: newDefinitionDraft.gender || null,
+          definition: newDefinitionDraft.definition,
+          examples: newDefinitionDraft.examples,
+        },
+        updateFrequency: newDefinitionDraft.updateFrequency,
+      });
     } else if (strategy === 'Ignore') {
       body = JSON.stringify({ type: ignoreType });
     }
@@ -176,6 +201,7 @@ export default function Page() {
     setNewHeadwordDefinitions([]);
     setNewHeadwordOrigins([]);
     setNewHeadwordAlternatives([]);
+    setNewDefinitionDraft(emptyDefinitionDraft());
 
     setAssignedWords((prev) => prev.filter((word) => word.id !== id));
     setProcessingIndex((prev) => (prev < assignedWords.length - 1 ? prev : 0));
@@ -281,7 +307,9 @@ export default function Page() {
             disabled={
               !currentWord.strategy ||
               (currentWord.strategy === 'New Headword' &&
-                !newHeadwordDefinitions.some((d) => d.definition.trim()))
+                !newHeadwordDefinitions.some((d) => d.definition.trim())) ||
+              (currentWord.strategy === 'New Definition' &&
+                (!selectedWord || !newDefinitionDraft.definition.trim()))
             }
           >
             <Save size={16} />
@@ -317,6 +345,17 @@ export default function Page() {
               setAlternatives={setNewHeadwordAlternatives}
               forms={forms}
               setForms={setForms}
+            />
+          </div>
+        )}
+        {currentWord.strategy === 'New Definition' && (
+          <div className={style.strategyDetails}>
+            <AddDefinitionForm
+              selectedWord={selectedWord}
+              setSelectedWord={setSelectedWord}
+              candidateExamples={currentWord.examples}
+              draft={newDefinitionDraft}
+              setDraft={setNewDefinitionDraft}
             />
           </div>
         )}

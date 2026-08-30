@@ -5,12 +5,13 @@ import { applyNewWordForm } from './newWordForm';
 import { applyExistingWordForm } from './existingWordForm';
 import { applyIgnoreWord } from './ignoreWord';
 import { applyNewHeadwordForm } from './newHeadwordForm';
+import { applyNewDefinitionForm } from './newDefinitionForm';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type HandlerFn = (id: number, body: any) => Promise<any>;
 
 const strategyMap: Record<WordProcessingStrategy, HandlerFn> = {
-  // "New Definition": async () => ({}),
+  'New Definition': applyNewDefinitionForm,
   'Frequency Only': applyFrequencyOnly,
   // "New Example": async () => ({}),
   'New Form': applyNewWordForm,

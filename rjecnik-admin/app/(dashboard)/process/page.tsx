@@ -24,7 +24,7 @@ export default function Page() {
   const strategyTranslations: Record<WordProcessingStrategy, string> = {
     'Frequency Only': 'Samo frekvencija',
     // "New Example": "Novi primjer",
-    // "New Definition": "Nova definicija",
+    'New Definition': 'Nova definicija',
     'New Form': 'Novi oblik',
     'Existing Form': 'Postojeći oblik',
     'New Headword': 'Nova riječ',
@@ -35,7 +35,7 @@ export default function Page() {
   const strategies: WordProcessingStrategy[] = [
     'Frequency Only',
     // "New Example",
-    // "New Definition",
+    'New Definition',
     'New Form',
     'Existing Form',
     'New Headword',
