@@ -8,10 +8,26 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
   color: var(--color-gray-900);
   font-size: var(--font-size-3xl);
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+.titleTrail {
+  color: var(--color-gray-400);
+}
+
+.titleSeparator {
+  color: var(--color-gray-300);
+  font-weight: 400;
+}
+
+.titleCurrent {
+  color: var(--color-gray-900);
 }
 
 .subtitle {

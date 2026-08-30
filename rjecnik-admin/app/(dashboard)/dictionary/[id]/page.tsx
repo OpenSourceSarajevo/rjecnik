@@ -190,7 +190,15 @@ export default function UpdateWordPage() {
       <ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
 
       <div className={style.header}>
-        <h1 className={style.title}>Ažuriraj riječ</h1>
+        <h1 className={style.title}>
+          <span className={style.titleTrail}>Ažuriraj riječ</span>
+          {headword && (
+            <>
+              <span className={style.titleSeparator}>/</span>
+              <span className={style.titleCurrent}>{headword}</span>
+            </>
+          )}
+        </h1>
         <p className={style.subtitle}>Izmijeni osnovne podatke, definicije i gramatičke oblike</p>
       </div>
 
