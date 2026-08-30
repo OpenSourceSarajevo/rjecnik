@@ -52,6 +52,11 @@ export default function AddWordPage() {
   const handleBack = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
+  const handleStepClick = (stepNum: number) => {
+    if (stepNum >= step) return;
+    setHeadwordError(false);
+    setStep(stepNum);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,7 +157,13 @@ export default function AddWordPage() {
                   {idx > 0 && (
                     <div className={step > idx ? style.stepConnectorActive : style.stepConnector} />
                   )}
-                  <div className={style.step}>
+                  <button
+                    type="button"
+                    className={isDone ? style.stepClickable : style.step}
+                    onClick={() => handleStepClick(stepNum)}
+                    disabled={!isDone}
+                    aria-current={isActive ? 'step' : undefined}
+                  >
                     <div
                       className={
                         isDone ? style.stepCircleDone : isActive ? style.stepCircleActive : style.stepCircle
@@ -163,7 +174,7 @@ export default function AddWordPage() {
                     <span className={isActive || isDone ? style.stepLabelActive : style.stepLabel}>
                       {s.label}
                     </span>
-                  </div>
+                  </button>
                 </React.Fragment>
               );
             })}
