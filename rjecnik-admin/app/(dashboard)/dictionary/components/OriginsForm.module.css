@@ -1,14 +1,23 @@
-.blockSection {
-  padding: var(--spacing-5);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--border-radius-md);
-  background: var(--color-gray-50);
+.wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
-.blockHeader {
+.emptyState {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6) var(--spacing-4);
+  border: 1px dashed var(--color-gray-300);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+}
+
+.emptyState p {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
 }
 
 button.addBlockButton {
@@ -23,7 +32,13 @@ button.addBlockButton {
 }
 
 button.addBlockButton:hover {
-  background: var(--color-gray-100);
+  background: var(--color-gray-50);
+}
+
+.addBlockButtonInline {
+  composes: addBlockButton;
+  margin-top: var(--spacing-3);
+  align-self: flex-start;
 }
 
 .blocksList {
@@ -32,14 +47,19 @@ button.addBlockButton:hover {
   gap: var(--spacing-2);
 }
 
-.blocksList:not(:empty) {
-  margin-top: var(--spacing-4);
-}
-
 .blockItem {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
+  padding-left: var(--spacing-4);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-md);
+  background: var(--color-white);
+  transition: border-color var(--transition-fast);
+}
+
+.blockItem:focus-within {
+  border-color: var(--color-primary-light);
 }
 
 button.removeBlockButton {
@@ -47,8 +67,8 @@ button.removeBlockButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   background: transparent;
   color: var(--color-gray-400);
   border: none;
@@ -62,22 +82,14 @@ button.removeBlockButton:hover {
 
 .input {
   width: 100%;
-  padding: var(--spacing-3) var(--spacing-4);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--border-radius);
+  padding: var(--spacing-3) 0;
+  border: none;
   font-size: var(--font-size-base);
   font-family: inherit;
-  background: var(--color-white);
+  background: transparent;
   color: var(--color-gray-900);
-  transition: border-color var(--transition-fast);
 }
 
 .input:focus {
   outline: none;
-  border-color: var(--color-primary-light);
-}
-
-.emptyState {
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-400);
 }
