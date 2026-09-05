@@ -26,6 +26,99 @@
   flex-shrink: 0;
 }
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+}
+
+.searchField {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 220px;
+  min-width: 180px;
+  max-width: 320px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--spacing-3);
+  color: var(--color-gray-400);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3) var(--spacing-2) 2.25rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray-200);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  transition: border-color var(--transition-fast);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+.filterSelect {
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray-200);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+.clearFilters {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: none;
+  background: none;
+  color: var(--color-gray-500);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.clearFilters:hover {
+  color: var(--color-gray-900);
+  text-decoration: underline;
+}
+
+.bulkBar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--border-radius-lg);
+  background-color: color-mix(in srgb, var(--color-primary-light) 8%, var(--color-white));
+}
+
+.bulkCount {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
 .totalCount {
   font-size: var(--font-size-sm);
   color: var(--color-gray-500);
@@ -89,15 +182,63 @@
 .container {
   border: 1px solid var(--color-gray-200);
   border-radius: var(--border-radius-lg);
-  overflow: hidden;
   box-shadow: var(--shadow-sm);
+}
+
+.tableScroll {
+  overflow-x: auto;
+  border-radius: var(--border-radius-lg);
 }
 
 .table {
   width: 100%;
+  min-width: 800px;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: var(--font-size-sm);
   background-color: var(--color-white);
+}
+
+.colSelect {
+  width: 2.75rem;
+}
+
+.checkbox {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--color-primary-light);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.colHeadword {
+  width: 13%;
+}
+
+.colExamples {
+  width: 25%;
+}
+
+.colCount {
+  width: 11%;
+}
+
+.colIsNew {
+  width: 7%;
+}
+
+.colCreatedBy {
+  width: 11%;
+}
+
+.colStrategy {
+  width: 17%;
+}
+
+.colAssignedTo {
+  width: 9%;
 }
 
 .table th,
@@ -114,6 +255,9 @@
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  overflow-wrap: break-word;
+  position: sticky;
+  top: 0;
 }
 
 .table tbody tr:last-child td {
@@ -125,10 +269,19 @@
   transition: background-color var(--transition-fast);
 }
 
+.tableRowSelected,
+.tableRowSelected:hover {
+  background-color: color-mix(in srgb, var(--color-primary-light) 10%, var(--color-white));
+}
+
 .tableRow td {
   vertical-align: top;
   word-break: break-word;
   color: var(--color-gray-900);
+}
+
+.headwordCell {
+  font-weight: 600;
 }
 
 .examplesList {
@@ -137,27 +290,44 @@
   margin: 0;
 }
 
-.examplesCell {
-  max-height: 3em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  position: relative;
+.examplesToggle {
+  margin-top: var(--spacing-1);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-primary-light);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
   cursor: pointer;
-  color: var(--color-gray-900);
-  max-width: 250px; /* or whatever width works for your layout */
 }
 
-/* On hover: expand fully and wrap text */
-.examplesCell:hover {
-  white-space: normal;
-  max-height: none;
-  background-color: var(--color-gray-50);
-  padding: 0.5rem;
-  z-index: 2;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-  position: absolute;
+.examplesToggle:hover {
+  text-decoration: underline;
 }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem var(--spacing-2);
+  border-radius: 999px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.badgeNew {
+  background-color: color-mix(in srgb, var(--color-success) 15%, var(--color-white));
+  color: var(--color-success);
+}
+
+.badgeMuted {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-500);
+}
+
+.emptyValue {
+  color: var(--color-gray-400);
+}
+
 .strategySelect {
   padding: var(--spacing-2) var(--spacing-3);
   border-radius: var(--border-radius);
@@ -167,7 +337,9 @@
   background-color: var(--color-gray-50);
   color: var(--color-gray-900);
   cursor: pointer;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .strategySelect:focus {
