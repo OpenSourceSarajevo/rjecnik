@@ -260,6 +260,25 @@ export default function Page() {
         </div>
       </div>
 
+      <div className={style.processingButtons}>
+        <Button
+          onClick={() => setProcessingIndex((prev) => Math.max(0, prev - 1))}
+          disabled={processingIndex === 0}
+          className={style.backButton}
+        >
+          <ArrowLeft size={16} />
+          Nazad
+        </Button>
+        <Button
+          onClick={() => setProcessingIndex((prev) => Math.min(prev + 1, assignedWords.length - 1))}
+          disabled={processingIndex >= assignedWords.length - 1}
+          className={style.navButton}
+        >
+          Sljedeće
+          <ArrowRight size={16} />
+        </Button>
+      </div>
+
       <div className={style.card}>
         <div className={style.wordHeading}>
           <h2 className={style.headword}>{currentWord.headword}</h2>
@@ -310,20 +329,6 @@ export default function Page() {
               </option>
             ))}
           </select>
-          <Button
-            className={style.navButton}
-            onClick={() => handleSaveStrategy(currentWord.id, currentWord.strategy!)}
-            disabled={
-              !currentWord.strategy ||
-              (currentWord.strategy === 'New Headword' &&
-                !newHeadwordDefinitions.some((d) => d.definition.trim())) ||
-              (currentWord.strategy === 'New Definition' &&
-                (!selectedWord || !newDefinitionDraft.definition.trim()))
-            }
-          >
-            <Save size={16} />
-            Sačuvaj
-          </Button>
         </div>
 
         {currentWord.strategy === 'New Form' && (
@@ -375,22 +380,20 @@ export default function Page() {
         )}
       </div>
 
-      <div className={style.processingButtons}>
+      <div className={style.saveRow}>
         <Button
-          onClick={() => setProcessingIndex((prev) => Math.max(0, prev - 1))}
-          disabled={processingIndex === 0}
-          className={style.backButton}
-        >
-          <ArrowLeft size={16} />
-          Nazad
-        </Button>
-        <Button
-          onClick={() => setProcessingIndex((prev) => Math.min(prev + 1, assignedWords.length - 1))}
-          disabled={processingIndex >= assignedWords.length - 1}
           className={style.navButton}
+          onClick={() => handleSaveStrategy(currentWord.id, currentWord.strategy!)}
+          disabled={
+            !currentWord.strategy ||
+            (currentWord.strategy === 'New Headword' &&
+              !newHeadwordDefinitions.some((d) => d.definition.trim())) ||
+            (currentWord.strategy === 'New Definition' &&
+              (!selectedWord || !newDefinitionDraft.definition.trim()))
+          }
         >
-          Sljedeće
-          <ArrowRight size={16} />
+          <Save size={16} />
+          Sačuvaj
         </Button>
       </div>
     </div>
