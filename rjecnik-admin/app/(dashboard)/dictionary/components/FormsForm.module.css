@@ -50,6 +50,7 @@ button.addBlockButton:hover {
 .caseToolToggle {
   display: flex;
   justify-content: flex-end;
+  gap: var(--spacing-2);
   margin-bottom: var(--spacing-3);
 }
 
@@ -129,6 +130,18 @@ button.applyCaseButton:hover {
     font-weight: 600;
     margin-top: var(--spacing-2);
   }
+}
+
+.verbGridScroll {
+  overflow-x: auto;
+}
+
+.verbGrid {
+  display: grid;
+  grid-template-columns: auto repeat(6, minmax(80px, 1fr));
+  align-items: center;
+  gap: var(--spacing-2) var(--spacing-3);
+  min-width: 640px;
 }
 
 .accordionItem {

@@ -18,9 +18,29 @@ type Props = {
 
 const CASES = ['Nominativ', 'Genitiv', 'Dativ', 'Akuzativ', 'Vokativ', 'Instrumental', 'Lokativ'];
 
+const TENSES = [
+  'Prezent',
+  'Perfekt',
+  'Aorist',
+  'Imperfekt',
+  'Pluskvamperfekt',
+  'Futur I',
+  'Futur II',
+];
+
+const PERSONS: { key: string; label: string }[] = [
+  { key: '1. lice jednine', label: '1. jd.' },
+  { key: '2. lice jednine', label: '2. jd.' },
+  { key: '3. lice jednine', label: '3. jd.' },
+  { key: '1. lice množine', label: '1. mn.' },
+  { key: '2. lice množine', label: '2. mn.' },
+  { key: '3. lice množine', label: '3. mn.' },
+];
+
 const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [showCaseTool, setShowCaseTool] = useState(false);
+  const [showVerbTool, setShowVerbTool] = useState(false);
   const handleAccordion = (idx: number) => {
     setOpenIdx(openIdx === idx ? null : idx);
   };
@@ -51,9 +71,44 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
     });
   };
 
+  const findVerbFormIdx = (tense: string, person: string) =>
+    forms.findIndex(
+      (f) => f.category === 'glagolsko vrijeme' && f.form === person && f.name === tense.toLowerCase()
+    );
+
+  const getVerbValue = (tense: string, person: string) => {
+    const idx = findVerbFormIdx(tense, person);
+    return idx >= 0 ? forms[idx].value : '';
+  };
+
+  const handleVerbValueChange = (tense: string, person: string, value: string) => {
+    setForms((prev) => {
+      const idx = findVerbFormIdx(tense, person);
+      if (idx >= 0) {
+        if (!value) return prev.filter((_, i) => i !== idx);
+        const updated = [...prev];
+        updated[idx] = { ...updated[idx], value };
+        return updated;
+      }
+      if (!value) return prev;
+      return [
+        ...prev,
+        { form: person, name: tense.toLowerCase(), value, category: 'glagolsko vrijeme' },
+      ];
+    });
+  };
+
   return (
     <div className={`${style.wrapper} ${className}`}>
       <div className={style.caseToolToggle}>
+        <Button
+          type="button"
+          className={style.caseToolButton}
+          onClick={() => setShowVerbTool((v) => !v)}
+        >
+          <Wand2 size={14} />
+          Brzo popuni glagolska vremena
+        </Button>
         <Button
           type="button"
           className={style.caseToolButton}
@@ -63,6 +118,43 @@ const FormsForm: React.FC<Props> = ({ forms, setForms, className }) => {
           Brzo popuni padeže
         </Button>
       </div>
+      {showVerbTool && (
+        <div className={style.casePanel}>
+          <div className={style.verbGridScroll}>
+            <div className={style.verbGrid}>
+              <span />
+              {PERSONS.map((person) => (
+                <span key={person.key} className={style.caseColumnLabel} title={person.key}>
+                  {person.label}
+                </span>
+              ))}
+              {TENSES.map((tense) => (
+                <React.Fragment key={tense}>
+                  <span className={style.caseRowLabel}>{tense}</span>
+                  {PERSONS.map((person) => (
+                    <input
+                      key={person.key}
+                      type="text"
+                      className={style.input}
+                      value={getVerbValue(tense, person.key)}
+                      onChange={(e) => handleVerbValueChange(tense, person.key, e.target.value)}
+                    />
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <div className={style.casePanelFooter}>
+            <Button
+              type="button"
+              className={style.applyCaseButton}
+              onClick={() => setShowVerbTool(false)}
+            >
+              Zatvori
+            </Button>
+          </div>
+        </div>
+      )}
       {showCaseTool && (
         <div className={style.casePanel}>
           <div className={style.caseGrid}>
