@@ -27,7 +27,7 @@ Keep the subject line <= 72 characters where possible, and add a longer body aft
 an empty line for explanation, motivation, or trade-offs. Example:
 
 ```
-feat(rjecnik-web): add quick search that filters as-you-type
+feat(web): add quick search that filters as-you-type
 
 Adds a client-side search box that filters the displayed list of words
 without a full page reload. This improves the perceived search speed.

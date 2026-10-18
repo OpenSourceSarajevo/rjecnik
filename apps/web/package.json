@@ -1,5 +1,5 @@
 {
-  "name": "rjecnik",
+  "name": "@rjecnik/web",
   "version": "0.1.0",
   "private": true,
   "engines": {

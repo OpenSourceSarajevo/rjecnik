@@ -41,18 +41,19 @@ export default function Page() {
     setHeadwordFilter('');
     setStrategyFilter('');
     setIsNewFilter('');
+    setCurrentPage(1);
   };
 
   useEffect(() => {
     const handle = setTimeout(() => {
-      setHeadwordFilter(headwordInput.trim());
+      const nextHeadwordFilter = headwordInput.trim();
+      if (nextHeadwordFilter !== headwordFilter) {
+        setHeadwordFilter(nextHeadwordFilter);
+        setCurrentPage(1);
+      }
     }, 300);
     return () => clearTimeout(handle);
-  }, [headwordInput]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [headwordFilter, strategyFilter, isNewFilter]);
+  }, [headwordInput, headwordFilter]);
 
   const toggleExamples = (id: number) => {
     setExpandedExamples((prev) => {
@@ -277,7 +278,10 @@ export default function Page() {
         <select
           className={style.filterSelect}
           value={strategyFilter}
-          onChange={(e) => setStrategyFilter(e.target.value)}
+          onChange={(e) => {
+            setStrategyFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">Sve strategije</option>
           <option value="none">Bez strategije</option>
@@ -291,7 +295,10 @@ export default function Page() {
         <select
           className={style.filterSelect}
           value={isNewFilter}
-          onChange={(e) => setIsNewFilter(e.target.value)}
+          onChange={(e) => {
+            setIsNewFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           {NEW_FILTER_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>

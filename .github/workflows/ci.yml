@@ -3,12 +3,12 @@ name: Rjecnik Web CI
 on:
   push:
     paths:
-      - rjecnik-web/*
-      - rjecnik-admin/*
+      - apps/**
+      - packages/**
   pull_request:
     paths:
-      - rjecnik-web/*
-      - rjecnik-admin/*
+      - apps/**
+      - packages/**
 
 jobs:
   deploy:
@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         node-version: [24.x]
-        project: ["./rjecnik-web", "./rjecnik-admin"]
+        project: ["./apps/web", "./apps/admin"]
 
     steps:
       - uses: actions/checkout@v2
