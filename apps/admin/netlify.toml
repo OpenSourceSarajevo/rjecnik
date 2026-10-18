@@ -4,7 +4,7 @@
   status = 200 
 
 [build]
-  command = "npm run build"
+  command = "pnpm build"
   publish = ".next"
 
 [[plugins]]

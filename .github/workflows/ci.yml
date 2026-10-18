@@ -24,20 +24,27 @@ jobs:
         project: ["./apps/web", "./apps/admin"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ${{ matrix.project }}/package.json
+
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
 
       - name: Install dependencies
         working-directory: ${{ matrix.project }}
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         working-directory: ${{ matrix.project }}
-        run: npm run lint
+        run: pnpm lint
 
       - name: Build
         working-directory: ${{ matrix.project }}
-        run: npm run build --if-present
+        run: pnpm build

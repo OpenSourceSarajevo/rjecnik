@@ -12,6 +12,7 @@ See [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for contribution guidelines
 ### Prerequisites
 
 - [Node 20+](https://nodejs.org/) (see each app's `.nvmrc`, or run `nvm use` from within `apps/web`/`apps/admin`)
+- [pnpm 9](https://pnpm.io/installation) (or run `corepack enable` to use the version pinned in `package.json`)
 - [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started)
 - [Docker](https://docs.docker.com/engine/install/)
 
@@ -27,10 +28,10 @@ cd apps/web
 cd apps/admin
 ```
 
-2. Install npm packages:
+2. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. Configure the application:
@@ -45,7 +46,7 @@ cp .env.example .env
 4. Run the application:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Make sure to configure a different port for one of the apps if running both.
@@ -122,5 +123,5 @@ supabase migration new <migration_name>
 
 - **`supabase start` fails immediately / hangs with a connection error.** Make sure Docker Desktop is running first — the Supabase CLI needs it to pull and run the local Postgres/Auth/Studio containers.
 - **`supabase start` takes several minutes the first time.** This is expected — it's pulling the Supabase Docker images. Subsequent starts are much faster since the images are cached.
-- **Port `3000` already in use when running both apps.** Both `apps/web` and `apps/admin` default to port 3000. Run one of them on a different port: `npm run dev -- -p 3001`.
+- **Port `3000` already in use when running both apps.** Both `apps/web` and `apps/admin` default to port 3000. Run one of them on a different port: `pnpm dev -p 3001`.
 - **Signed in with Google but still can't access the admin dashboard.** You're missing the `Dictionary.ReadWrite` permission — see step 4 of [Setting up auth](#setting-up-auth) above.

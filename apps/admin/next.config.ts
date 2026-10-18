@@ -1,15 +1,18 @@
 import path from 'path';
 import type { NextConfig } from 'next';
 
+const repoRoot = path.join(__dirname, '../..');
+
 const nextConfig: NextConfig = {
-  // Pin the workspace root explicitly — otherwise Next.js walks up from cwd looking
-  // for lockfiles and can lock onto an unrelated one (e.g. ~/package-lock.json),
+  // Pin the workspace root explicitly to the repo root — otherwise Next.js walks up from
+  // cwd looking for lockfiles and can lock onto an unrelated one (e.g. ~/package-lock.json),
   // which causes flaky dev-server behavior (stale 404s, wrong static asset MIME types).
+  // The repo root (not the app folder) lets the `@rjecnik/*` alias import from packages/.
   // outputFileTracingRoot covers the webpack build; turbopack.root covers `next dev`
   // (Turbopack is the default dev bundler as of Next.js 16).
-  outputFileTracingRoot: path.join(__dirname),
+  outputFileTracingRoot: repoRoot,
   turbopack: {
-    root: path.join(__dirname),
+    root: repoRoot,
   },
 
   images: {

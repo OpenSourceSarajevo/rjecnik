@@ -24,6 +24,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@rjecnik/*": [
+        "../../packages/*"
       ]
     },
     "target": "ES2017"
