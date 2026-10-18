@@ -92,7 +92,7 @@
     "http",
     "net"
   ],
-  "eslint.workingDirectories": ["rjecnik-web"],
+  "eslint.workingDirectories": ["apps/web"],
   "files.associations": {
     "*.sql": "postgres"
   }

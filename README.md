@@ -2,29 +2,29 @@
 
 Rječnik is a Bosnian language dictionary application. This is a monorepo containing:
 
-- [`rjecnik-web`](./rjecnik-web) — public-facing dictionary search site (Vercel)
-- [`rjecnik-admin`](./rjecnik-admin) — admin dashboard for managing entries (Netlify)
-- [`rjecnik-etl`](./rjecnik-etl) — one-time Python ETL pipeline (historical use, not actively developed)
+- [`apps/web`](./apps/web) — public-facing dictionary search site (Vercel)
+- [`apps/admin`](./apps/admin) — admin dashboard for managing entries (Netlify)
+- [`tools/etl`](./tools/etl) — one-time Python ETL pipeline (historical use, not actively developed)
 - [`supabase`](./supabase) — migrations, edge functions, and local dev config shared by both apps
 
 See [`docs/CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for contribution guidelines, and [`docs/architecture/decisions`](./docs/architecture/decisions) for the architecture decision records behind these choices.
 
 ### Prerequisites
 
-- [Node 20+](https://nodejs.org/) (see each app's `.nvmrc`, or run `nvm use` from within `rjecnik-web`/`rjecnik-admin`)
+- [Node 20+](https://nodejs.org/) (see each app's `.nvmrc`, or run `nvm use` from within `apps/web`/`apps/admin`)
 - [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started)
 - [Docker](https://docs.docker.com/engine/install/)
 
 ## Getting Started
 
-1. Navigate to `rjecnik-web` and/or `rjecnik-admin`:
+1. Navigate to `apps/web` and/or `apps/admin`:
 
 ```bash
-cd rjecnik-web
+cd apps/web
 ```
 
 ```bash
-cd rjecnik-admin
+cd apps/admin
 ```
 
 2. Install npm packages:
@@ -39,8 +39,8 @@ npm install
 cp .env.example .env
 ```
 
-   - `rjecnik-web` only: `NEXT_PUBLIC_GITHUB_REPOSITORY` is the full URL of the GitHub repo (e.g. `https://github.com/OpenSourceSarajevo/rjecnik`), used to build the "report an issue" link on each dictionary entry.
-   - `rjecnik-admin` only: `NEXT_PUBLIC_SITE_URL` is the base URL Google OAuth redirects back to after sign-in (`${NEXT_PUBLIC_SITE_URL}/auth/callback`). Defaults to `http://localhost:3000` for local dev — change it to your deployed/preview URL when testing auth on Netlify.
+   - `apps/web` only: `NEXT_PUBLIC_GITHUB_REPOSITORY` is the full URL of the GitHub repo (e.g. `https://github.com/OpenSourceSarajevo/rjecnik`), used to build the "report an issue" link on each dictionary entry.
+   - `apps/admin` only: `NEXT_PUBLIC_SITE_URL` is the base URL Google OAuth redirects back to after sign-in (`${NEXT_PUBLIC_SITE_URL}/auth/callback`). Defaults to `http://localhost:3000` for local dev — change it to your deployed/preview URL when testing auth on Netlify.
 
 4. Run the application:
 
@@ -93,8 +93,8 @@ supabase start
 
 4. From the console output copy the values of `API URL` and `anon key` into your app's `.env`:
 
-   - `rjecnik-web`: `SUPABASE_URL` and `SUPABASE_ANON_KEY`
-   - `rjecnik-admin`: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `apps/web`: `SUPABASE_URL` and `SUPABASE_ANON_KEY`
+   - `apps/admin`: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 5. Stop the container
 
@@ -122,5 +122,5 @@ supabase migration new <migration_name>
 
 - **`supabase start` fails immediately / hangs with a connection error.** Make sure Docker Desktop is running first — the Supabase CLI needs it to pull and run the local Postgres/Auth/Studio containers.
 - **`supabase start` takes several minutes the first time.** This is expected — it's pulling the Supabase Docker images. Subsequent starts are much faster since the images are cached.
-- **Port `3000` already in use when running both apps.** Both `rjecnik-web` and `rjecnik-admin` default to port 3000. Run one of them on a different port: `npm run dev -- -p 3001`.
+- **Port `3000` already in use when running both apps.** Both `apps/web` and `apps/admin` default to port 3000. Run one of them on a different port: `npm run dev -- -p 3001`.
 - **Signed in with Google but still can't access the admin dashboard.** You're missing the `Dictionary.ReadWrite` permission — see step 4 of [Setting up auth](#setting-up-auth) above.

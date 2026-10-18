@@ -1,4 +1,4 @@
-# rjecnik-web
+# web
 
 Public-facing dictionary search site, deployed on Vercel.
 
@@ -8,7 +8,7 @@ See the [root README](../README.md) for prerequisites, initial setup, and runnin
 
 Copy `.env.example` to `.env` and fill in:
 
-- `SUPABASE_URL` / `SUPABASE_ANON_KEY` — from your local (`supabase start`) or hosted Supabase project. Note: unlike `rjecnik-admin`, these are **not** prefixed with `NEXT_PUBLIC_`.
+- `SUPABASE_URL` / `SUPABASE_ANON_KEY` — from your local (`supabase start`) or hosted Supabase project. Note: unlike `admin`, these are **not** prefixed with `NEXT_PUBLIC_`.
 - `NEXT_PUBLIC_GITHUB_REPOSITORY` — full URL of the GitHub repo (e.g. `https://github.com/OpenSourceSarajevo/rjecnik`), used to build the "report an issue" link on each dictionary entry.
 
 ## How it talks to Supabase

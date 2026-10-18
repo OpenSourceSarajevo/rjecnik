@@ -29,14 +29,12 @@
     "target": "ES2017"
   },
   "include": [
-    "rjecnik-web/next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "rjecnik-web/.next/types/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "rjecnik-web/node_modules"
+    "node_modules"
   ]
 }

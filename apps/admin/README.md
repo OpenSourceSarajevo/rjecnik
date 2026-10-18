@@ -1,4 +1,4 @@
-# rjecnik-admin
+# admin
 
 Admin dashboard for managing dictionary entries, deployed on Netlify.
 
