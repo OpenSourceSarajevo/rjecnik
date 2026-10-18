@@ -13,10 +13,29 @@ type Props = {
 };
 
 const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, className }) => {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  // Definitions are open by default; track the ones the editor collapsed
+  const [collapsed, setCollapsed] = useState<Set<number>>(new Set());
   const handleAccordion = (idx: number) => {
-    setOpenIdx(openIdx === idx ? null : idx);
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(idx)) {
+        next.delete(idx);
+      } else {
+        next.add(idx);
+      }
+      return next;
+    });
   };
+  // Keep collapsed definitions collapsed when a definition is inserted (+1) or removed (-1) at idx
+  const shiftCollapsed = (idx: number, delta: 1 | -1) =>
+    setCollapsed(
+      (prev) =>
+        new Set(
+          [...prev]
+            .filter((i) => !(delta === -1 && i === idx))
+            .map((i) => (i > idx ? i + delta : i))
+        )
+    );
   const handleAddDefinition = () =>
     setDefinitions((defs) => [
       ...defs,
@@ -39,7 +58,11 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
       copy.splice(idx + 1, 0, { ...defs[idx] });
       return copy;
     });
-    setOpenIdx(idx + 1);
+    shiftCollapsed(idx, 1);
+  };
+  const handleRemoveDefinition = (idx: number) => {
+    setDefinitions((defs) => defs.filter((_, i) => i !== idx));
+    shiftCollapsed(idx, -1);
   };
   return (
     <div className={`${style.wrapper} ${className}`}>
@@ -54,7 +77,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
       ) : (
         <div className={style.blocksList}>
           {definitions.map((defObj, idx) => {
-            const isOpen = openIdx === idx;
+            const isOpen = !collapsed.has(idx);
             const preview = defObj.definition?.trim() || 'Nova definicija';
             return (
               <div key={idx} className={style.accordionItem}>
@@ -218,7 +241,7 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
                       <Button
                         type="button"
                         className={style.removeBlockButton}
-                        onClick={() => setDefinitions((defs) => defs.filter((_, i) => i !== idx))}
+                        onClick={() => handleRemoveDefinition(idx)}
                       >
                         <X size={14} />
                         Ukloni definiciju
