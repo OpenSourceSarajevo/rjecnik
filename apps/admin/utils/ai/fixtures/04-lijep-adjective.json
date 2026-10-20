@@ -1,0 +1,43 @@
+{
+  "name": "lijep: popuni prazna polja",
+  "description": "Adjective; fills the definition, examples, synonyms and antonyms, adds no forms and leaves gender empty.",
+  "instruction": "Popuni prazna polja",
+  "word": {
+    "headword": "lijep",
+    "origins": [],
+    "alternatives": [],
+    "definitions": [
+      {
+        "type": "pridjev",
+        "gender": null,
+        "definition": "",
+        "examples": [],
+        "synonyms": [],
+        "antonyms": [],
+        "part_of_speech": null,
+        "pronunciation_ipa": null
+      }
+    ],
+    "forms": []
+  },
+  "proposal": {
+    "reply": "Popunio sam definiciju, dva primjera, sinonime i antonim. Pridjevski oblici (deklinacija, komparacija) ne postoje u formi, pa ih nisam dodavao. Riječ ima i preneseno značenje (lijep postupak: dobar, plemenit), koje mogu dodati kao posebnu definiciju.",
+    "word": {
+      "origins": [],
+      "alternatives": [],
+      "definitions": [
+        {
+          "type": "pridjev",
+          "gender": null,
+          "definition": "koji je ugodan oku, privlačan izgledom; skladan",
+          "examples": ["Imaju lijepu kuću s pogledom na rijeku.", "Bio je lijep sunčan dan."],
+          "synonyms": ["zgodan", "krasan", "divan"],
+          "antonyms": ["ružan"],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        }
+      ],
+      "forms": []
+    }
+  }
+}

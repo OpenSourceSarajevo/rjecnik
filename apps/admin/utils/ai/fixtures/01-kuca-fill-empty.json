@@ -1,0 +1,131 @@
+{
+  "name": "kuća: popuni prazna polja",
+  "description": "Noun with an empty definition and no forms; fills the existing meaning and the cases without adding new meanings.",
+  "instruction": "Popuni prazna polja",
+  "word": {
+    "headword": "kuća",
+    "origins": [],
+    "alternatives": [],
+    "definitions": [
+      {
+        "type": "imenica",
+        "gender": "ženski",
+        "definition": "",
+        "examples": [],
+        "synonyms": [],
+        "antonyms": [],
+        "part_of_speech": null,
+        "pronunciation_ipa": null
+      }
+    ],
+    "forms": []
+  },
+  "proposal": {
+    "reply": "Popunio sam definiciju osnovnog značenja (zgrada za stanovanje), dva primjera, sinonime i svih 14 padežnih oblika. Riječ ima i druga značenja: porodica, ukućani („cijela kuća je spavala”), loza („kuća Kotromanića”) i preduzeće („izdavačka kuća”). Mogu ih dodati kao posebne definicije.",
+    "word": {
+      "origins": [],
+      "alternatives": [],
+      "definitions": [
+        {
+          "type": "imenica",
+          "gender": "ženski",
+          "definition": "zgrada namijenjena stanovanju",
+          "examples": [
+            "Sagradili su kuću na kraju sela.",
+            "U kući je bilo toplo i mirisalo je na hljeb."
+          ],
+          "synonyms": ["zgrada", "dom"],
+          "antonyms": [],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        }
+      ],
+      "forms": [
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "nominativ",
+          "value": "kuća"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "genitiv",
+          "value": "kuće"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "dativ",
+          "value": "kući"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "akuzativ",
+          "value": "kuću"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "vokativ",
+          "value": "kućo"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "lokativ",
+          "value": "kući"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "instrumental",
+          "value": "kućom"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "nominativ",
+          "value": "kuće"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "genitiv",
+          "value": "kuća"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "dativ",
+          "value": "kućama"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "akuzativ",
+          "value": "kuće"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "vokativ",
+          "value": "kuće"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "lokativ",
+          "value": "kućama"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "instrumental",
+          "value": "kućama"
+        }
+      ]
+    }
+  }
+}

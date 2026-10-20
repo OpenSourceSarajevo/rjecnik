@@ -1,0 +1,27 @@
+{
+  "name": "kuca: oblik druge riječi ili greška",
+  "description": "Headword that is an inflected form of another word or a misspelling; the assistant proposes nothing and explains why.",
+  "instruction": "Popuni prazna polja",
+  "word": {
+    "headword": "kuca",
+    "origins": [],
+    "alternatives": [],
+    "definitions": [
+      {
+        "type": null,
+        "gender": null,
+        "definition": "",
+        "examples": [],
+        "synonyms": [],
+        "antonyms": [],
+        "part_of_speech": null,
+        "pronunciation_ipa": null
+      }
+    ],
+    "forms": []
+  },
+  "proposal": {
+    "reply": "Nisam ništa mijenjao. „kuca” nije osnovni oblik riječi: to je 3. lice jednine prezenta glagola „kucati” (neko kuca na vrata), ili „kuća” napisana bez dijakritika. Predlažem da ovaj unos ne popunjavate kao posebnu riječ.",
+    "word": null
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "name": "avlija: popuni prazna polja",
+  "description": "Bosnian word of Turkish origin; mentions the origin in the reply instead of guessing the origins format.",
+  "instruction": "Popuni prazna polja",
+  "word": {
+    "headword": "avlija",
+    "origins": [],
+    "alternatives": [],
+    "definitions": [
+      {
+        "type": "imenica",
+        "gender": "ženski",
+        "definition": "",
+        "examples": [],
+        "synonyms": [],
+        "antonyms": [],
+        "part_of_speech": null,
+        "pronunciation_ipa": null
+      }
+    ],
+    "forms": []
+  },
+  "proposal": {
+    "reply": "Popunio sam definiciju, dva primjera, sinonim i svih 14 padežnih oblika. Riječ je turskog porijekla (tur. avlu, od grč. aulē). Porijeklo nisam upisao jer riječ nema postojećih unosa po kojima bih znao format.",
+    "word": {
+      "origins": [],
+      "alternatives": [],
+      "definitions": [
+        {
+          "type": "imenica",
+          "gender": "ženski",
+          "definition": "ograđeni prostor uz kuću ili između kuća; dvorište",
+          "examples": [
+            "Djeca su se igrala u avliji.",
+            "Nana je sjedila ispod dunje nasred avlije."
+          ],
+          "synonyms": ["dvorište"],
+          "antonyms": [],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        }
+      ],
+      "forms": [
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "nominativ",
+          "value": "avlija"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "genitiv",
+          "value": "avlije"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "dativ",
+          "value": "avliji"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "akuzativ",
+          "value": "avliju"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "vokativ",
+          "value": "avlijo"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "lokativ",
+          "value": "avliji"
+        },
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "instrumental",
+          "value": "avlijom"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "nominativ",
+          "value": "avlije"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "genitiv",
+          "value": "avlija"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "dativ",
+          "value": "avlijama"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "akuzativ",
+          "value": "avlije"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "vokativ",
+          "value": "avlije"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "lokativ",
+          "value": "avlijama"
+        },
+        {
+          "category": "padež",
+          "form": "množina",
+          "name": "instrumental",
+          "value": "avlijama"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "aba: razdvoji definiciju",
+  "description": "One definition holding three meanings is split into three; everything else, including the single existing form, is copied back unchanged.",
+  "instruction": "Razdvoji definiciju na zasebna značenja",
+  "word": {
+    "headword": "aba",
+    "origins": [],
+    "alternatives": [],
+    "definitions": [
+      {
+        "type": "imenica",
+        "gender": "ženski",
+        "definition": "grubo sukno od vune; odjeća od abe, gunj, ogrtač; pejor. - staro, poderano, ružno odijelo, dronjci",
+        "examples": [],
+        "synonyms": [],
+        "antonyms": [],
+        "part_of_speech": null,
+        "pronunciation_ipa": null
+      }
+    ],
+    "forms": [
+      {
+        "category": "padež",
+        "form": "jednina",
+        "name": "nominativ",
+        "value": "aba"
+      }
+    ]
+  },
+  "proposal": {
+    "reply": "Razdvojio sam definiciju na tri značenja: sukno, odjeća od abe i pejorativno značenje (staro, poderano odijelo). Ostalo je nepromijenjeno.",
+    "word": {
+      "origins": [],
+      "alternatives": [],
+      "definitions": [
+        {
+          "type": "imenica",
+          "gender": "ženski",
+          "definition": "grubo sukno od vune",
+          "examples": [],
+          "synonyms": [],
+          "antonyms": [],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        },
+        {
+          "type": "imenica",
+          "gender": "ženski",
+          "definition": "odjeća od abe; gunj, ogrtač",
+          "examples": [],
+          "synonyms": [],
+          "antonyms": [],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        },
+        {
+          "type": "imenica",
+          "gender": "ženski",
+          "definition": "pejor. staro, poderano, ružno odijelo; dronjci",
+          "examples": [],
+          "synonyms": [],
+          "antonyms": [],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        }
+      ],
+      "forms": [
+        {
+          "category": "padež",
+          "form": "jednina",
+          "name": "nominativ",
+          "value": "aba"
+        }
+      ]
+    }
+  }
+}

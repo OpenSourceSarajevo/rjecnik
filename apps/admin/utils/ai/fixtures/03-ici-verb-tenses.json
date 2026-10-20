@@ -1,0 +1,296 @@
+{
+  "name": "ići: popuni glagolska vremena",
+  "description": "Irregular verb; only the forms change. Compound tenses use the masculine participle, futur i keeps the infinitive (ići ću).",
+  "instruction": "Popuni glagolska vremena",
+  "word": {
+    "headword": "ići",
+    "origins": [],
+    "alternatives": [],
+    "definitions": [
+      {
+        "type": "glagol",
+        "gender": null,
+        "definition": "kretati se hodajući; koračati",
+        "examples": ["Svako jutro ide pješke na posao."],
+        "synonyms": [],
+        "antonyms": [],
+        "part_of_speech": null,
+        "pronunciation_ipa": null
+      }
+    ],
+    "forms": []
+  },
+  "proposal": {
+    "reply": "Dodao sam sva 42 oblika (7 vremena × 6 lica). Složena vremena su u muškom rodu (išao sam). Aorist (idoh) i imperfekt (iđah) su danas rijetki i knjiški, pa provjerite želite li ih zadržati.",
+    "word": {
+      "origins": [],
+      "alternatives": [],
+      "definitions": [
+        {
+          "type": "glagol",
+          "gender": null,
+          "definition": "kretati se hodajući; koračati",
+          "examples": ["Svako jutro ide pješke na posao."],
+          "synonyms": [],
+          "antonyms": [],
+          "part_of_speech": null,
+          "pronunciation_ipa": null
+        }
+      ],
+      "forms": [
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "prezent",
+          "value": "idem"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "prezent",
+          "value": "ideš"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "prezent",
+          "value": "ide"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "prezent",
+          "value": "idemo"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "prezent",
+          "value": "idete"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "prezent",
+          "value": "idu"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "perfekt",
+          "value": "išao sam"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "perfekt",
+          "value": "išao si"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "perfekt",
+          "value": "išao je"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "perfekt",
+          "value": "išli smo"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "perfekt",
+          "value": "išli ste"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "perfekt",
+          "value": "išli su"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "aorist",
+          "value": "idoh"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "aorist",
+          "value": "ide"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "aorist",
+          "value": "ide"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "aorist",
+          "value": "idosmo"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "aorist",
+          "value": "idoste"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "aorist",
+          "value": "idoše"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "imperfekt",
+          "value": "iđah"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "imperfekt",
+          "value": "iđaše"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "imperfekt",
+          "value": "iđaše"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "imperfekt",
+          "value": "iđasmo"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "imperfekt",
+          "value": "iđaste"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "imperfekt",
+          "value": "iđahu"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "pluskvamperfekt",
+          "value": "bio sam išao"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "pluskvamperfekt",
+          "value": "bio si išao"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "pluskvamperfekt",
+          "value": "bio je išao"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "pluskvamperfekt",
+          "value": "bili smo išli"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "pluskvamperfekt",
+          "value": "bili ste išli"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "pluskvamperfekt",
+          "value": "bili su išli"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "futur i",
+          "value": "ići ću"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "futur i",
+          "value": "ići ćeš"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "futur i",
+          "value": "ići će"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "futur i",
+          "value": "ići ćemo"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "futur i",
+          "value": "ići ćete"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "futur i",
+          "value": "ići će"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice jednine",
+          "name": "futur ii",
+          "value": "budem išao"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice jednine",
+          "name": "futur ii",
+          "value": "budeš išao"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice jednine",
+          "name": "futur ii",
+          "value": "bude išao"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "1. lice množine",
+          "name": "futur ii",
+          "value": "budemo išli"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "2. lice množine",
+          "name": "futur ii",
+          "value": "budete išli"
+        },
+        {
+          "category": "glagolsko vrijeme",
+          "form": "3. lice množine",
+          "name": "futur ii",
+          "value": "budu išli"
+        }
+      ]
+    }
+  }
+}
