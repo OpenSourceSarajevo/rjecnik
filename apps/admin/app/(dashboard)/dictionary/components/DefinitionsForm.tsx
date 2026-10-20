@@ -44,7 +44,6 @@ const DefinitionsForm: React.FC<Props> = ({ definitions, setDefinitions, classNa
         gender: '',
         examples: [],
         definition: '',
-        hidden_definition: '',
         part_of_speech: null,
         synonyms: [],
         antonyms: [],

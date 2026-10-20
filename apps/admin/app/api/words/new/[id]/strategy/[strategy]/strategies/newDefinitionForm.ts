@@ -39,7 +39,6 @@ export async function applyNewDefinitionForm(id: number, body: any) {
     gender: definition.gender || null,
     examples: Array.isArray(definition.examples) ? definition.examples : [],
     definition: definition.definition,
-    hidden_definition: '',
     part_of_speech: null,
     pronunciation_ipa: null,
     pronunciation_audio: null,

@@ -29,7 +29,6 @@ const emptyDefinition = (examples: string[]): Definition => ({
   gender: null,
   examples,
   definition: '',
-  hidden_definition: '',
   part_of_speech: null,
   pronunciation_ipa: null,
   pronunciation_audio: null,
