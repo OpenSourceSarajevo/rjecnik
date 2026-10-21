@@ -166,12 +166,18 @@
   background: color-mix(in srgb, var(--color-error) 6%, var(--color-white));
 }
 
-.saveButton {
+.toolbarActions {
   flex-shrink: 0;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--spacing-2);
   margin-left: auto;
+}
+
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
   white-space: nowrap;
 }
 

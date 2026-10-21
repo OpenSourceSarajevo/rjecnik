@@ -25,6 +25,8 @@ type Props = {
   submitLabel: string;
   loadingLabel: string;
   onSubmit: () => void;
+  // Extra buttons shown in the toolbar next to the save button
+  toolbarActions?: React.ReactNode;
 };
 
 const SECTIONS = [
@@ -50,6 +52,7 @@ const WordEditor: React.FC<Props> = ({
   submitLabel,
   loadingLabel,
   onSubmit,
+  toolbarActions,
 }) => {
   const [headwordError, setHeadwordError] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>('osnovno');
@@ -148,10 +151,13 @@ const WordEditor: React.FC<Props> = ({
             </button>
           ))}
         </nav>
-        <Button type="submit" disabled={loading} className={style.saveButton}>
-          <Save size={16} />
-          {loading ? loadingLabel : submitLabel}
-        </Button>
+        <div className={style.toolbarActions}>
+          {toolbarActions}
+          <Button type="submit" disabled={loading} className={style.saveButton}>
+            <Save size={16} />
+            {loading ? loadingLabel : submitLabel}
+          </Button>
+        </div>
       </div>
 
       <section

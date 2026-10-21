@@ -1,0 +1,224 @@
+/* Column next to the editor that stays in view while the form scrolls */
+.panel {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: 24rem;
+  flex-shrink: 0;
+  height: calc(100vh - 2 * var(--spacing-8));
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* The display rule above would otherwise override the hidden attribute */
+.panel[hidden] {
+  display: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.headerIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-primary-light) 10%, var(--color-white));
+  color: var(--color-primary-light);
+}
+
+.title {
+  flex: 1;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: transparent;
+  color: var(--color-gray-500);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.closeButton:hover {
+  background: var(--color-gray-50);
+  color: var(--color-gray-900);
+}
+
+/* Messages */
+.messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  overflow-y: auto;
+}
+
+.empty {
+  margin: auto 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--color-gray-500);
+  text-align: center;
+}
+
+.message {
+  max-width: 90%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.userMessage {
+  composes: message;
+  align-self: flex-end;
+  background: var(--color-primary-light);
+  color: var(--color-white);
+}
+
+.assistantMessage {
+  composes: message;
+  align-self: flex-start;
+  background: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.errorMessage {
+  composes: message;
+  align-self: flex-start;
+  border: 1px solid color-mix(in srgb, var(--color-error) 30%, var(--color-white));
+  background: color-mix(in srgb, var(--color-error) 6%, var(--color-white));
+  color: var(--color-gray-900);
+}
+
+.thinking {
+  color: var(--color-gray-500);
+}
+
+.thinking::after {
+  content: '';
+  animation: thinking-dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes thinking-dots {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+}
+
+/* Shortcuts and input */
+.shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4) 0;
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.shortcut {
+  padding: var(--spacing-1) var(--spacing-3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 999px;
+  background: var(--color-white);
+  color: var(--color-gray-700);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.shortcut:hover:not(:disabled) {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary-light);
+}
+
+.shortcut:disabled {
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-4);
+}
+
+.input {
+  flex: 1;
+  min-height: 2.75rem;
+  max-height: 10rem;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius);
+  background: var(--color-gray-50);
+  color: var(--color-gray-900);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  resize: vertical;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  background: var(--color-white);
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  padding: 0 var(--spacing-3);
+}
+
+/* On narrow screens the panel sits below the editor and stays pinned to the bottom of the screen */
+@media (max-width: 1100px) {
+  .panel {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 55vh;
+  }
+}

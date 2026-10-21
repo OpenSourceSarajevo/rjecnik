@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { Sparkles } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import WordEditor from '../components/WordEditor';
+import WordChatPanel from './components/WordChatPanel';
 import { Definition, WordForm } from '@/app/api/dictionary/route';
 
-import style from '../add/page.module.css';
+import style from './page.module.css';
 
 export default function UpdateWordPage() {
   const router = useRouter();
@@ -20,6 +22,7 @@ export default function UpdateWordPage() {
   const [origins, setOrigins] = useState<string[]>([]);
   const [alternatives, setAlternatives] = useState<string[]>([]);
   const [forms, setForms] = useState<WordForm[]>([]);
+  const [chatOpen, setChatOpen] = useState(false);
 
   // Temp state until synonyms and antonyms get migrated to definitions
   const [synonyms, setSynonyms] = useState<string[]>([]);
@@ -131,38 +134,63 @@ export default function UpdateWordPage() {
   };
 
   return (
-    <div className={style.container}>
+    <div className={chatOpen ? style.containerWithChat : style.container}>
       <ToastContainer toasts={toasts} onRemove={handleRemoveToast} />
 
-      <div className={style.header}>
-        <h1 className={style.title}>
-          <span className={style.titleTrail}>Ažuriraj riječ</span>
-          {headword && (
-            <>
-              <span className={style.titleSeparator}>/</span>
-              <span className={style.titleCurrent}>{headword}</span>
-            </>
-          )}
-        </h1>
-        <p className={style.subtitle}>Izmijeni osnovne podatke, definicije i gramatičke oblike</p>
-      </div>
+      <div className={style.layout}>
+        <div className={style.editor}>
+          <div className={style.header}>
+            <h1 className={style.title}>
+              <span className={style.titleTrail}>Ažuriraj riječ</span>
+              {headword && (
+                <>
+                  <span className={style.titleSeparator}>/</span>
+                  <span className={style.titleCurrent}>{headword}</span>
+                </>
+              )}
+            </h1>
+            <p className={style.subtitle}>
+              Izmijeni osnovne podatke, definicije i gramatičke oblike
+            </p>
+          </div>
 
-      <WordEditor
-        headword={headword}
-        setHeadword={setHeadword}
-        origins={origins}
-        setOrigins={setOrigins}
-        alternatives={alternatives}
-        setAlternatives={setAlternatives}
-        definitions={definitions}
-        setDefinitions={setDefinitions}
-        forms={forms}
-        setForms={setForms}
-        loading={loading}
-        submitLabel="Sačuvaj izmjene"
-        loadingLabel="Ažuriranje..."
-        onSubmit={handleSubmit}
-      />
+          <WordEditor
+            headword={headword}
+            setHeadword={setHeadword}
+            origins={origins}
+            setOrigins={setOrigins}
+            alternatives={alternatives}
+            setAlternatives={setAlternatives}
+            definitions={definitions}
+            setDefinitions={setDefinitions}
+            forms={forms}
+            setForms={setForms}
+            loading={loading}
+            submitLabel="Sačuvaj izmjene"
+            loadingLabel="Ažuriranje..."
+            onSubmit={handleSubmit}
+            toolbarActions={
+              <button
+                type="button"
+                className={chatOpen ? style.assistantToggleActive : style.assistantToggle}
+                onClick={() => setChatOpen((open) => !open)}
+                aria-pressed={chatOpen}
+              >
+                <Sparkles size={16} />
+                Asistent
+              </button>
+            }
+          />
+        </div>
+
+        {/* Kept mounted while closed so the conversation survives closing the panel */}
+        <WordChatPanel
+          wordId={String(id)}
+          draft={{ headword, origins, alternatives, definitions, forms }}
+          open={chatOpen}
+          onClose={() => setChatOpen(false)}
+        />
+      </div>
     </div>
   );
 }
