@@ -91,6 +91,8 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, onApply, open, onClose 
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [lastApplied, setLastApplied] = useState<AppliedProposal | null>(null);
+  // Identifies this chat in the stored conversations
+  const [conversationId] = useState(() => uuidv4());
   const abortRef = useRef<AbortController | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -132,7 +134,7 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, onApply, open, onClose 
       const res = await fetch(`/api/words/${wordId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversation }),
+        body: JSON.stringify({ conversationId, conversation }),
         signal: controller.signal,
       });
       if (!res.ok || !res.body) {

@@ -1,5 +1,10 @@
 import { createClient } from '@/utils/supabase/server';
-import { WordAssistantError, type ChatTurn } from '@/utils/ai/assistant';
+import {
+  lastUserTurn,
+  WordAssistantError,
+  type ChatTurn,
+  type TokenUsage,
+} from '@/utils/ai/assistant';
 import { getWordAssistant } from '@/utils/ai/backend';
 import { ProposedWordSchema, WordProposalSchema, type WordProposal } from '@/utils/ai/wordProposal';
 import { jwtDecode } from 'jwt-decode';
@@ -16,6 +21,8 @@ const MAX_INSTRUCTION_LENGTH = 2000;
 // Editor turns carry the form contents at the time they were sent (see toWordContext), assistant
 // turns the proposal they answered with. The last turn is the new editor message.
 const ChatRequestSchema = z.object({
+  // Created by the chat panel when it opens; all turns of one chat are saved under it
+  conversationId: z.uuid(),
   conversation: z
     .array(
       z.discriminatedUnion('role', [
@@ -32,7 +39,7 @@ const ChatRequestSchema = z.object({
     .refine((turns) => turns.at(-1)?.role === 'user', 'The last turn must be an editor turn'),
 });
 
-export type ChatRequest = { conversation: ChatTurn[] };
+export type ChatRequest = { conversationId: string; conversation: ChatTurn[] };
 
 // The response body is newline-delimited JSON, one event per line. Reply events stream the reply
 // text as it is written; the stream ends with either the validated proposal (whose reply is the
@@ -42,7 +49,9 @@ export type ChatStreamEvent =
   | { type: 'proposal'; proposal: WordProposal }
   | { type: 'error'; code: WordAssistantError['code']; message: string };
 
-const errorEvent = (error: unknown): ChatStreamEvent => {
+type ErrorEvent = Extract<ChatStreamEvent, { type: 'error' }>;
+
+const errorEvent = (error: unknown): ErrorEvent => {
   const assistantError =
     error instanceof WordAssistantError
       ? error
@@ -54,6 +63,13 @@ const errorEvent = (error: unknown): ChatStreamEvent => {
         );
   if (!(error instanceof WordAssistantError)) console.error('Word chat failed', error);
   return { type: 'error', code: assistantError.code, message: assistantError.message };
+};
+
+const NO_USAGE: TokenUsage = {
+  input_tokens: 0,
+  output_tokens: 0,
+  cache_creation_input_tokens: 0,
+  cache_read_input_tokens: 0,
 };
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -82,7 +98,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       { status: 400 }
     );
   }
-  const { conversation } = parseResult.data;
+  const { conversationId, conversation } = parseResult.data;
 
   const [word, recentRequests] = await Promise.all([
     supabase.from('words_v2').select('id').eq('id', wordId).maybeSingle(),
@@ -119,6 +135,38 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   }
 
   const assistant = getWordAssistant();
+  const { instruction, word: wordContext } = lastUserTurn(conversation);
+  const requestedAt = new Date().toISOString();
+
+  // Appends the editor's message and the outcome to the stored conversation. Failed turns are kept
+  // too, with the tokens they were billed for.
+  const saveTurn = async (
+    outcome: { proposal: WordProposal } | { error: ErrorEvent },
+    model: string | undefined,
+    usage: TokenUsage | null | undefined
+  ) => {
+    const { error } = await supabase.rpc('append_ai_chat_turn', {
+      conversation_id: conversationId,
+      word_id: wordId,
+      model: model ?? null,
+      messages: [
+        { role: 'user', instruction, word: wordContext, created_at: requestedAt },
+        {
+          role: 'assistant',
+          model: model ?? null,
+          proposal: 'proposal' in outcome ? outcome.proposal : null,
+          error:
+            'error' in outcome
+              ? { code: outcome.error.code, message: outcome.error.message }
+              : null,
+          usage: usage ?? null,
+          created_at: new Date().toISOString(),
+        },
+      ],
+      ...(usage ?? NO_USAGE),
+    });
+    if (error) console.error('Saving the word chat turn failed', error);
+  };
   const extractReply = createReplyExtractor();
   const encoder = new TextEncoder();
   // Stops the model when the editor closes the chat or the connection drops
@@ -136,7 +184,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       };
 
       try {
-        const proposal = await assistant.propose(conversation, {
+        const { proposal, model, usage } = await assistant.propose(conversation, {
           signal: abortController.signal,
           onText: (delta) => {
             const text = extractReply(delta);
@@ -144,8 +192,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
           },
         });
         send({ type: 'proposal', proposal });
+        await saveTurn({ proposal }, model, usage);
       } catch (error) {
-        send(errorEvent(error));
+        const event = errorEvent(error);
+        send(event);
+        const assistantError = error instanceof WordAssistantError ? error : undefined;
+        await saveTurn({ error: event }, assistantError?.model, assistantError?.usage);
       }
       if (!abortController.signal.aborted) controller.close();
     },

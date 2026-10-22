@@ -52,6 +52,6 @@ export const fixtureBackend: WordAssistant = {
       await wait(CHUNK_DELAY_MS, signal);
       onText?.(text.slice(i, i + CHUNK_SIZE));
     }
-    return proposal;
+    return { proposal, model: 'fixture', usage: null };
   },
 };

@@ -107,20 +107,31 @@ export const anthropicBackend: WordAssistant = {
       if (onText) stream.on('text', onText);
 
       const message = await stream.finalMessage();
+      const billed = {
+        model: message.model,
+        usage: {
+          input_tokens: message.usage.input_tokens,
+          output_tokens: message.usage.output_tokens,
+          cache_creation_input_tokens: message.usage.cache_creation_input_tokens ?? 0,
+          cache_read_input_tokens: message.usage.cache_read_input_tokens ?? 0,
+        },
+      };
 
       if (message.stop_reason === 'refusal') {
         console.warn('Word assistant refused', message.stop_details);
         throw new WordAssistantError(
           'refusal',
           'Asistent je odbio ovaj zahtjev. Pokušajte preformulisati uputu.',
-          422
+          422,
+          billed
         );
       }
       if (message.stop_reason === 'max_tokens') {
         throw new WordAssistantError(
           'truncated',
           'Odgovor asistenta je bio predug i prekinut je. Pokušajte s užom uputom, npr. samo padeži ili samo glagolska vremena.',
-          502
+          502,
+          billed
         );
       }
 
@@ -128,13 +139,13 @@ export const anthropicBackend: WordAssistant = {
         .flatMap((block) => (block.type === 'text' ? [block.text] : []))
         .join('');
       try {
-        return outputFormat.parse(text);
+        return { proposal: outputFormat.parse(text), ...billed };
       } catch (error) {
         throw new WordAssistantError(
           'invalid_output',
           'Asistent je vratio neispravan odgovor. Pokušajte ponovo.',
           502,
-          { cause: error }
+          { cause: error, ...billed }
         );
       }
     } catch (error) {
