@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import type { ChatStreamEvent } from '@/app/api/words/[id]/chat/route';
 import Button from '@/app/components/Button';
 import type { ChatTurn } from '@/utils/ai/assistant';
-import { applyProposal } from '@/utils/ai/proposalChanges';
 import {
   toWordContext,
   type WordContext,
@@ -173,9 +172,7 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, onApply, open, onClose 
     }
   };
 
-  const apply = (messageId: string, proposal: WordProposal) => {
-    if (!proposal.word) return;
-    const result = applyProposal(draft, proposal.word);
+  const apply = (messageId: string, result: WordDraft) => {
     setLastApplied({ messageId, previous: draft, result });
     onApply(result);
   };
@@ -250,7 +247,7 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, onApply, open, onClose 
                   word={m.proposal.word}
                   applied={lastApplied?.messageId === m.id}
                   canUndo={lastApplied?.messageId === m.id && canUndo}
-                  onApply={() => apply(m.id, m.proposal!)}
+                  onApply={(result) => apply(m.id, result)}
                   onUndo={undo}
                 />
               )}

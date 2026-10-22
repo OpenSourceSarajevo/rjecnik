@@ -38,13 +38,60 @@
 }
 
 .change {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
   color: var(--color-gray-700);
+  cursor: pointer;
+}
+
+.checkbox {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  accent-color: var(--color-primary-light);
+  cursor: pointer;
+}
+
+.selectAll {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  color: var(--color-gray-500);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
 }
 
 .fieldChanges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
   margin-top: var(--spacing-1);
-  padding-left: var(--spacing-4);
-  list-style: disc;
+  padding-left: var(--spacing-6);
+  list-style: none;
+}
+
+.listAdded {
+  display: block;
+  color: var(--color-gray-900);
+  text-decoration: none;
+}
+
+.listAdded::before {
+  content: '+ ';
+  color: color-mix(in srgb, var(--color-success) 70%, var(--color-black));
+}
+
+.listRemoved {
+  display: block;
+  color: var(--color-gray-500);
+}
+
+.listRemoved::before {
+  content: '− ';
+}
+
+.remainingNote {
+  color: var(--color-gray-500);
 }
 
 /* Change tags and counts */

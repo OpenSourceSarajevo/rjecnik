@@ -122,6 +122,80 @@ export const getProposalChanges = (draft: WordDraft, proposed: ProposedWord): Pr
 export const hasChanges = (changes: ProposalChanges) =>
   Object.values(changes).some((section) => section.length > 0);
 
+// Ids of the changes the editor can accept one by one: each origin, alternative and form, each
+// added or removed definition, and each changed field of a definition
+export const listChangeId = (section: 'origins' | 'alternatives', index: number) =>
+  `${section}:${index}`;
+export const definitionChangeId = (index: number, field?: DefinitionField) =>
+  field ? `definitions:${index}:${field}` : `definitions:${index}`;
+export const formChangeId = (index: number) => `forms:${index}`;
+
+export const getChangeIds = (changes: ProposalChanges): string[] => [
+  ...changes.origins.map((_, i) => listChangeId('origins', i)),
+  ...changes.alternatives.map((_, i) => listChangeId('alternatives', i)),
+  ...changes.definitions.flatMap((c) =>
+    c.kind === 'changed'
+      ? c.fields.map((field) => definitionChangeId(c.index, field))
+      : [definitionChangeId(c.index)]
+  ),
+  ...changes.forms.map((_, i) => formChangeId(i)),
+];
+
+// The form contents after accepting only some of the changes. Accepted additions go to the end of
+// their list; everything that was not accepted stays as it is.
+export const applySelectedChanges = (
+  draft: WordDraft,
+  changes: ProposalChanges,
+  selected: ReadonlySet<string>
+): WordDraft => {
+  const applyList = (section: 'origins' | 'alternatives') => {
+    const result = [...draft[section]];
+    changes[section].forEach((c, i) => {
+      if (!selected.has(listChangeId(section, i))) return;
+      if (c.kind === 'added') result.push(c.value);
+      else result.splice(result.indexOf(c.value), 1);
+    });
+    return result;
+  };
+
+  const definitions: (Definition | null)[] = [...draft.definitions];
+  for (const c of changes.definitions) {
+    if (c.kind === 'changed') {
+      const accepted = c.fields.filter((field) => selected.has(definitionChangeId(c.index, field)));
+      if (accepted.length) {
+        definitions[c.index] = {
+          ...draft.definitions[c.index],
+          ...Object.fromEntries(accepted.map((field) => [field, c.after[field]])),
+        };
+      }
+    } else if (selected.has(definitionChangeId(c.index))) {
+      // Additions only exist past the end of the current list, removals only when the proposal is
+      // shorter, so a definition is never both added and removed
+      if (c.kind === 'added') definitions.push({ ...c.after, pronunciation_audio: null });
+      else definitions[c.index] = null;
+    }
+  }
+
+  let forms = [...draft.forms];
+  changes.forms.forEach((c, i) => {
+    if (!selected.has(formChangeId(i))) return;
+    const key = formKey(c);
+    const { category, form, name } = c;
+    if (c.kind === 'added') forms.push({ category, form, name, value: c.after ?? '' });
+    else if (c.kind === 'changed') {
+      forms = forms.map((f) => (formKey(f) === key ? { ...f, value: c.after ?? '' } : f));
+    } else forms = forms.filter((f) => formKey(f) !== key);
+  });
+
+  return {
+    headword: draft.headword,
+    origins: applyList('origins'),
+    alternatives: applyList('alternatives'),
+    definitions: definitions.filter((d): d is Definition => d !== null),
+    forms,
+  };
+};
+
 // The form contents after applying a proposal. The headword is not part of the proposal, and
 // pronunciation audio, which the assistant never sees, stays with the definition at the same
 // position.
