@@ -4,7 +4,7 @@
 
 /* Room for the assistant panel next to the editor */
 .containerWithChat {
-  composes: container;
+  composes: container from '../add/page.module.css';
   max-width: calc(860px + 24rem + var(--spacing-6));
 }
 

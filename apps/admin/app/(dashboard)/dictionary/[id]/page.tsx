@@ -187,6 +187,12 @@ export default function UpdateWordPage() {
         <WordChatPanel
           wordId={String(id)}
           draft={{ headword, origins, alternatives, definitions, forms }}
+          onApply={(draft) => {
+            setOrigins(draft.origins);
+            setAlternatives(draft.alternatives);
+            setDefinitions(draft.definitions);
+            setForms(draft.forms);
+          }}
           open={chatOpen}
           onClose={() => setChatOpen(false)}
         />

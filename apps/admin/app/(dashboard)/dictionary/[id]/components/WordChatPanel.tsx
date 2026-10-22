@@ -1,17 +1,20 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import isEqual from 'lodash/isEqual';
 import { SendHorizontal, Sparkles, Square, X } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import type { ChatStreamEvent } from '@/app/api/words/[id]/chat/route';
 import Button from '@/app/components/Button';
 import type { ChatTurn } from '@/utils/ai/assistant';
+import { applyProposal } from '@/utils/ai/proposalChanges';
 import {
   toWordContext,
   type WordContext,
   type WordDraft,
   type WordProposal,
 } from '@/utils/ai/wordProposal';
+import ProposalSummary from './ProposalSummary';
 import style from './WordChatPanel.module.css';
 
 type ChatMessage =
@@ -30,9 +33,13 @@ type Props = {
   wordId: string;
   // The current, possibly unsaved, form contents; sent with every message
   draft: WordDraft;
+  // Replaces the form contents; saving stays up to the editor
+  onApply: (draft: WordDraft) => void;
   open: boolean;
   onClose: () => void;
 };
+
+type AppliedProposal = { messageId: string; previous: WordDraft; result: WordDraft };
 
 const SHORTCUTS = ['Popuni prazna polja', 'Popuni padeže', 'Popuni glagolska vremena'];
 
@@ -80,10 +87,11 @@ async function* readEvents(body: ReadableStream<Uint8Array>) {
   }
 }
 
-const WordChatPanel: React.FC<Props> = ({ wordId, draft, open, onClose }) => {
+const WordChatPanel: React.FC<Props> = ({ wordId, draft, onApply, open, onClose }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
+  const [lastApplied, setLastApplied] = useState<AppliedProposal | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -165,6 +173,23 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, open, onClose }) => {
     }
   };
 
+  const apply = (messageId: string, proposal: WordProposal) => {
+    if (!proposal.word) return;
+    const result = applyProposal(draft, proposal.word);
+    setLastApplied({ messageId, previous: draft, result });
+    onApply(result);
+  };
+
+  const undo = () => {
+    if (!lastApplied) return;
+    onApply(lastApplied.previous);
+    setLastApplied(null);
+  };
+
+  // Undo is only offered while the form is unchanged since applying, so it can't discard edits
+  // made afterwards
+  const canUndo = lastApplied !== null && isEqual(draft, lastApplied.result);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     send(input);
@@ -210,9 +235,25 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, open, onClose }) => {
           ) : (
             <div
               key={m.id}
-              className={m.status === 'error' ? style.errorMessage : style.assistantMessage}
+              className={
+                m.status === 'error'
+                  ? style.errorMessage
+                  : m.proposal?.word
+                    ? style.proposalMessage
+                    : style.assistantMessage
+              }
             >
               {m.text || <span className={style.thinking}>Asistent razmišlja</span>}
+              {m.proposal?.word && (
+                <ProposalSummary
+                  draft={draft}
+                  word={m.proposal.word}
+                  applied={lastApplied?.messageId === m.id}
+                  canUndo={lastApplied?.messageId === m.id && canUndo}
+                  onApply={() => apply(m.id, m.proposal!)}
+                  onUndo={undo}
+                />
+              )}
             </div>
           )
         )}

@@ -109,6 +109,15 @@
   color: var(--color-gray-900);
 }
 
+/* Replies with a proposal use the full width for the change summary */
+.proposalMessage {
+  composes: message;
+  align-self: stretch;
+  max-width: 100%;
+  background: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
 .errorMessage {
   composes: message;
   align-self: flex-start;
