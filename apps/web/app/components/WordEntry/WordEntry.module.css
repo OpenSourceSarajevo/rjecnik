@@ -1,0 +1,70 @@
+.header {
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.word {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 7vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.alternatives {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.origins {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.originsLabel {
+  margin-right: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.origin {
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-text-body);
+  font-size: 0.825rem;
+  text-transform: capitalize;
+}
+
+.section {
+  margin-top: 2.5rem;
+}
+
+.sectionTitle {
+  margin-bottom: 1rem;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.meanings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+  counter-reset: meaning;
+}

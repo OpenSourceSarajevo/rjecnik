@@ -1,47 +1,110 @@
 .footer {
-  padding: 2rem 0;
+  margin-top: 6rem;
   border-top: 1px solid var(--color-border);
-}
-
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  background-color: var(--color-bg-secondary);
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  gap: 2.5rem;
+  padding-top: 3rem;
+  padding-bottom: 2.5rem;
 }
 
-.text {
+.brand {
+  max-width: 22rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.logoIcon {
+  color: var(--color-primary);
+}
+
+.tagline {
+  margin-top: 0.75rem;
   color: var(--color-text-secondary);
   font-size: 0.875rem;
 }
 
-.links {
-  display: flex;
-  gap: 1.5rem;
+.inlineLink {
+  color: var(--color-text-body);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border-strong);
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--transition);
 }
 
-.githubLink {
+.inlineLink:hover {
+  text-decoration-color: var(--color-primary);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.column {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.columnTitle {
+  margin-bottom: 0.25rem;
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.link {
+  display: inline-flex;
   align-items: center;
-  text-decoration: none;
-  color: inherit;
+  gap: 0.4rem;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  transition: color var(--transition);
 }
 
-.githubIcon {
-  margin-right: 0.5rem;
-  color: var(--color-icon);
+.link:hover {
+  color: var(--color-primary);
+}
+
+.bottomBar {
+  border-top: 1px solid var(--color-border);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
 }
 
 @media (min-width: 768px) {
   .content {
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .columns {
+    grid-template-columns: repeat(3, minmax(9rem, auto));
+    gap: 3rem;
   }
 }

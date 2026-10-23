@@ -1,0 +1,125 @@
+.page {
+  padding-top: 3.5rem;
+}
+
+.header {
+  max-width: var(--content-width);
+  padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--color-border);
+  animation: fade-in 0.5s ease both;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.date {
+  margin-top: 0.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.intro {
+  margin-top: 1.25rem;
+  color: var(--color-text-body);
+  font-size: 1.125rem;
+}
+
+.layout {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.toc {
+  display: none;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  max-width: var(--content-width);
+  list-style: none;
+  counter-reset: legal;
+  animation: fade-in 0.5s 0.1s ease both;
+}
+
+.section {
+  counter-increment: legal;
+}
+
+.sectionTitle {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+}
+
+.sectionTitle::before {
+  content: counter(legal) '. ';
+  color: var(--color-primary);
+}
+
+.sectionContent {
+  color: var(--color-text-body);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 14rem 1fr;
+    gap: 4rem;
+  }
+
+  .toc {
+    display: block;
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+    align-self: start;
+  }
+
+  .tocTitle {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .toc ol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-left: 0.9rem;
+    border-left: 1px solid var(--color-border);
+    list-style: none;
+  }
+
+  .toc a {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    transition: color var(--transition);
+  }
+
+  .toc a:hover {
+    color: var(--color-primary);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

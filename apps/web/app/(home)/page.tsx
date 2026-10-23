@@ -1,110 +1,110 @@
-'use client';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
-import { BookText, BookType, Keyboard, ListChecks, Shuffle, Volume2 } from 'lucide-react';
-
-import Feature from '../components/Feature';
-import Section from '../components/Section';
-import FaqItem from '../components/FaqItem';
+import SearchForm from '../components/SearchForm';
+import Section from './Section';
+import FaqItem from './FaqItem';
+import Guide from './Guide';
 
 import style from './page.module.css';
 
-const Home = () => {
-  const faq = [
-    {
-      question: 'Čemu služi ovaj rječnik?',
-      answer:
-        'Ovo je online bosanski rječnik koji pruža definicije, gramatičke informacije, sinonime, antonime i detalje o izgovoru riječi.',
-    },
-    {
-      question: 'Hoće li rječnik podržavati prijevode?',
-      answer:
-        'Rječnik je fokusiran na bosanski jezik, trenutno ne planiramo podržavanje prijevoda na druge jezike.',
-    },
-    {
-      question: 'Mogu li doprinijeti rječniku?',
-      answer:
-        'Trenutno jedino podržavamo otvorene doprinose putem prijavljivanja grešaka na GitHubu, ali radimo na funkciji koja će omogućiti korisnicima da predlažu ispravke i dodaju nove riječi.',
-    },
-  ];
+const suggestions = ['sevdah', 'merhamet', 'ćuprija', 'avlija', 'džezva'];
 
-  const features = [
-    {
-      Icon: BookText,
-      title: 'Definicije',
-      description: 'Detaljne definicije riječi',
-      soon: false,
-    },
-    {
-      Icon: BookType,
-      title: 'Primjeri',
-      description: 'Primjeri upotrebe u svakodnevnom govoru',
-      soon: true,
-    },
-    {
-      Icon: ListChecks,
-      title: 'Forme riječi',
-      description: 'Oblici riječi: glagolska vremena, padeži, rodovi i brojevi',
-      soon: true,
-    },
-    {
-      Icon: Shuffle,
-      title: 'Sinonimi i Antonimi',
-      description: 'Slične i suprotne riječi za obogaćivanje rječnika',
-      soon: true,
-    },
-    {
-      Icon: Volume2,
-      title: 'Izgovor',
-      description: 'Audio zapisi izvornih govornika za pravilno učenje izgovora',
-      soon: true,
-    },
-    {
-      Icon: Keyboard,
-      title: 'Latinica i Ćirilica',
-      description: 'Podrška za oba pisma bosanskog jezika',
-      soon: true,
-    },
-  ];
+const faq = [
+  {
+    question: 'Čemu služi ovaj rječnik?',
+    answer:
+      'Ovo je online bosanski rječnik koji pruža definicije, gramatičke informacije, sinonime, antonime i detalje o izgovoru riječi.',
+  },
+  {
+    question: 'Hoće li rječnik podržavati prijevode?',
+    answer:
+      'Rječnik je fokusiran na bosanski jezik, trenutno ne planiramo podržavanje prijevoda na druge jezike.',
+  },
+  {
+    question: 'Mogu li doprinijeti rječniku?',
+    answer:
+      'Trenutno jedino podržavamo otvorene doprinose putem prijavljivanja grešaka na GitHubu, ali radimo na funkciji koja će omogućiti korisnicima da predlažu ispravke i dodaju nove riječi.',
+  },
+];
+
+const Home = () => {
+  const githubUrl = process.env.NEXT_PUBLIC_GITHUB_REPOSITORY;
 
   return (
     <>
-      <main>
-        <Section id="hero" title="" className={style.hero}>
-          <div className={style.textCenter}>
-            <h1 className={style.heroTitle}>Rječnik Bosanskog Jezika</h1>
-          </div>
+      <section className={style.hero}>
+        <div className={`container ${style.heroText}`}>
+          <h1 className={style.heroTitle}>
+            Rječnik <span className={style.accent}>bosanskog jezika</span>
+          </h1>
+          <p className={style.heroSubtitle}>Pronađite značenje, oblike i srodne riječi.</p>
 
-          <div className={style.featuresGrid}>
-            {features.map((feature, index) => (
-              <Feature key={index} {...feature} />
+          <SearchForm size="lg" />
+
+          <div className={style.suggestions}>
+            <span className={style.suggestionsLabel}>Probajte:</span>
+            {suggestions.map((word) => (
+              <Link
+                key={word}
+                href={`/rjecnik?q=${encodeURIComponent(word)}`}
+                className={style.suggestion}
+              >
+                {word}
+              </Link>
             ))}
           </div>
-        </Section>
+        </div>
+      </section>
 
-        <Section id="o-projektu" title="O Projektu" className={style.sectionBackground}>
+      <Section id="vodic" title="Vodič" centered>
+        <Guide />
+      </Section>
+
+      <Section id="o-projektu" title="O projektu">
+        <div className={style.aboutText}>
+          <p>
+            Bosanski online rječnik je sveobuhvatan digitalni resurs dizajniran za očuvanje i
+            promociju bosanskog jezika. Cilj nam je pružiti pouzdanu i pristupačnu referencu za
+            govornike bosanskog jezika, učenike i lingviste.
+          </p>
+          <p>
+            Projekat je u potpunosti otvorenog koda i razvija ga zajednica volontera okupljena oko
+            Open Source Sarajevo. Svako može pregledati kod, predložiti poboljšanje ili prijaviti
+            grešku.
+          </p>
+        </div>
+      </Section>
+
+      <section className="container">
+        <div className={style.cta}>
           <div>
-            <p className={style.mb4}>
-              Bosanski Online Rječnik je sveobuhvatan digitalni resurs dizajniran za očuvanje i
-              promociju bosanskog jezika. Naš projekat koristi najnovije web tehnologije kako bi
-              pružio pouzdanu i pristupačnu referencu za govornike bosanskog jezika, učenike i
-              lingviste.
-            </p>
-            <p>
-              Izgrađen koristeći Next.js i Supabase, naš rječnik nudi robusnu platformu koja
-              omogućava brzo pretraživanje, detaljne definicije i primjere upotrebe. Podržavamo i
-              latinicu i ćirilicu, čineći naš resurs inkluzivnim za sve korisnike bosanskog jezika.
+            <h2 className={style.ctaTitle}>Pomozite nam da rječnik bude bolji</h2>
+            <p className={style.ctaText}>
+              Pronašli ste grešku u definiciji ili nedostaje riječ? Javite nam, svaka prijava
+              pomaže.
             </p>
           </div>
-        </Section>
-
-        <Section id="faq" title="Često Postavljana Pitanja">
-          <div>
-            {faq.map((i) => (
-              <FaqItem key={i.question} question={i.question} answer={i.answer} />
-            ))}
+          <div className={style.ctaActions}>
+            <a
+              href={`${githubUrl}/issues`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={style.buttonPrimary}
+            >
+              Prijavi grešku <ArrowRight size={16} aria-hidden="true" />
+            </a>
           </div>
-        </Section>
-      </main>
+        </div>
+      </section>
+
+      <Section id="faq" title="Često postavljana pitanja">
+        <div>
+          {faq.map((item) => (
+            <FaqItem key={item.question} question={item.question} answer={item.answer} />
+          ))}
+        </div>
+      </Section>
     </>
   );
 };

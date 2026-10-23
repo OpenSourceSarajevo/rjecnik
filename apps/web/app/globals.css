@@ -1,18 +1,54 @@
 :root {
-  --border-radius: 12px;
-
   --color-primary: #34d399;
   --color-primary-hover: #6ee7b7;
+  --color-primary-subtle: rgba(52, 211, 153, 0.12);
+  --color-primary-glow: rgba(52, 211, 153, 0.18);
+  --color-on-primary: #052e1f;
+
   --color-bg: #111827;
   --color-bg-secondary: #1f2937;
+  --color-bg-tertiary: #374151;
+  --color-bg-overlay: rgba(17, 24, 39, 0.8);
+
   --color-border: #374151;
+  --color-border-strong: #4b5563;
+
   --color-text: #ffffff;
+  --color-text-body: #d1d5db;
   --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+
+  --color-warning-bg: rgba(251, 191, 36, 0.08);
+  --color-warning-border: rgba(251, 191, 36, 0.3);
+  --color-warning-text: #fcd34d;
+
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, 'Times New Roman', serif;
+
+  --radius-sm: 8px;
+  --border-radius: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.5);
+
+  --container-width: 1120px;
+  --content-width: 760px;
+  --header-height: 64px;
+
+  --transition: 0.2s ease;
 }
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
 }
 
 html,
@@ -22,13 +58,18 @@ body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  line-height: 1.5;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body > main {
+  flex: 1;
 }
 
 a {
@@ -36,15 +77,47 @@ a {
   text-decoration: none;
 }
 
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
+button,
+input {
+  font: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/*
+ * Only sets horizontal spacing so it can be combined with module classes
+ * that add vertical padding. Narrow it per element with --container-max.
+ */
+.container {
+  width: 100%;
+  max-width: var(--container-max, var(--container-width));
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   html {
-    color-scheme: dark;
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -1,0 +1,87 @@
+.form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.form:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-glow);
+}
+
+.icon {
+  position: absolute;
+  left: 1.25rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  padding: 0.75rem 0.5rem 0.75rem 3rem;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.button {
+  margin: 0.3rem;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.lg .input {
+  padding: 1rem 0.5rem 1rem 3.5rem;
+  font-size: 1.125rem;
+}
+
+.lg .icon {
+  left: 1.4rem;
+}
+
+.lg .button {
+  margin: 0.4rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .lg .input {
+    font-size: 1rem;
+    padding-left: 3rem;
+  }
+
+  .lg .icon {
+    left: 1.1rem;
+  }
+
+  .lg .button {
+    padding: 0.65rem 1.1rem;
+  }
+}

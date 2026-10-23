@@ -1,14 +1,29 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Source_Serif_4 } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin', 'latin-ext', 'cyrillic'],
+  variable: '--font-inter',
+});
+
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin', 'latin-ext', 'cyrillic'],
+  variable: '--font-source-serif',
+});
 
 export const metadata: Metadata = {
-  title: 'Rječnik',
-  description: 'Rječnik Bosanskog Jezika',
+  title: {
+    default: 'Rječnik bosanskog jezika',
+    template: '%s · Rječnik bosanskog jezika',
+  },
+  description:
+    'Besplatni online rječnik bosanskog jezika s definicijama, oblicima riječi, sinonimima i antonimima.',
 };
 
 export default function RootLayout({
@@ -17,9 +32,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
+    <html lang="bs" className={`${inter.variable} ${sourceSerif.variable}`}>
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
         <Analytics />
       </body>
     </html>

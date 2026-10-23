@@ -1,0 +1,65 @@
+.container {
+  margin-top: 2.5rem;
+}
+
+.heading {
+  margin-bottom: 1rem;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg-secondary);
+}
+
+.title {
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table tr + tr td {
+  border-top: 1px solid var(--color-border);
+}
+
+.key {
+  width: 45%;
+  padding: 0.5rem 1rem 0.5rem 0;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-style: italic;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.value {
+  padding: 0.5rem 0;
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+}

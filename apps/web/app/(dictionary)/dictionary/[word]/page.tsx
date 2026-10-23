@@ -1,63 +1,28 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
 
 import { createClient } from '@/utils/supabase/server';
+import WordEntry, { type WordDetails } from '@/app/components/WordEntry';
 
-import ReturnNav from '@/app/components/ReturnNav';
 import ReportButton from './ReportButton';
-import MeaningCard from './MeaningCard';
-import RelatedWords from './RelatedWords';
-import Forms from './Forms';
 
 import style from './page.module.css';
 
-type WordDefinition = {
-  type: string | null;
-  gender: string | null;
-  examples: string[] | null;
-  definition: string;
-  part_of_speech: string | null;
-  pronunciation_ipa: string | null;
-  pronunciation_audio: string | null;
-  synonyms: string[];
-  antonyms: string[];
+type PageProps = { params: Promise<{ word: string }> };
+
+export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
+  const { word } = await params;
+  return { title: decodeURIComponent(word) };
 };
 
-type WordDetails = {
-  id: number;
-  headword: string;
-  definitions: WordDefinition[];
-  origins: string[] | null;
-  alternatives: string[] | null;
-  forms: WordForm[];
-};
-
-type WordForm = {
-  form: string;
-  name: string;
-  value: string;
-  category: string;
-};
-
-const Origins = ({ origins }: { origins: string[] | null }) => {
-  if (!origins) return <></>;
-
-  return (
-    <div className={style.origins}>
-      {origins?.map((origin: string, index: number) => (
-        <span key={index} className={style.origin}>
-          {origin}
-        </span>
-      ))}
-    </div>
-  );
-};
-
-const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
+const Page = async ({ params }: PageProps) => {
   const { word } = await params;
   const decodedHeadword = decodeURIComponent(word);
 
   const supabase = await createClient();
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('words_v2')
     .select('id, headword, definitions, origins, alternatives, forms')
     .eq('headword', decodedHeadword)
@@ -67,50 +32,26 @@ const Page = async ({ params }: { params: Promise<{ word: string }> }) => {
     notFound();
   }
 
-  const { headword, origins, alternatives, forms } = data;
-
-  const synonymsSet = data.definitions.reduce((acc, def) => {
-    def.synonyms.forEach((syn) => acc.add(syn));
-    return acc;
-  }, new Set<string>());
-  const synonyms = Array.from(synonymsSet);
-
-  const antonymsSet = data.definitions.reduce((acc, def) => {
-    def.antonyms.forEach((ant) => acc.add(ant));
-    return acc;
-  }, new Set<string>());
-  const antonyms = Array.from(antonymsSet);
-
-  let wordBlock = <h1 className={style.word}>{headword}</h1>;
-  if (alternatives && alternatives?.length > 0) {
-    wordBlock = (
-      <h1 className={style.word}>
-        {headword}/{alternatives.join('/')}
-      </h1>
-    );
-  }
+  const githubUrl = process.env.NEXT_PUBLIC_GITHUB_REPOSITORY;
 
   return (
-    <div className={style.wrapper}>
-      <div className={style.nav}>
-        <ReturnNav url={'/rjecnik'} />
-        <div className={style.splitter} />
-        <ReportButton word={headword} />
-      </div>
-      <div className={style.container}>
-        <div className={style.header}>
-          <div className={style.wordInfo}>{wordBlock}</div>
-          <Origins origins={origins} />
-        </div>
+    <div className={`container ${style.page}`}>
+      <Link href="/rjecnik" className={style.back}>
+        <ArrowLeft size={16} aria-hidden="true" />
+        Nazad na pretragu
+      </Link>
 
-        <div className={style.section}>
-          {data.definitions.map((details, index) => (
-            <MeaningCard key={index} {...details} />
-          ))}
-        </div>
+      <div className={style.entry}>
+        <WordEntry word={data} action={<ReportButton word={data.headword} />} />
       </div>
-      <Forms forms={forms} />
-      <RelatedWords antonyms={antonyms} synonyms={synonyms} />
+
+      <p className={style.note}>
+        Podaci su digitalizovani automatski i mogu sadržavati greške. Primijetili ste grešku?{' '}
+        <a href={`${githubUrl}/issues`} target="_blank" rel="noopener noreferrer">
+          Javite nam na GitHubu
+        </a>
+        .
+      </p>
     </div>
   );
 };

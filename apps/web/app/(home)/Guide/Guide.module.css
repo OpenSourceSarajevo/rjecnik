@@ -1,0 +1,283 @@
+.guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+}
+
+/* Browser window with the preview */
+
+.window {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.windowBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+}
+
+.dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.dots span {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border-strong);
+}
+
+.url {
+  flex: 1;
+  max-width: 20rem;
+  padding: 0.2rem 0.85rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.preview {
+  padding: 2rem 1.25rem 2rem 2.25rem;
+}
+
+.reportButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.placeholders {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Upcoming features, drawn faded so they read as not yet available */
+.placeholder {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.scriptActive {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.caption {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+}
+
+.captionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.captionLink:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Callouts: a numbered list below the preview on narrow screens */
+
+.callouts {
+  display: grid;
+  gap: 1.25rem 2rem;
+  max-width: 620px;
+  margin: 2rem auto 0;
+  list-style: none;
+  counter-reset: callout;
+}
+
+.callout {
+  position: relative;
+  padding-left: 2.25rem;
+  counter-increment: callout;
+}
+
+.callout::before {
+  content: counter(callout);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.calloutTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.soon {
+  opacity: 0.7;
+}
+
+.soon::before {
+  background-color: var(--color-text-muted);
+}
+
+.soonBadge {
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.5rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.calloutText {
+  margin-top: 0.15rem;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 560px) {
+  .callouts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Arrows and pins drawn over the stage */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.arrow {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.arrowHead {
+  fill: var(--color-primary);
+}
+
+.arrowSoon {
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 5;
+}
+
+.arrowHeadSoon {
+  fill: var(--color-text-muted);
+}
+
+.pin {
+  fill: var(--color-primary);
+  stroke: var(--color-bg);
+  stroke-width: 3;
+}
+
+.pinSoon {
+  fill: var(--color-text-muted);
+  stroke: var(--color-bg);
+  stroke-width: 3;
+}
+
+.pinText {
+  fill: var(--color-on-primary);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Wide screens: callouts sit beside the preview, positioned next to their targets */
+
+@media (min-width: 1100px) {
+  .callouts {
+    position: absolute;
+    inset: 0;
+    display: block;
+    max-width: none;
+    margin: 0;
+  }
+
+  .callout {
+    position: absolute;
+    top: var(--y, 0);
+    width: 200px;
+    padding-left: 0;
+  }
+
+  .callout::before {
+    display: none;
+  }
+
+  .left {
+    left: 0;
+    text-align: right;
+  }
+
+  .right {
+    right: 0;
+  }
+
+  .calloutTitle {
+    color: var(--color-primary);
+    line-height: 2rem;
+  }
+
+  .soon .calloutTitle {
+    color: var(--color-text-secondary);
+  }
+}

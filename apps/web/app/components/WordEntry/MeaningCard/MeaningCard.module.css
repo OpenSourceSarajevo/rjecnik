@@ -1,0 +1,59 @@
+.meaning {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg-secondary);
+  counter-increment: meaning;
+}
+
+.meaning::before {
+  content: counter(meaning);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.wordType {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--color-primary);
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.definition {
+  color: var(--color-text-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.example {
+  margin-top: 0.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-border-strong);
+  color: var(--color-text-secondary);
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.example::before {
+  content: '„';
+}
+
+.example::after {
+  content: '“';
+}

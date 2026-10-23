@@ -19,11 +19,15 @@ const ReportButton = async ({ word }: { word: string }) => {
   const issueUrl = getIssueReportUrl(word, url);
 
   return (
-    <a href={issueUrl} target="_blank">
-      <button className={style.button} aria-label={`Prijavi grešku za riječ ${word}`}>
-        <Flag className={style.icon} />
-        <span>Prijavi grešku</span>
-      </button>
+    <a
+      href={issueUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={style.button}
+      aria-label={`Prijavi grešku za riječ ${word}`}
+    >
+      <Flag className={style.icon} aria-hidden="true" />
+      <span>Prijavi grešku</span>
     </a>
   );
 };

@@ -1,120 +1,25 @@
-'use client';
+import type { Metadata } from 'next';
 
-import { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import SearchResults from './SearchResults';
 
 import style from './page.module.css';
-import Card from '../../components/Card';
-import ReturnNav from '../../components/ReturnNav';
-import Loader from '../../components/Loader';
 
-type Word = {
-  id: number;
-  headword: string;
-  definitions: Definition[];
+export const metadata: Metadata = {
+  title: 'Pretraga',
 };
 
-type Definition = {
-  type: string | null;
-  gender: string | null;
-  definition: string;
-};
-
-const Dictionary = () => {
-  const MAX_PER_PAGE = 10;
-
-  const [data, setData] = useState<Word[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState<number>(0);
-  const [word, setWord] = useState('');
-
-  const [fetchedAll, setFetchedAll] = useState(false);
-
-  const handleScroll = () => {
-    const OFFSET_PIXEL = 1;
-
-    if (
-      window.innerHeight + window.scrollY + OFFSET_PIXEL >= document.body.offsetHeight &&
-      !fetchedAll
-    ) {
-      setPage((page) => page + 1);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    (async function getData() {
-      var newData = await fetch(
-        '/api/dictionary?' +
-          new URLSearchParams({
-            pageNumber: page.toString(),
-            pageSize: MAX_PER_PAGE.toString(),
-            word: word,
-          }),
-        {
-          method: 'GET',
-        }
-      ).then((res) => res?.json());
-
-      if (!!newData) setFetchedAll(true);
-      setData((prevData) => [...prevData, ...newData]);
-      setLoading(false);
-    })();
-  }, [page, word]);
-
-  const handleChange = (value: string) => {
-    setData([]);
-    setWord(value);
-    setPage(0);
-  };
-
-  if (loading) {
-    return <Loader />;
-  }
+const Dictionary = async ({ searchParams }: { searchParams: Promise<{ q?: string }> }) => {
+  const { q } = await searchParams;
 
   return (
-    <div className={style.container}>
-      <div className={style.nav}>
-        <ReturnNav url={'/'} />
+    <div className={`container ${style.page}`}>
+      <div className={style.heading}>
+        <h1 className={style.title}>Pretraga</h1>
+        <p className={style.subtitle}>
+          Upišite riječ ili njen dio. Rezultati se prikazuju dok kucate.
+        </p>
       </div>
-      <div className={style.wrapper}>
-        <input
-          type="text"
-          value={word}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder="Pretraži"
-          className={style.input}
-        />
-        <Search className={style.icon} size={20} />
-      </div>
-      <div className={style.list}>
-        {data.map((item) => {
-          const firstDefinition =
-            item.definitions.length > 0 ? item.definitions[0].definition : undefined;
-
-          const definitionsCount = item.definitions.filter(
-            (i) => i.definition && i.definition.length > 0
-          ).length;
-
-          return (
-            <Card
-              key={item.id}
-              id={item.id}
-              title={item.headword}
-              description={''}
-              definitionsCount={definitionsCount > 0 ? definitionsCount : undefined}
-              firstDefinition={firstDefinition}
-            />
-          );
-        })}
-      </div>
+      <SearchResults initialQuery={q ?? ''} />
     </div>
   );
 };
