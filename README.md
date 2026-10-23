@@ -41,6 +41,7 @@ cp .env.example .env
 
    - `apps/web` only: `NEXT_PUBLIC_GITHUB_REPOSITORY` is the full URL of the GitHub repo (e.g. `https://github.com/OpenSourceSarajevo/rjecnik`), used to build the "report an issue" link on each dictionary entry.
    - `apps/admin` only: `NEXT_PUBLIC_SITE_URL` is the base URL Google OAuth redirects back to after sign-in (`${NEXT_PUBLIC_SITE_URL}/auth/callback`). Defaults to `http://localhost:3000` for local dev — change it to your deployed/preview URL when testing auth on Netlify.
+   - `apps/admin` only: `AI_BACKEND` and `ANTHROPIC_API_KEY` configure the AI assistant in the word editor. The default `fixture` backend needs no API key; see the [admin README](./apps/admin/README.md#ai-assistant).
 
 4. Run the application:
 
