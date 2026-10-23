@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
     root: path.join(__dirname),
   },
 
+  experimental: {
+    turbopackFileSystemCacheForBuild: false,
+  },
+
   images: {
     remotePatterns: [
       {
