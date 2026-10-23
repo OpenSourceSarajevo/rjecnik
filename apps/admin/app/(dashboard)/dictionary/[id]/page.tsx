@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Sparkles } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import WordEditor from '../components/WordEditor';
@@ -11,7 +11,6 @@ import { Definition, WordForm } from '@/app/api/dictionary/route';
 import style from './page.module.css';
 
 export default function UpdateWordPage() {
-  const router = useRouter();
   const params = useParams();
   const { id } = params;
 
@@ -118,7 +117,6 @@ export default function UpdateWordPage() {
           message: 'Riječ uspješno ažurirana!',
         },
       ]);
-      router.push('/dictionary');
     } catch (err: unknown) {
       setToasts((prev) => [
         ...prev,
