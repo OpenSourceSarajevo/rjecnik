@@ -6,6 +6,7 @@ import {
   type TokenUsage,
 } from '@/utils/ai/assistant';
 import { getWordAssistant } from '@/utils/ai/backend';
+import { findShortcut, limitToShortcut } from '@/utils/ai/shortcuts';
 import { ProposedWordSchema, WordProposalSchema, type WordProposal } from '@/utils/ai/wordProposal';
 import { jwtDecode } from 'jwt-decode';
 import { NextRequest, NextResponse } from 'next/server';
@@ -184,15 +185,16 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       };
 
       try {
-        const { proposal, model, usage } = await assistant.propose(conversation, {
+        const result = await assistant.propose(conversation, {
           signal: abortController.signal,
           onText: (delta) => {
             const text = extractReply(delta);
             if (text) send({ type: 'reply', text });
           },
         });
+        const proposal = limitToShortcut(result.proposal, wordContext, findShortcut(instruction));
         send({ type: 'proposal', proposal });
-        await saveTurn({ proposal }, model, usage);
+        await saveTurn({ proposal }, result.model, result.usage);
       } catch (error) {
         const event = errorEvent(error);
         send(event);

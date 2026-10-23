@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { ChatStreamEvent } from '@/app/api/words/[id]/chat/route';
 import Button from '@/app/components/Button';
 import type { ChatTurn } from '@/utils/ai/assistant';
+import { SHORTCUTS } from '@/utils/ai/shortcuts';
 import {
   toWordContext,
   type WordContext,
@@ -39,8 +40,6 @@ type Props = {
 };
 
 type AppliedProposal = { messageId: string; previous: WordDraft; result: WordDraft };
-
-const SHORTCUTS = ['Popuni prazna polja', 'Popuni padeže', 'Popuni glagolska vremena'];
 
 // Stays below the route's limit of 20 turns, leaving room for the new message
 const MAX_HISTORY_TURNS = 18;
@@ -259,15 +258,15 @@ const WordChatPanel: React.FC<Props> = ({ wordId, draft, onApply, open, onClose 
       </div>
 
       <div className={style.shortcuts}>
-        {SHORTCUTS.map((shortcut) => (
+        {SHORTCUTS.map(({ instruction }) => (
           <button
-            key={shortcut}
+            key={instruction}
             type="button"
             className={style.shortcut}
             disabled={isStreaming}
-            onClick={() => send(shortcut)}
+            onClick={() => send(instruction)}
           >
-            {shortcut}
+            {instruction}
           </button>
         ))}
       </div>
