@@ -47,7 +47,7 @@ const Home = () => {
             {suggestions.map((word) => (
               <Link
                 key={word}
-                href={`/rjecnik?q=${encodeURIComponent(word)}`}
+                href={`/rjecnik/${encodeURIComponent(word)}`}
                 className={style.suggestion}
               >
                 {word}
