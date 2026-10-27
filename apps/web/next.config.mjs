@@ -31,6 +31,31 @@ const nextConfig = {
       },
     ];
   },
+  // Rewrites below serve the English routes under Bosnian URLs; redirect the English URLs so each page has a single address
+  async redirects() {
+    return [
+      {
+        source: '/dictionary',
+        destination: '/rjecnik',
+        permanent: true,
+      },
+      {
+        source: '/dictionary/:word',
+        destination: '/rjecnik/:word',
+        permanent: true,
+      },
+      {
+        source: '/privacy',
+        destination: '/privatnost',
+        permanent: true,
+      },
+      {
+        source: '/terms',
+        destination: '/uslovi-koristenja',
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
