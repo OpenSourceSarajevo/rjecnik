@@ -17,7 +17,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   const headword = decodeURIComponent(word);
 
   return {
-    title: headword,
+    title: `${headword} – značenje i definicija`,
     alternates: { canonical: `/rjecnik/${encodeURIComponent(headword)}` },
   };
 };
