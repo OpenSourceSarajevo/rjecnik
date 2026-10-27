@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
 import Card from '../Card';
@@ -30,8 +30,6 @@ const SearchResults = ({ initialQuery }: { initialQuery: string }) => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
-  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -79,20 +77,7 @@ const SearchResults = ({ initialQuery }: { initialQuery: string }) => {
     return () => controller.abort();
   }, [search]);
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel || loading || !hasMore || error) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setSearch((prev) => ({ ...prev, page: prev.page + 1 }));
-      },
-      { rootMargin: '400px' }
-    );
-    observer.observe(sentinel);
-
-    return () => observer.disconnect();
-  }, [loading, hasMore, error]);
+  const loadMore = () => setSearch((prev) => ({ ...prev, page: prev.page + 1 }));
 
   const isEmpty = !loading && !error && data.length === 0;
 
@@ -163,7 +148,11 @@ const SearchResults = ({ initialQuery }: { initialQuery: string }) => {
           </div>
         )}
 
-        <div ref={sentinelRef} />
+        {!loading && !error && hasMore && data.length > 0 && (
+          <button type="button" className={style.loadMore} onClick={loadMore}>
+            Učitaj još
+          </button>
+        )}
       </div>
     </>
   );
