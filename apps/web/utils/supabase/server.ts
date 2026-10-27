@@ -17,3 +17,10 @@ export async function createClient() {
     },
   });
 }
+
+// Reads no cookies, so pages using it can be statically generated and cached
+export function createStaticClient() {
+  return createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
+}

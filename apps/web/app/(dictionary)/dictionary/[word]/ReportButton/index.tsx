@@ -1,4 +1,3 @@
-import { headers } from 'next/headers';
 import { Flag } from 'lucide-react';
 
 import style from './ReportButton.module.css';
@@ -10,12 +9,9 @@ const getIssueReportUrl = (word: string, url: string): string => {
   );
 };
 
-const ReportButton = async ({ word }: { word: string }) => {
-  const headersList = await headers();
-
-  const host = headersList.get('host');
-
-  const url = `${host}/rjecnik/${word}`;
+const ReportButton = ({ word }: { word: string }) => {
+  // Built from the site URL rather than the request host so the word page can be cached
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL}/rjecnik/${encodeURIComponent(word)}`;
   const issueUrl = getIssueReportUrl(word, url);
 
   return (

@@ -1,17 +1,12 @@
 import type { MetadataRoute } from 'next';
-import { createServerClient } from '@supabase/ssr';
+
+import { createStaticClient } from '@/utils/supabase/server';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
 // Supabase caps a single select at 1000 rows
 const BATCH_SIZE = 1000;
 
 export const revalidate = 86400;
-
-// The shared server client reads cookies, which would make the sitemap render on every request
-const createStaticClient = () =>
-  createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
-    cookies: { getAll: () => [], setAll: () => {} },
-  });
 
 const getHeadwords = async () => {
   const supabase = createStaticClient();
