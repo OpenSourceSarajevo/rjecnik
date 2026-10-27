@@ -18,6 +18,8 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
+  // Resolves relative canonical and Open Graph URLs to absolute ones
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   title: {
     default: 'Rječnik bosanskog jezika',
     template: '%s · Rječnik bosanskog jezika',

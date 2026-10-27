@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
@@ -27,6 +28,10 @@ const faq = [
       'Trenutno jedino podržavamo otvorene doprinose putem prijavljivanja grešaka na GitHubu, ali radimo na funkciji koja će omogućiti korisnicima da predlažu ispravke i dodaju nove riječi.',
   },
 ];
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 const Home = () => {
   const githubUrl = process.env.NEXT_PUBLIC_GITHUB_REPOSITORY;

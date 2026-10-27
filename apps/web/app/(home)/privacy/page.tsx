@@ -6,6 +6,7 @@ import { sections } from './sections.data';
 
 export const metadata: Metadata = {
   title: 'Politika privatnosti',
+  alternates: { canonical: '/privatnost' },
 };
 
 const PrivacyPolicy = () => {

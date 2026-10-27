@@ -6,6 +6,7 @@ import { sections } from './sections.data';
 
 export const metadata: Metadata = {
   title: 'Uslovi korištenja',
+  alternates: { canonical: '/uslovi-koristenja' },
 };
 
 const TermsConditions = () => {

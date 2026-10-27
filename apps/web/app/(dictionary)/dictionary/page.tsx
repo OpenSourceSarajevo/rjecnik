@@ -6,6 +6,7 @@ import style from './page.module.css';
 
 export const metadata: Metadata = {
   title: 'Pretraga',
+  alternates: { canonical: '/rjecnik' },
 };
 
 const Dictionary = async ({ searchParams }: { searchParams: Promise<{ q?: string }> }) => {

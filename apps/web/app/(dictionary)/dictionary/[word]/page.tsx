@@ -14,7 +14,12 @@ type PageProps = { params: Promise<{ word: string }> };
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { word } = await params;
-  return { title: decodeURIComponent(word) };
+  const headword = decodeURIComponent(word);
+
+  return {
+    title: headword,
+    alternates: { canonical: `/rjecnik/${encodeURIComponent(headword)}` },
+  };
 };
 
 const Page = async ({ params }: PageProps) => {
