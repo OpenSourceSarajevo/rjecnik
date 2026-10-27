@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { SITE_NAME, SITE_DESCRIPTION, openGraphDefaults } from './shared-metadata';
 
 import './globals.css';
 
@@ -21,11 +22,18 @@ export const metadata: Metadata = {
   // Resolves relative canonical and Open Graph URLs to absolute ones
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   title: {
-    default: 'Rječnik bosanskog jezika',
-    template: '%s · Rječnik bosanskog jezika',
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    'Besplatni online rječnik bosanskog jezika s definicijama, oblicima riječi, sinonimima i antonimima.',
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    ...openGraphDefaults,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary',
+  },
 };
 
 export default function RootLayout({

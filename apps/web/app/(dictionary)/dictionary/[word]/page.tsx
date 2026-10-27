@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import { createClient } from '@/utils/supabase/server';
 import WordEntry, { type WordDetails } from '@/app/components/WordEntry';
+import { openGraphDefaults } from '@/app/shared-metadata';
 
 import ReportButton from './ReportButton';
 
@@ -15,10 +16,13 @@ type PageProps = { params: Promise<{ word: string }> };
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
   const { word } = await params;
   const headword = decodeURIComponent(word);
+  const title = `${headword} – značenje i definicija`;
+  const url = `/rjecnik/${encodeURIComponent(headword)}`;
 
   return {
-    title: `${headword} – značenje i definicija`,
-    alternates: { canonical: `/rjecnik/${encodeURIComponent(headword)}` },
+    title,
+    alternates: { canonical: url },
+    openGraph: { ...openGraphDefaults, title, url },
   };
 };
 
