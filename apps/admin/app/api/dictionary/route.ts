@@ -30,6 +30,7 @@ export type Word = {
   alternatives?: string[] | null;
   origins?: string[] | null;
   frequency: number;
+  note?: string | null;
 };
 
 const WORDS_TABLE: string = 'words_v2';
@@ -109,6 +110,7 @@ const WordInputSchema = z.object({
   synonyms: z.array(z.string()).nullable().optional(),
   antonyms: z.array(z.string()).nullable().optional(),
   frequency: z.number().nullable().optional(),
+  note: z.string().nullable().optional(),
 });
 
 export async function POST(request: NextRequest) {

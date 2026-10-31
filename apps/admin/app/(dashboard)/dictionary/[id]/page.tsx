@@ -6,6 +6,7 @@ import { Sparkles } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import WordEditor from '../components/WordEditor';
 import WordChatPanel from './components/WordChatPanel';
+import NoteField from './components/NoteField';
 import { Definition, WordForm } from '@/app/api/dictionary/route';
 
 import style from './page.module.css';
@@ -21,6 +22,7 @@ export default function UpdateWordPage() {
   const [origins, setOrigins] = useState<string[]>([]);
   const [alternatives, setAlternatives] = useState<string[]>([]);
   const [forms, setForms] = useState<WordForm[]>([]);
+  const [note, setNote] = useState('');
   const [chatOpen, setChatOpen] = useState(false);
 
   // Temp state until synonyms and antonyms get migrated to definitions
@@ -42,6 +44,7 @@ export default function UpdateWordPage() {
           setAlternatives(data.alternatives || []);
           setSynonyms(data.synonyms || []);
           setAntonyms(data.antonyms || []);
+          setNote(data.note ?? '');
         } else {
           setToasts((prev) => [
             ...prev,
@@ -91,6 +94,7 @@ export default function UpdateWordPage() {
         origins,
         synonyms: synonyms,
         antonyms: antonyms,
+        note: note.trim() || null,
       };
       const res = await fetch(`/api/dictionary?id=${id}`, {
         method: 'PATCH',
@@ -151,6 +155,8 @@ export default function UpdateWordPage() {
               Izmijeni osnovne podatke, definicije i gramatičke oblike
             </p>
           </div>
+
+          <NoteField note={note} setNote={setNote} />
 
           <WordEditor
             headword={headword}
