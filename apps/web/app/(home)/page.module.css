@@ -127,7 +127,8 @@
   gap: 0.75rem;
 }
 
-.buttonPrimary {
+.buttonPrimary,
+.buttonSecondary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -148,6 +149,16 @@
 
 .buttonPrimary:hover {
   background-color: var(--color-primary-hover);
+}
+
+.buttonSecondary {
+  border: 1px solid var(--color-border-strong);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.buttonSecondary:hover {
+  border-color: var(--color-primary);
 }
 
 @media (min-width: 860px) {

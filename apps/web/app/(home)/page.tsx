@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Coffee } from 'lucide-react';
 
 import SearchForm from '../components/SearchForm';
 import Section from './Section';
@@ -26,6 +26,11 @@ const faq = [
     question: 'Mogu li doprinijeti rječniku?',
     answer:
       'Trenutno jedino podržavamo otvorene doprinose putem prijavljivanja grešaka na GitHubu, ali radimo na funkciji koja će omogućiti korisnicima da predlažu ispravke i dodaju nove riječi.',
+  },
+  {
+    question: 'Kako mogu podržati projekat?',
+    answer:
+      'Rječnik je besplatan i razvijaju ga volonteri. Ako želite pomoći, možete nas podržati putem Ko-fi stranice (ko-fi.com/opensourcesarajevo). Sredstva koristimo za hosting, domenu i dalji razvoj.',
   },
 ];
 
@@ -87,7 +92,7 @@ const Home = () => {
             <h2 className={style.ctaTitle}>Pomozite nam da rječnik bude bolji</h2>
             <p className={style.ctaText}>
               Pronašli ste grešku u definiciji ili nedostaje riječ? Javite nam, svaka prijava
-              pomaže.
+              pomaže. Ako želite, možete i finansijski podržati razvoj i održavanje rječnika.
             </p>
           </div>
           <div className={style.ctaActions}>
@@ -98,6 +103,14 @@ const Home = () => {
               className={style.buttonPrimary}
             >
               Prijavi grešku <ArrowRight size={16} aria-hidden="true" />
+            </a>
+            <a
+              href="https://ko-fi.com/opensourcesarajevo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={style.buttonSecondary}
+            >
+              <Coffee size={16} aria-hidden="true" /> Podrži projekat
             </a>
           </div>
         </div>

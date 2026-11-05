@@ -97,14 +97,8 @@ We currently support only two types of issues:
 
 ## Funding
 
-Rječnik is an open source project and we welcome support. At the moment we do not
-have an active funding/sponsorship setup, but we plan to offer one or more of the
-following options in the future:
+Rječnik is an open source project and we welcome support. You can support the
+project through Ko-fi: https://ko-fi.com/opensourcesarajevo
 
-- GitHub Sponsors - for recurring or one-time contributions through GitHub.
-- Buy Me a Coffee (or similar) - a simple option for small one-time donations.
-
-If you'd like to support the project now, please open an issue or reach out to a
-maintainer and we'll share the best way to help (and update this document with
-links once the funding pages are live). Any funds received will be used to
+Any funds received will be used to
 cover hosting, domain, infrastructure costs, and to compensate maintainers and collaborators working on the code, design, data or anything else we find necessary for the success of the project.

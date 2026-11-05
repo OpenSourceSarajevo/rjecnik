@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 
-import GithubIcon from '../GithubIcon';
-
 import style from './Footer.module.css';
 
 const Footer = () => {
@@ -46,7 +44,7 @@ const Footer = () => {
           <div className={style.column}>
             <h2 className={style.columnTitle}>Zajednica</h2>
             <a href={githubUrl} target="_blank" rel="noopener noreferrer" className={style.link}>
-              <GithubIcon size={14} /> GitHub
+              GitHub
             </a>
             <a
               href={`${githubUrl}/issues`}
@@ -55,6 +53,14 @@ const Footer = () => {
               className={style.link}
             >
               Prijavi grešku
+            </a>
+            <a
+              href="https://ko-fi.com/opensourcesarajevo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={style.link}
+            >
+              Podrži projekat
             </a>
           </div>
           <div className={style.column}>
