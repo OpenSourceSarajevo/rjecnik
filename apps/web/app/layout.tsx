@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import KofiWidget from './components/KofiWidget';
 import { SITE_NAME, SITE_DESCRIPTION, openGraphDefaults } from './shared-metadata';
 
 import './globals.css';
@@ -48,6 +49,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <Analytics />
+        <KofiWidget />
       </body>
     </html>
   );

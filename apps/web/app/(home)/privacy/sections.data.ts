@@ -12,7 +12,7 @@ export const sections = [
   {
     title: 'Treće strane',
     content:
-      'Koristimo Vercel Analytics za praćenje performansi, ali ovaj servis ne prikuplja lične podatke korisnika.',
+      'Koristimo Vercel Analytics za praćenje performansi, ali ovaj servis ne prikuplja lične podatke korisnika. Dugme za podršku projektu učitava se sa Ko-fi servisa, koji može prikupljati podatke u skladu sa svojom politikom privatnosti.',
   },
   {
     title: 'Kolačići',
