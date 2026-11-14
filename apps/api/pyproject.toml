@@ -1,0 +1,23 @@
+[project]
+name = "rjecnik-api"
+version = "0.1.0"
+description = "Rječnik REST API"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.163.0",
+    "pydantic-settings>=2.16.3",
+    "supabase>=2.34.1",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.5",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
