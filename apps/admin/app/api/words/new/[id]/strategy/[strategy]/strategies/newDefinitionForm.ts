@@ -1,4 +1,4 @@
-import { Word } from '@/app/api/dictionary/route';
+import { Word } from '@/types/dictionary';
 import { NewWord } from '@/app/api/words/contracts';
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';

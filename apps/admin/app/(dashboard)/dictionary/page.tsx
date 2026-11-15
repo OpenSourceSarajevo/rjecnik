@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import WordCard from './components/WordCard';
 import { Search } from 'lucide-react';
-import { Word } from '@/app/api/dictionary/route';
+import { Word } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Link from 'next/link';

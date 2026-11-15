@@ -9,7 +9,7 @@ import ToastContainer, { Toast } from '@/app/components/Toast';
 import NewForm from './components/NewForm';
 
 import style from './page.module.css';
-import { Definition, Word, WordForm } from '@/app/api/dictionary/route';
+import { Definition, Word, WordForm } from '@/types/dictionary';
 import ExistingForm from './components/ExistingForm';
 import NewHeadwordForm from './components/NewHeadwordForm';
 import AddDefinitionForm, { NewDefinitionDraft } from './components/AddDefinitionForm';

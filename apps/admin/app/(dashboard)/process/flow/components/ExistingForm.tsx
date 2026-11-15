@@ -1,4 +1,4 @@
-import { Word, WordForm } from '@/app/api/dictionary/route';
+import { Word, WordForm } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
@@ -43,14 +43,10 @@ const ExistingForm: React.FC<ExistingFormProps> = ({
   // Fetch single word details when selectedWord changes
   useEffect(() => {
     if (!selectedWord) return;
-    (async () => {
-      const res = await fetch(`/api/dictionary/${selectedWord.headword}`);
-      if (res.ok) {
-        const data = await res.json();
-        setForms((data.forms as WordForm[]) || []); // optionally set forms if present
-        setIsLoading(false);
-      }
-    })();
+    apiFetch<Word>(`/api/words/headword/${encodeURIComponent(selectedWord.headword)}`)
+      .then((data) => setForms(data.forms || []))
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
   }, [selectedWord, setForms]);
 
   return (

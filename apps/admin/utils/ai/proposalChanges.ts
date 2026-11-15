@@ -1,4 +1,4 @@
-import type { Definition } from '@/app/api/dictionary/route';
+import type { Definition } from '@/types/dictionary';
 import {
   toWordContext,
   type ProposedDefinition,

@@ -1,4 +1,4 @@
-import { Definition, WordForm } from '@/app/api/dictionary/route';
+import { Definition, WordForm } from '@/types/dictionary';
 import DefinitionsForm from '@/app/(dashboard)/dictionary/components/DefinitionsForm';
 import FormsForm from '@/app/(dashboard)/dictionary/components/FormsForm';
 import OriginsForm from '@/app/(dashboard)/dictionary/components/OriginsForm';
@@ -45,7 +45,11 @@ const NewHeadwordForm: React.FC<NewHeadwordFormProps> = ({
     />
 
     <h4 className={style.sectionHeading}>Definicije</h4>
-    <DefinitionsForm definitions={definitions} setDefinitions={setDefinitions} className={style.block} />
+    <DefinitionsForm
+      definitions={definitions}
+      setDefinitions={setDefinitions}
+      className={style.block}
+    />
 
     <h4 className={style.sectionHeading}>Oblici</h4>
     <FormsForm forms={forms} setForms={setForms} className={style.block} />

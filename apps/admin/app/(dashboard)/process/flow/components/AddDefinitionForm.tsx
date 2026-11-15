@@ -1,4 +1,4 @@
-import { Word, Definition } from '@/app/api/dictionary/route';
+import { Word, Definition } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
@@ -58,14 +58,10 @@ const AddDefinitionForm: React.FC<AddDefinitionFormProps> = ({
 
   useEffect(() => {
     if (!selectedWord) return;
-    (async () => {
-      const res = await fetch(`/api/dictionary/${selectedWord.headword}`);
-      if (res.ok) {
-        const data = await res.json();
-        setDefinitions((data.definitions as Definition[]) || []);
-        setIsLoading(false);
-      }
-    })();
+    apiFetch<Word>(`/api/words/headword/${encodeURIComponent(selectedWord.headword)}`)
+      .then((data) => setDefinitions(data.definitions || []))
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
   }, [selectedWord]);
 
   const toggleExample = (example: string) => {

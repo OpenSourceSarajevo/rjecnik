@@ -6,7 +6,7 @@ import DefinitionsForm from './DefinitionsForm';
 import FormsForm from './FormsForm';
 import OriginsForm from './OriginsForm';
 import AlternativesForm from './AlternativesForm';
-import { Definition, WordForm } from '@/app/api/dictionary/route';
+import { Definition, WordForm } from '@/types/dictionary';
 import Button from '@/app/components/Button';
 import style from './WordEditor.module.css';
 

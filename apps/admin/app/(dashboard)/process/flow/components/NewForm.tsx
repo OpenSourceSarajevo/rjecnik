@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Search, X, Plus } from 'lucide-react';
 import { NewWord } from '@/app/api/words/contracts';
 import style from './NewForm.module.css';
-import { Word, WordForm } from '@/app/api/dictionary/route';
+import { Word, WordForm } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';
 import Button from '@/app/components/Button';
 
@@ -54,14 +54,10 @@ const NewForm: React.FC<NewFormProps> = ({
   // Fetch single word details when selectedWord changes
   useEffect(() => {
     if (!selectedWord) return;
-    (async () => {
-      const res = await fetch(`/api/dictionary/${selectedWord.headword}`);
-      if (res.ok) {
-        const data = await res.json();
-        setForms(data.forms || []); // optionally set forms if present
-        setIsLoading(false);
-      }
-    })();
+    apiFetch<Word>(`/api/words/headword/${encodeURIComponent(selectedWord.headword)}`)
+      .then((data) => setForms(data.forms || []))
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
   }, [selectedWord, setForms]);
 
   const handleFormChange = (field: keyof WordForm, value: string) => {

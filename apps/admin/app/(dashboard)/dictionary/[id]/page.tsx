@@ -7,7 +7,7 @@ import ToastContainer, { Toast } from '@/app/components/Toast';
 import WordEditor from '../components/WordEditor';
 import WordChatPanel from './components/WordChatPanel';
 import NoteField from './components/NoteField';
-import { Definition, Word, WordForm } from '@/app/api/dictionary/route';
+import { Definition, Word, WordForm } from '@/types/dictionary';
 import { ApiError, apiFetch } from '@/utils/api';
 
 import style from './page.module.css';

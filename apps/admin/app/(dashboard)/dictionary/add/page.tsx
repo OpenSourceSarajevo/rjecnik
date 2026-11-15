@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { v4 as uuidv4 } from 'uuid';
 import WordEditor from '../components/WordEditor';
-import { Definition, WordForm } from '@/app/api/dictionary/route';
+import { Definition, WordForm } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';
 
 import style from './page.module.css';

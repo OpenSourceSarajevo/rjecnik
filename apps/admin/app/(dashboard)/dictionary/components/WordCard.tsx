@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './WordCard.module.css';
-import { Word } from '@/app/api/dictionary/route';
+import { Word } from '@/types/dictionary';
 import Link from 'next/link';
 import { Edit } from 'lucide-react';
 

@@ -3,7 +3,7 @@ import { Plus, X, Copy, ChevronDown } from 'lucide-react';
 import style from './DefinitionsForm.module.css';
 import WordTypeSelect from '@/app/(dashboard)/components/WordTypeSelect';
 import GenderSelect from '@/app/(dashboard)/components/GenderSelect';
-import { Definition } from '@/app/api/dictionary/route';
+import { Definition } from '@/types/dictionary';
 import Button from '@/app/components/Button';
 
 type Props = {

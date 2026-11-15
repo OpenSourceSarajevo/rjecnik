@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import type { Definition, WordForm } from '@/app/api/dictionary/route';
+import type { Definition, WordForm } from '@/types/dictionary';
 
 // Schemas for the AI assistant's response. Every field is required (nullable where the app allows
 // "no value") because structured outputs require all object keys. Type, gender and form labels are
