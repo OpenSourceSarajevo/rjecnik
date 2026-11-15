@@ -85,23 +85,10 @@ export default function UpdateWordPage() {
         antonyms: antonyms,
         note: note.trim() || null,
       };
-      const res = await fetch(`/api/dictionary?id=${id}`, {
+      await apiFetch<Word>(`/api/words/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        setToasts((prev) => [
-          ...prev,
-          {
-            id: Date.now().toString(),
-            type: 'error',
-            message: data.error ? String(data.error) : `Greška: ${res.status}`,
-          },
-        ]);
-        return;
-      }
       setToasts((prev) => [
         ...prev,
         {

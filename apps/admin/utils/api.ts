@@ -11,6 +11,17 @@ export class ApiError extends Error {
   }
 }
 
+// FastAPI returns `detail` as a string, or as a list of field errors on validation failure
+function errorMessage(detail: unknown): string | undefined {
+  if (typeof detail === 'string') return detail;
+  if (Array.isArray(detail)) {
+    return detail
+      .map((e: { loc?: unknown[]; msg?: string }) => `${e.loc?.slice(1).join('.')}: ${e.msg}`)
+      .join('; ');
+  }
+  return undefined;
+}
+
 /**
  * Calls the Rječnik API (apps/api) from the browser, authenticated with the
  * current Supabase session's access token.
@@ -32,7 +43,7 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   const res = await fetch(`${API_URL}${path}`, { ...init, headers });
   if (!res.ok) {
     const body = await res.json().catch(() => null);
-    throw new ApiError(res.status, body?.detail ?? res.statusText);
+    throw new ApiError(res.status, errorMessage(body?.detail) ?? `Greška: ${res.status}`);
   }
   return res.json() as Promise<T>;
 }
