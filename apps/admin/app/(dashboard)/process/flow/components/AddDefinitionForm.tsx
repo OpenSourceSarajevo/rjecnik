@@ -1,4 +1,5 @@
 import { Word, Definition } from '@/app/api/dictionary/route';
+import { apiFetch } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
@@ -44,11 +45,10 @@ const AddDefinitionForm: React.FC<AddDefinitionFormProps> = ({
           setResults([]);
           return;
         }
-        const res = await fetch(
-          `/api/dictionary?pageNumber=0&pageSize=5&word=${encodeURIComponent(query)}`
+        const data = await apiFetch<{ items: Word[] }>(
+          `/api/words/search?page_size=5&q=${encodeURIComponent(query)}`
         );
-        const data = await res.json();
-        setResults(data);
+        setResults(data.items);
       },
       query ? 300 : 0
     );

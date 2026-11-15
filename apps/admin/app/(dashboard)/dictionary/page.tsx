@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import WordCard from './components/WordCard';
 import { Search } from 'lucide-react';
 import { Word } from '@/app/api/dictionary/route';
+import { apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Link from 'next/link';
 import Button from '@/app/components/Button';
@@ -34,26 +35,17 @@ const Page: React.FC = () => {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        // Fetch one extra to check if there are more pages
-        return fetch(
-          `/api/dictionary?pageNumber=${currentPage - 1}&pageSize=${ITEMS_PER_PAGE + 1}&word=${searchTerm}`
-        );
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
+        const params = new URLSearchParams({
+          q: searchTerm,
+          page: String(currentPage),
+          page_size: String(ITEMS_PER_PAGE),
+        });
+        return apiFetch<{ items: Word[]; has_more: boolean }>(`/api/words/search?${params}`);
       })
       .then((data) => {
         if (ignore) return;
-        if (data.length > ITEMS_PER_PAGE) {
-          setHasMore(true);
-          setWords(data.slice(0, ITEMS_PER_PAGE));
-        } else {
-          setHasMore(false);
-          setWords(data || []);
-        }
+        setHasMore(data.has_more);
+        setWords(data.items);
       })
       .catch(() => {
         if (!ignore) setError('Greška pri učitavanju riječi.');

@@ -3,6 +3,7 @@ import { Search, X, Plus } from 'lucide-react';
 import { NewWord } from '@/app/api/words/contracts';
 import style from './NewForm.module.css';
 import { Word, WordForm } from '@/app/api/dictionary/route';
+import { apiFetch } from '@/utils/api';
 import Button from '@/app/components/Button';
 
 type NewFormProps = {
@@ -39,11 +40,10 @@ const NewForm: React.FC<NewFormProps> = ({
           setResults([]);
           return;
         }
-        const res = await fetch(
-          `/api/dictionary?pageNumber=0&pageSize=5&word=${encodeURIComponent(query)}`
+        const data = await apiFetch<{ items: Word[] }>(
+          `/api/words/search?page_size=5&q=${encodeURIComponent(query)}`
         );
-        const data = await res.json();
-        setResults(data);
+        setResults(data.items);
       },
       query ? 300 : 0
     );
