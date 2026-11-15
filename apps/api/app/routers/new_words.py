@@ -1,23 +1,75 @@
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Body, Query
+from pydantic import BaseModel
 
 from app.auth import AdminOnly
+from app.db import AdminDb, fetch_page
 from app.stubs import not_implemented
 
 router = APIRouter(prefix="/words/new", tags=["new-words"], dependencies=AdminOnly)
 
+Strategy = Literal[
+    "Frequency Only",
+    "New Definition",
+    "New Form",
+    "Existing Form",
+    "New Headword",
+    "Ignore",
+    "Remove",
+]
+
+
+class NewWord(BaseModel):
+    id: int
+    headword: str
+    examples: list[str]
+    count: int
+    is_new: bool
+    created_at: str | None = None
+    created_by: str | None = None
+    assigned_to: str | None = None
+    strategy: str | None = None
+
+
+class NewWordPage(BaseModel):
+    items: list[NewWord]
+    total: int
+
 
 @router.get("")
 def list_new_words(
+    db: AdminDb,
     headword: str | None = None,
-    strategy: str | None = None,
+    strategy: Annotated[
+        str | None, Query(description='A strategy name, or "none" for unassigned words')
+    ] = None,
     is_new: bool | None = None,
     page: Annotated[int, Query(ge=1)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100)] = 20,
-) -> dict[str, Any]:
-    """Paginated words_new with filters."""
-    not_implemented()
+) -> NewWordPage:
+    """Newest first, then alphabetical."""
+
+    def build():
+        query = (
+            db.table("words_new")
+            .select("*", count="exact")
+            .order("created_at", desc=True)
+            .order("headword")
+            .order("id")  # stable paging
+        )
+        if headword:
+            query = query.ilike("headword", f"%{headword}%")
+        if strategy == "none":
+            query = query.is_("strategy", "null")
+        elif strategy:
+            query = query.eq("strategy", strategy)
+        if is_new is not None:
+            query = query.eq("is_new", is_new)
+        return query
+
+    items, total = fetch_page(build, page, page_size)
+    return NewWordPage(items=items, total=total)
 
 
 @router.get("/mine")
