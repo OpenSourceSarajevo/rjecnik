@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Wand2, Inbox, Search, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
+import { apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';
 
@@ -97,25 +98,19 @@ export default function Page() {
         setIsLoading(true);
         setError(null);
         const params = new URLSearchParams({
-          pageNumber: String(currentPage - 1),
-          pageSize: String(ITEMS_PER_PAGE),
+          page: String(currentPage),
+          page_size: String(ITEMS_PER_PAGE),
         });
         if (headwordFilter) params.set('headword', headwordFilter);
         if (strategyFilter) params.set('strategy', strategyFilter);
-        if (isNewFilter) params.set('isNew', isNewFilter);
-        return fetch(`/api/words/new?${params.toString()}`);
+        if (isNewFilter) params.set('is_new', isNewFilter);
+        return apiFetch<{ items: NewWord[]; total: number }>(`/api/words/new?${params}`);
       })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(({ data, total }) => {
+      .then(({ items, total }) => {
         if (ignore) return;
         setTotalCount(total);
         setHasMore(total > currentPage * ITEMS_PER_PAGE);
-        setWords(data || []);
+        setWords(items);
         setExpandedExamples(new Set());
         setSelectedIds(new Set());
       })
