@@ -85,17 +85,14 @@ export default function Page() {
   };
 
   const handleTypeChange = async (id: number, type: IgnoreType) => {
-    const res = await fetch(`/api/words/ignore/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type }),
-    });
-    const data = await res.json();
-    if (!res.ok || data.error) {
-      addToast({
-        type: 'error',
-        message: data.error ? String(data.error) : `Greška: ${res.status}`,
+    let data: IgnoredWord;
+    try {
+      data = await apiFetch<IgnoredWord>(`/api/words/ignored/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ type }),
       });
+    } catch (err) {
+      addToast({ type: 'error', message: err instanceof ApiError ? err.message : 'Greška.' });
       return;
     }
     setWords((prev) => prev.map((w) => (w.id === id ? { ...w, type: data.type } : w)));
