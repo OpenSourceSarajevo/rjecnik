@@ -1,6 +1,6 @@
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Body, Query
+from fastapi import APIRouter, HTTPException, Query
 from postgrest.exceptions import APIError
 from pydantic import BaseModel, Field, StringConstraints
 
@@ -29,6 +29,10 @@ class BulkIgnore(BaseModel):
     headwords: list[Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]] = Field(
         min_length=1
     )
+    type: IgnoreType
+
+
+class IgnoreUpdate(BaseModel):
     type: IgnoreType
 
 
@@ -85,9 +89,16 @@ def bulk_add_ignored_words(db: AdminDb, body: BulkIgnore) -> BulkIgnoreResult:
 
 
 @router.patch("/{ignored_id}")
-def update_ignored_word(ignored_id: int, body: Annotated[dict[str, Any], Body()]) -> dict[str, Any]:
-    """Change the ignore type: {type}."""
-    not_implemented()
+def update_ignored_word(db: AdminDb, ignored_id: int, body: IgnoreUpdate) -> IgnoredWord:
+    res = (
+        db.table("words_ignore")
+        .update({"type": body.type, "updated_at": now_iso()})
+        .eq("id", ignored_id)
+        .execute()
+    )
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Riječ nije pronađena")
+    return IgnoredWord(**res.data[0])
 
 
 @router.delete("/{ignored_id}")
