@@ -33,6 +33,11 @@ class WordSummary(BaseModel):
     definitions: list[dict[str, Any]]
 
 
+class SearchResults(BaseModel):
+    items: list[WordSummary]
+    has_more: bool
+
+
 class WordDetail(Word):
     """Full row for the admin app, including the editor note and audit columns."""
 
@@ -108,13 +113,17 @@ def search_words(
     q: str = "",
     page: Annotated[int, Query(ge=1)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100)] = 20,
-) -> list[WordSummary]:
+) -> SearchResults:
     """Exact match first, then prefix matches, then other matches; alphabetical within each."""
     res = db.rpc(
         "search_words_ranked",
-        {"search_term": q, "limit_value": page_size, "offset_value": (page - 1) * page_size},
+        # One extra row tells us whether another page exists
+        {"search_term": q, "limit_value": page_size + 1, "offset_value": (page - 1) * page_size},
     ).execute()
-    return [WordSummary(**row) for row in res.data]
+    return SearchResults(
+        items=[WordSummary(**row) for row in res.data[:page_size]],
+        has_more=len(res.data) > page_size,
+    )
 
 
 # :path so headwords containing "/" (e.g. "A/a") still match
