@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Wand2, Inbox, Search, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
-import { NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
+import { NewWord, WordProcessingStrategy } from '@/types/words';
 import { ApiError, apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';

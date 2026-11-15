@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Search, Inbox, Trash2, Upload, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
-import { IgnoredWord, IgnoreType } from '@/app/api/words/contracts';
+import { IgnoredWord, IgnoreType } from '@/types/words';
 import { ApiError, apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';

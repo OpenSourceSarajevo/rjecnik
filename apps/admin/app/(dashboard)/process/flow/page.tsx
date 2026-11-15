@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Save, PartyPopper, Hash, Sparkles } from 'lucide-react';
-import { IgnoreType, NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
+import { IgnoreType, NewWord, WordProcessingStrategy } from '@/types/words';
 import { ApiError, apiFetch } from '@/utils/api';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 
@@ -179,20 +179,18 @@ export default function Page() {
       body = JSON.stringify({ type: ignoreType });
     }
 
-    const res = await fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: body,
-    });
-    const data = await res.json();
-
-    if (!res.ok || data.error) {
+    try {
+      await apiFetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
+        method: 'POST',
+        body,
+      });
+    } catch (err) {
       setToasts((prev) => [
         ...prev,
         {
           id: uuidv4(),
           type: 'error',
-          message: data.error ?? `Greška: ${res.status}`,
+          message: err instanceof ApiError ? err.message : 'Greška.',
         },
       ]);
       return;

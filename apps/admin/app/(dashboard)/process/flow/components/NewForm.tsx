@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Search, X, Plus } from 'lucide-react';
-import { NewWord } from '@/app/api/words/contracts';
+import { NewWord } from '@/types/words';
 import style from './NewForm.module.css';
 import { Word, WordForm } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';

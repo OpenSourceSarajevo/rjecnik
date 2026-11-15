@@ -1,4 +1,4 @@
-import { IgnoreType } from '@/app/api/words/contracts';
+import { IgnoreType } from '@/types/words';
 import style from './IgnoreForm.module.css';
 
 const ignoreTypes: { value: IgnoreType; label: string; description: string }[] = [
