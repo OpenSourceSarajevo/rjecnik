@@ -196,10 +196,117 @@
   width: 1rem;
 }
 
-.wordsList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
+.errorText {
+  color: var(--color-error);
+}
+
+.tableContainer {
+  overflow-x: auto;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  min-width: 640px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  background-color: var(--color-white);
+}
+
+.colHeadword {
+  width: 12rem;
+}
+
+.colType {
+  width: 8rem;
+}
+
+.colCount {
+  width: 6.5rem;
+}
+
+.colActions {
+  width: 3.5rem;
+}
+
+.table th,
+.table td {
+  padding: var(--spacing-3) var(--spacing-4);
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.table th {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-600);
+  font-weight: 600;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tableRow td {
+  vertical-align: middle;
+  color: var(--color-gray-900);
+  word-break: break-word;
+}
+
+.tableRow:hover {
+  background-color: var(--color-gray-50);
+  transition: background-color var(--transition-fast);
+}
+
+.headwordCell a {
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.headwordCell a:hover {
+  text-decoration: underline;
+}
+
+.definitionCell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-gray-600);
+}
+
+.emptyValue {
+  color: var(--color-gray-400);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.actionsCell {
+  text-align: right;
+}
+
+.actionButton {
+  display: inline-flex;
+  padding: var(--spacing-2);
+  border-radius: var(--border-radius-md);
+  color: var(--color-gray-500);
+}
+
+.actionButton:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-800);
 }
 
 .pagination {
@@ -280,7 +387,9 @@
   font-family: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-2);

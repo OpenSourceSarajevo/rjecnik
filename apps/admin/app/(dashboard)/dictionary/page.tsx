@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import WordCard from './components/WordCard';
-import { Search } from 'lucide-react';
+import { Edit, Search } from 'lucide-react';
 import { Word } from '@/types/dictionary';
 import { apiFetch } from '@/utils/api';
 import style from './page.module.css';
@@ -86,13 +85,57 @@ const Page: React.FC = () => {
         {isLoading ? (
           <p>Učitavanje riječi...</p>
         ) : error ? (
-          <p style={{ color: 'red' }}>{error}</p>
+          <p className={style.errorText}>{error}</p>
         ) : words.length > 0 ? (
           <>
-            <div className={style.wordsList}>
-              {words.map((word) => (
-                <WordCard key={word.id} word={word} />
-              ))}
+            <div className={style.tableContainer}>
+              <table className={style.table}>
+                <colgroup>
+                  <col className={style.colHeadword} />
+                  <col className={style.colType} />
+                  <col />
+                  <col className={style.colCount} />
+                  <col className={style.colActions} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Riječ</th>
+                    <th>Vrsta</th>
+                    <th>Značenje</th>
+                    <th>Značenja</th>
+                    <th>
+                      <span className={style.srOnly}>Akcije</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {words.map((word) => {
+                    const [first] = word.definitions;
+                    return (
+                      <tr key={word.id} className={style.tableRow}>
+                        <td className={style.headwordCell}>
+                          <Link href={`/dictionary/${word.id}`}>{word.headword}</Link>
+                        </td>
+                        <td>{first?.type || <span className={style.emptyValue}>—</span>}</td>
+                        <td className={style.definitionCell}>
+                          {first?.definition || <span className={style.emptyValue}>—</span>}
+                        </td>
+                        <td>{word.definitions.length}</td>
+                        <td className={style.actionsCell}>
+                          <Link
+                            href={`/dictionary/${word.id}`}
+                            className={style.actionButton}
+                            title="Uredi riječ"
+                            aria-label={`Uredi riječ ${word.headword}`}
+                          >
+                            <Edit size={18} />
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
 
             <div className={style.pagination}>
