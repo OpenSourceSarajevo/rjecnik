@@ -3,7 +3,7 @@ from typing import Annotated, Any, Literal
 from fastapi import APIRouter, Body, Query
 from pydantic import BaseModel
 
-from app.auth import AdminOnly
+from app.auth import Admin, AdminOnly
 from app.db import AdminDb, fetch_page
 from app.stubs import not_implemented
 
@@ -73,9 +73,18 @@ def list_new_words(
 
 
 @router.get("/mine")
-def list_my_new_words() -> list[dict[str, Any]]:
-    """words_new assigned to the current user."""
-    not_implemented()
+def list_my_new_words(db: AdminDb, user: Admin) -> list[NewWord]:
+    """New words assigned to the signed-in editor, newest first."""
+    res = (
+        db.table("words_new")
+        .select("*")
+        .eq("assigned_to", user.email)
+        .order("created_at", desc=True)
+        .order("headword")
+        .order("id")
+        .execute()
+    )
+    return [NewWord(**row) for row in res.data]
 
 
 @router.patch("/{new_word_id}/strategy/{strategy}")
