@@ -93,6 +93,7 @@
     "net"
   ],
   "eslint.workingDirectories": ["apps/web"],
+  "python.defaultInterpreterPath": "${workspaceFolder}/apps/api/.venv/bin/python",
   "files.associations": {
     "*.sql": "postgres"
   }
