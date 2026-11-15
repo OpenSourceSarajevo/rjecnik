@@ -1,6 +1,6 @@
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Body, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
 from app import strategies
@@ -31,10 +31,6 @@ class NewWord(BaseModel):
     created_by: str | None = None
     assigned_to: str | None = None
     strategy: str | None = None
-
-
-class StrategyResult(BaseModel):
-    word: WordDetail | None
 
 
 class NewWordPage(BaseModel):
@@ -108,18 +104,70 @@ def assign_strategy(
     return NewWord(**res.data[0])
 
 
-@router.post("/{new_word_id}/strategy/{strategy}")
-def apply_strategy(
-    db: AdminDb,
-    user: Admin,
-    new_word_id: int,
-    strategy: Strategy,
-    body: Annotated[dict[str, Any] | None, Body()] = None,
-) -> StrategyResult:
-    """Process the new word with the strategy, then remove it from the new words list.
+# One endpoint per strategy. Each applies the change, then removes the word from words_new
+# and returns the dictionary word it created or updated.
 
-    The body depends on the strategy (see app/strategies.py). Returns the dictionary
-    word that was created or updated, or null for Ignore and Remove.
-    """
-    word = strategies.apply(db, user, new_word_id, strategy, body)
-    return StrategyResult(word=word)
+
+def get_new_word(db: AdminDb, new_word_id: int) -> dict[str, Any]:
+    return strategies.load_new_word(db, new_word_id)
+
+
+NewWordRow = Annotated[dict[str, Any], Depends(get_new_word)]
+
+
+def _processed(db: AdminDb, new_word: dict[str, Any], word: dict[str, Any]) -> WordDetail:
+    strategies.delete_new_word(db, new_word["id"])
+    return WordDetail(**word)
+
+
+@router.post("/{new_word_id}/frequency-only")
+def apply_frequency_only(db: AdminDb, user: Admin, new_word: NewWordRow) -> WordDetail:
+    """Already in the dictionary under the same headword: add its count to the frequency."""
+    return _processed(db, new_word, strategies.frequency_only(db, user, new_word))
+
+
+@router.post("/{new_word_id}/existing-form")
+def apply_existing_form(
+    db: AdminDb, user: Admin, new_word: NewWordRow, body: strategies.HeadwordBody
+) -> WordDetail:
+    """A known form of another headword: add its count to that headword."""
+    return _processed(db, new_word, strategies.existing_form(db, user, new_word, body))
+
+
+@router.post("/{new_word_id}/new-form")
+def apply_new_form(
+    db: AdminDb, user: Admin, new_word: NewWordRow, body: strategies.NewFormBody
+) -> WordDetail:
+    """A new form of another headword: save that headword's complete form list."""
+    return _processed(db, new_word, strategies.new_form(db, user, new_word, body))
+
+
+@router.post("/{new_word_id}/new-definition")
+def apply_new_definition(
+    db: AdminDb, user: Admin, new_word: NewWordRow, body: strategies.NewDefinitionBody
+) -> WordDetail:
+    """A new meaning of an existing headword: append a definition."""
+    return _processed(db, new_word, strategies.new_definition(db, user, new_word, body))
+
+
+@router.post("/{new_word_id}/new-headword", status_code=201)
+def apply_new_headword(
+    db: AdminDb, user: Admin, new_word: NewWordRow, body: strategies.NewHeadwordBody
+) -> WordDetail:
+    """Not in the dictionary yet: add it as a new headword."""
+    return _processed(db, new_word, strategies.new_headword(db, user, new_word, body))
+
+
+@router.post("/{new_word_id}/ignore", status_code=204)
+def apply_ignore(
+    db: AdminDb, new_word: NewWordRow, body: strategies.IgnoreBody | None = None
+) -> None:
+    """Add it to the ignore list so it is skipped in future ingestions."""
+    strategies.ignore(db, new_word, body or strategies.IgnoreBody())
+    strategies.delete_new_word(db, new_word["id"])
+
+
+@router.delete("/{new_word_id}", status_code=204)
+def remove_new_word(db: AdminDb, new_word_id: int) -> None:
+    """Discard it (e.g. an OCR error)."""
+    strategies.delete_new_word(db, new_word_id)
