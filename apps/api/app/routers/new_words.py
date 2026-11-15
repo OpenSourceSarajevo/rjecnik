@@ -3,9 +3,10 @@ from typing import Annotated, Any, Literal
 from fastapi import APIRouter, Body, HTTPException, Query
 from pydantic import BaseModel
 
+from app import strategies
 from app.auth import Admin, AdminOnly
 from app.db import AdminDb, fetch_page
-from app.stubs import not_implemented
+from app.routers.words import WordDetail
 
 router = APIRouter(prefix="/words/new", tags=["new-words"], dependencies=AdminOnly)
 
@@ -30,6 +31,10 @@ class NewWord(BaseModel):
     created_by: str | None = None
     assigned_to: str | None = None
     strategy: str | None = None
+
+
+class StrategyResult(BaseModel):
+    word: WordDetail | None
 
 
 class NewWordPage(BaseModel):
@@ -105,7 +110,16 @@ def assign_strategy(
 
 @router.post("/{new_word_id}/strategy/{strategy}")
 def apply_strategy(
-    new_word_id: int, strategy: str, body: Annotated[dict[str, Any] | None, Body()] = None
-) -> dict[str, Any]:
-    """Run the strategy (e.g. merge into words_v2) for this new word."""
-    not_implemented()
+    db: AdminDb,
+    user: Admin,
+    new_word_id: int,
+    strategy: Strategy,
+    body: Annotated[dict[str, Any] | None, Body()] = None,
+) -> StrategyResult:
+    """Process the new word with the strategy, then remove it from the new words list.
+
+    The body depends on the strategy (see app/strategies.py). Returns the dictionary
+    word that was created or updated, or null for Ignore and Remove.
+    """
+    word = strategies.apply(db, user, new_word_id, strategy, body)
+    return StrategyResult(word=word)
