@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
+import { apiFetch } from '@/utils/api';
+
 import Card from '../Card';
 
 import style from './SearchResults.module.css';
@@ -17,6 +19,11 @@ type Definition = {
   type: string | null;
   gender: string | null;
   definition: string;
+};
+
+type SearchResponse = {
+  items: Word[];
+  has_more: boolean;
 };
 
 const PAGE_SIZE = 20;
@@ -56,16 +63,16 @@ const SearchResults = ({ initialQuery }: { initialQuery: string }) => {
 
       try {
         const params = new URLSearchParams({
-          pageNumber: page.toString(),
-          pageSize: PAGE_SIZE.toString(),
-          word: query,
+          q: query,
+          page: (page + 1).toString(),
+          page_size: PAGE_SIZE.toString(),
         });
-        const res = await fetch(`/api/dictionary?${params}`, { signal: controller.signal });
-        if (!res.ok) throw new Error(res.statusText);
+        const result = await apiFetch<SearchResponse>(`/words/search?${params}`, {
+          signal: controller.signal,
+        });
 
-        const newData: Word[] = await res.json();
-        setData((prevData) => [...prevData, ...newData]);
-        setHasMore(newData.length === PAGE_SIZE);
+        setData((prevData) => [...prevData, ...result.items]);
+        setHasMore(result.has_more);
         setLoading(false);
       } catch {
         if (controller.signal.aborted) return;

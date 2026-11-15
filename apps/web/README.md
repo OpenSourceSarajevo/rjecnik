@@ -8,12 +8,16 @@ See the [root README](../README.md) for prerequisites, initial setup, and runnin
 
 Copy `.env.example` to `.env` and fill in:
 
-- `SUPABASE_URL` / `SUPABASE_ANON_KEY` — from your local (`supabase start`) or hosted Supabase project. Note: unlike `admin`, these are **not** prefixed with `NEXT_PUBLIC_`.
+- `NEXT_PUBLIC_API_URL` — base URL of the Rječnik API ([`apps/api`](../api)), e.g. `http://localhost:8000`. The API must list this site's origin in its `CORS_ORIGINS`, since search calls it from the browser.
 - `NEXT_PUBLIC_GITHUB_REPOSITORY` — full URL of the GitHub repo (e.g. `https://github.com/OpenSourceSarajevo/rjecnik`), used to build the "report an issue" link on each dictionary entry.
 
-## How it talks to Supabase
+## How it gets its data
 
-The site calls its own Next.js API route (`/api/dictionary`), which invokes the Supabase RPC function `search_words_ranked`. There is no direct client-side database access.
+All data comes from the public endpoints of the Rječnik API (`utils/api.ts`); the site never talks to Supabase directly:
+
+- search (browser) — `GET /api/words/search`
+- word page (server, revalidated hourly) — `GET /api/words/headword/{headword}`
+- sitemap (server, revalidated daily) — `GET /api/words/headwords`
 
 ## Routing
 

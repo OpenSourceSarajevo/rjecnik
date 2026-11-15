@@ -1,35 +1,15 @@
 import type { MetadataRoute } from 'next';
 
-import { createStaticClient } from '@/utils/supabase/server';
+import { apiFetch } from '@/utils/api';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
-// Supabase caps a single select at 1000 rows
-const BATCH_SIZE = 1000;
 
 export const revalidate = 86400;
 
-const getHeadwords = async () => {
-  const supabase = createStaticClient();
-  const headwords: string[] = [];
-
-  for (let from = 0; ; from += BATCH_SIZE) {
-    const { data, error } = await supabase
-      .from('words_v2')
-      .select('headword')
-      .order('id')
-      .range(from, from + BATCH_SIZE - 1);
-
-    if (error) throw error;
-
-    headwords.push(...data.map((row) => row.headword));
-    if (data.length < BATCH_SIZE) break;
-  }
-
-  return headwords;
-};
-
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const headwords = await getHeadwords();
+  const headwords = await apiFetch<string[]>('/words/headwords', {
+    next: { revalidate },
+  });
 
   return [
     { url: SITE_URL, changeFrequency: 'monthly', priority: 1 },

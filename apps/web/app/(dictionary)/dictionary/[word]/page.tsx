@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
-import { createStaticClient } from '@/utils/supabase/server';
+import { ApiError, apiFetch } from '@/utils/api';
 import WordEntry, { type WordDetails } from '@/app/components/WordEntry';
 import { openGraphDefaults } from '@/app/shared-metadata';
 
@@ -19,16 +19,16 @@ export const revalidate = 3600;
 
 export const generateStaticParams = async () => [];
 
-// Deduplicates the query between generateMetadata and the page
+// Deduplicates the request between generateMetadata and the page
 const getWord = cache(async (headword: string) => {
-  const supabase = createStaticClient();
-  const { data } = await supabase
-    .from('words_v2')
-    .select('id, headword, definitions, origins, alternatives, forms')
-    .eq('headword', headword)
-    .maybeSingle<WordDetails>();
-
-  return data;
+  try {
+    return await apiFetch<WordDetails>(`/words/headword/${encodeURIComponent(headword)}`, {
+      next: { revalidate },
+    });
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
 });
 
 export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
