@@ -102,13 +102,10 @@ export default function Page() {
     if (!window.confirm(`Ukloniti "${headword}" sa liste ignorisanih riječi?`)) {
       return;
     }
-    const res = await fetch(`/api/words/ignore/${id}`, { method: 'DELETE' });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      addToast({
-        type: 'error',
-        message: data.error ? String(data.error) : `Greška: ${res.status}`,
-      });
+    try {
+      await apiFetch<void>(`/api/words/ignored/${id}`, { method: 'DELETE' });
+    } catch (err) {
+      addToast({ type: 'error', message: err instanceof ApiError ? err.message : 'Greška.' });
       return;
     }
     setWords((prev) => prev.filter((w) => w.id !== id));

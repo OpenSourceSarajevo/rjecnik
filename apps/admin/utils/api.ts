@@ -45,5 +45,6 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
     const body = await res.json().catch(() => null);
     throw new ApiError(res.status, errorMessage(body?.detail) ?? `Greška: ${res.status}`);
   }
+  if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
