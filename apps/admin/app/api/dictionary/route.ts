@@ -29,6 +29,8 @@ export type Word = {
   forms?: WordForm[] | null;
   alternatives?: string[] | null;
   origins?: string[] | null;
+  synonyms?: string[] | null;
+  antonyms?: string[] | null;
   frequency: number;
   note?: string | null;
 };

@@ -7,7 +7,8 @@ import ToastContainer, { Toast } from '@/app/components/Toast';
 import WordEditor from '../components/WordEditor';
 import WordChatPanel from './components/WordChatPanel';
 import NoteField from './components/NoteField';
-import { Definition, WordForm } from '@/app/api/dictionary/route';
+import { Definition, Word, WordForm } from '@/app/api/dictionary/route';
+import { ApiError, apiFetch } from '@/utils/api';
 
 import style from './page.module.css';
 
@@ -33,36 +34,24 @@ export default function UpdateWordPage() {
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    fetch(`/api/dictionary?id=${id}`)
-      .then((res) => res.json())
+    apiFetch<Word>(`/api/words/${id}`)
       .then((data) => {
-        if (data && !data.error) {
-          setHeadword(data.headword || '');
-          setDefinitions(data.definitions || []);
-          setForms(data.forms ?? []);
-          setOrigins(data.origins || []);
-          setAlternatives(data.alternatives || []);
-          setSynonyms(data.synonyms || []);
-          setAntonyms(data.antonyms || []);
-          setNote(data.note ?? '');
-        } else {
-          setToasts((prev) => [
-            ...prev,
-            {
-              id: Date.now().toString(),
-              type: 'error',
-              message: data.error || 'Greška pri učitavanju riječi.',
-            },
-          ]);
-        }
+        setHeadword(data.headword || '');
+        setDefinitions(data.definitions || []);
+        setForms(data.forms ?? []);
+        setOrigins(data.origins || []);
+        setAlternatives(data.alternatives || []);
+        setSynonyms(data.synonyms || []);
+        setAntonyms(data.antonyms || []);
+        setNote(data.note ?? '');
       })
-      .catch(() => {
+      .catch((err: unknown) => {
         setToasts((prev) => [
           ...prev,
           {
             id: Date.now().toString(),
             type: 'error',
-            message: 'Greška pri učitavanju riječi.',
+            message: err instanceof ApiError ? err.message : 'Greška pri učitavanju riječi.',
           },
         ]);
       })
