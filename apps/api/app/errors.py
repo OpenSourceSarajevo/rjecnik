@@ -13,4 +13,5 @@ def register_error_handlers(app: FastAPI) -> None:
     @app.exception_handler(APIError)
     async def postgrest_error(_: Request, exc: APIError) -> JSONResponse:
         status = PG_STATUS.get(exc.code or "", 500)
-        return JSONResponse(status_code=status, content={"detail": exc.message or "Greška baze"})
+        detail = "Zapis već postoji" if status == 409 else exc.message or "Greška baze"
+        return JSONResponse(status_code=status, content={"detail": detail})

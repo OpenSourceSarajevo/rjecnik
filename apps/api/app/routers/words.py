@@ -123,9 +123,18 @@ def get_word(db: AdminDb, word_id: int) -> WordDetail:
     return WordDetail(**res.data[0])
 
 
-@router.post("", status_code=201, dependencies=AdminOnly)
-def create_word(body: Annotated[dict[str, Any], Body()]) -> Word:
-    not_implemented()
+@router.post("", status_code=201)
+def create_word(db: AdminDb, user: Admin, body: WordInput) -> WordDetail:
+    now = now_iso()
+    values = body.model_dump(exclude_unset=True)
+    values |= {
+        "created_by": user.email,
+        "created_at": now,
+        "updated_by": user.email,
+        "updated_at": now,
+    }
+    res = db.table("words_v2").insert(values).execute()
+    return WordDetail(**res.data[0])
 
 
 @router.patch("/{word_id:int}")
