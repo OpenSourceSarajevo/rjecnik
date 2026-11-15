@@ -2,10 +2,11 @@ from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Body, Query
 from postgrest.exceptions import APIError
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, StringConstraints
 
 from app.auth import AdminOnly
 from app.db import AdminDb
+from app.routers.words import now_iso
 from app.stubs import not_implemented
 
 router = APIRouter(prefix="/words/ignored", tags=["ignored-words"], dependencies=AdminOnly)
@@ -22,6 +23,18 @@ class IgnoredWord(BaseModel):
     type: str
     inserted_at: str | None = None
     updated_at: str | None = None
+
+
+class BulkIgnore(BaseModel):
+    headwords: list[Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]] = Field(
+        min_length=1
+    )
+    type: IgnoreType
+
+
+class BulkIgnoreResult(BaseModel):
+    items: list[IgnoredWord]
+    count: int
 
 
 class IgnoredWordPage(BaseModel):
@@ -59,10 +72,16 @@ def list_ignored_words(
     return IgnoredWordPage(items=res.data, total=res.count or 0)
 
 
-@router.post("")
-def bulk_add_ignored_words(body: Annotated[dict[str, Any], Body()]) -> list[dict[str, Any]]:
-    """Upsert many headwords with one ignore type: {headwords: [...], type}."""
-    not_implemented()
+@router.post("", status_code=201)
+def bulk_add_ignored_words(db: AdminDb, body: BulkIgnore) -> BulkIgnoreResult:
+    """Add headwords to the ignore list, or change their type if they are already on it."""
+    now = now_iso()
+    rows = [
+        {"headword": h, "type": body.type, "updated_at": now}
+        for h in dict.fromkeys(body.headwords)  # dedupe, keep order
+    ]
+    res = db.table("words_ignore").upsert(rows, on_conflict="headword").execute()
+    return BulkIgnoreResult(items=res.data, count=len(res.data))
 
 
 @router.patch("/{ignored_id}")
