@@ -7,7 +7,7 @@ from app.routers import dashboard, health, ignored_words, new_words, words
 
 settings = get_settings()
 
-app = FastAPI(title=settings.app_name)
+app = FastAPI(title=settings.app_name, docs_url="/")
 register_error_handlers(app)
 
 app.add_middleware(
