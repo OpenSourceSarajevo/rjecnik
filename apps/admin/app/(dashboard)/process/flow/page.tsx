@@ -3,14 +3,13 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Save, PartyPopper, Hash, Sparkles } from 'lucide-react';
-import { IgnoreType, NewWord, WordProcessingStrategy } from '@/types/words';
-import { ApiError, apiFetch } from '@/utils/api';
+import type { Definition, IgnoreType, NewWord, Strategy, Word, WordForm } from '@rjecnik/api';
+import { ApiError, api } from '@/utils/api';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 
 import NewForm from './components/NewForm';
 
 import style from './page.module.css';
-import { Definition, Word, WordForm } from '@/types/dictionary';
 import ExistingForm from './components/ExistingForm';
 import NewHeadwordForm from './components/NewHeadwordForm';
 import AddDefinitionForm, { NewDefinitionDraft } from './components/AddDefinitionForm';
@@ -37,16 +36,6 @@ const emptyDefinition = (examples: string[]): Definition => ({
   antonyms: [],
 });
 
-// API endpoint per strategy: POST /api/words/new/{id}/{endpoint}; Remove is DELETE /api/words/new/{id}
-const strategyEndpoints: Record<Exclude<WordProcessingStrategy, 'Remove'>, string> = {
-  'Frequency Only': 'frequency-only',
-  'Existing Form': 'existing-form',
-  'New Form': 'new-form',
-  'New Definition': 'new-definition',
-  'New Headword': 'new-headword',
-  Ignore: 'ignore',
-};
-
 export default function Page() {
   const [assignedWords, setAssignedWords] = useState<NewWord[]>([]);
   const [processingIndex, setProcessingIndex] = useState(0);
@@ -59,13 +48,12 @@ export default function Page() {
   const [newHeadwordDefinitions, setNewHeadwordDefinitions] = useState<Definition[]>([]);
   const [newHeadwordOrigins, setNewHeadwordOrigins] = useState<string[]>([]);
   const [newHeadwordAlternatives, setNewHeadwordAlternatives] = useState<string[]>([]);
-  const [newDefinitionDraft, setNewDefinitionDraft] = useState<NewDefinitionDraft>(
-    emptyDefinitionDraft()
-  );
+  const [newDefinitionDraft, setNewDefinitionDraft] =
+    useState<NewDefinitionDraft>(emptyDefinitionDraft());
 
   const currentWord = assignedWords[processingIndex];
 
-  const strategyTranslations: Record<WordProcessingStrategy, string> = {
+  const strategyTranslations: Record<Strategy, string> = {
     'Frequency Only': 'Samo frekvencija',
     // "New Example": "Novi primjer",
     // "New Definition": "Nova definicija",
@@ -77,7 +65,7 @@ export default function Page() {
     Remove: 'Ukloni',
   };
 
-  const strategies: WordProcessingStrategy[] = [
+  const strategies: Strategy[] = [
     'Frequency Only',
     // "New Example",
     'New Definition',
@@ -95,7 +83,7 @@ export default function Page() {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        return apiFetch<NewWord[]>('/api/words/new/mine');
+        return api.newWords.mine();
       })
       .then((data) => {
         if (!ignore) setAssignedWords(data);
@@ -112,13 +100,10 @@ export default function Page() {
     };
   }, []);
 
-  const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
+  const handleStrategyChange = async (id: number, strategy: Strategy) => {
     let data: NewWord;
     try {
-      data = await apiFetch<NewWord>(
-        `/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
-        { method: 'PATCH' }
-      );
+      data = await api.newWords.assignStrategy(id, strategy);
     } catch (err) {
       setToasts((prev) => [
         ...prev,
@@ -161,43 +146,45 @@ export default function Page() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const handleSaveStrategy = async (id: number, strategy: WordProcessingStrategy) => {
-    let body: string | null = null;
-    if (strategy === 'New Form') {
-      body = JSON.stringify({ headword: selectedWord?.headword, forms });
-    } else if (strategy === 'Existing Form') {
-      body = JSON.stringify({ headword: selectedWord?.headword });
-    } else if (strategy === 'New Headword') {
-      body = JSON.stringify({
-        definitions: newHeadwordDefinitions,
-        origins: newHeadwordOrigins,
-        alternatives: newHeadwordAlternatives,
-        forms,
-      });
-    } else if (strategy === 'New Definition') {
-      body = JSON.stringify({
-        headword: selectedWord?.headword,
-        definition: {
-          type: newDefinitionDraft.type || null,
-          gender: newDefinitionDraft.gender || null,
-          definition: newDefinitionDraft.definition,
-          examples: newDefinitionDraft.examples,
-        },
-        updateFrequency: newDefinitionDraft.updateFrequency,
-      });
-    } else if (strategy === 'Ignore') {
-      body = JSON.stringify({ type: ignoreType });
-    }
+  const applyStrategy = (id: number, strategy: Strategy): Promise<unknown> => {
+    // An empty headword is rejected by the API with a validation message
+    const headword = selectedWord?.headword ?? '';
 
-    try {
-      if (strategy === 'Remove') {
-        await apiFetch(`/api/words/new/${id}`, { method: 'DELETE' });
-      } else {
-        await apiFetch(`/api/words/new/${id}/${strategyEndpoints[strategy]}`, {
-          method: 'POST',
-          body,
+    switch (strategy) {
+      case 'Frequency Only':
+        return api.newWords.applyFrequencyOnly(id);
+      case 'Existing Form':
+        return api.newWords.applyExistingForm(id, { headword });
+      case 'New Form':
+        return api.newWords.applyNewForm(id, { headword, forms });
+      case 'New Definition':
+        return api.newWords.applyNewDefinition(id, {
+          headword,
+          definition: {
+            type: newDefinitionDraft.type || null,
+            gender: newDefinitionDraft.gender || null,
+            definition: newDefinitionDraft.definition,
+            examples: newDefinitionDraft.examples,
+          },
+          updateFrequency: newDefinitionDraft.updateFrequency,
         });
-      }
+      case 'New Headword':
+        return api.newWords.applyNewHeadword(id, {
+          definitions: newHeadwordDefinitions,
+          origins: newHeadwordOrigins,
+          alternatives: newHeadwordAlternatives,
+          forms,
+        });
+      case 'Ignore':
+        return api.newWords.applyIgnore(id, { type: ignoreType });
+      case 'Remove':
+        return api.newWords.remove(id);
+    }
+  };
+
+  const handleSaveStrategy = async (id: number, strategy: Strategy) => {
+    try {
+      await applyStrategy(id, strategy);
     } catch (err) {
       setToasts((prev) => [
         ...prev,
@@ -322,10 +309,7 @@ export default function Page() {
             className={style.strategySelect}
             value={(currentWord.strategy as string) || ''}
             onChange={(e) =>
-              handleStrategyChange(
-                currentWord.id,
-                (e.target.value as WordProcessingStrategy) || null
-              )
+              handleStrategyChange(currentWord.id, (e.target.value as Strategy) || null)
             }
           >
             <option value="">Bez strategije</option>

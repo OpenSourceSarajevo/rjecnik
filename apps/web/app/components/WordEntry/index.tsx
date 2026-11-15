@@ -1,45 +1,19 @@
+import type { Word } from '@rjecnik/api';
+
 import MeaningCard from './MeaningCard';
 import Forms from './Forms';
 
 import style from './WordEntry.module.css';
 
-export type WordDefinition = {
-  type: string | null;
-  gender: string | null;
-  examples: string[] | null;
-  definition: string;
-  part_of_speech: string | null;
-  pronunciation_ipa: string | null;
-  pronunciation_audio: string | null;
-  synonyms: string[];
-  antonyms: string[];
-};
-
-export type WordForm = {
-  form: string;
-  name: string;
-  value: string;
-  category: string;
-};
-
-export type WordDetails = {
-  id: number;
-  headword: string;
-  definitions: WordDefinition[];
-  origins: string[] | null;
-  alternatives: string[] | null;
-  forms: WordForm[];
-};
-
 type WordEntryProps = {
-  word: Omit<WordDetails, 'id'>;
+  word: Omit<Word, 'id'>;
   // Rendered next to the headword, e.g. the report button
   action?: React.ReactNode;
   // Rendered below the headword
   meta?: React.ReactNode;
 };
 
-const Origins = ({ origins }: { origins: string[] | null }) => {
+const Origins = ({ origins }: { origins?: string[] | null }) => {
   if (!origins || origins.length === 0) return null;
 
   return (
@@ -82,7 +56,7 @@ const WordEntry = ({ word, action, meta }: WordEntryProps) => {
         </ol>
       </section>
 
-      <Forms forms={forms} />
+      <Forms forms={forms ?? []} />
     </article>
   );
 };

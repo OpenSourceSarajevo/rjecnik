@@ -4,12 +4,14 @@ import { useEffect, useId, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Flag, Volume2 } from 'lucide-react';
 
-import WordEntry, { type WordDetails } from '@/app/components/WordEntry';
+import type { Word } from '@rjecnik/api';
+
+import WordEntry from '@/app/components/WordEntry';
 
 import style from './Guide.module.css';
 
 // Snapshot of a real entry, trimmed to the first two meanings
-const sampleWord: Omit<WordDetails, 'id'> = {
+const sampleWord: Omit<Word, 'id'> = {
   headword: 'kuća',
   alternatives: [],
   origins: [],

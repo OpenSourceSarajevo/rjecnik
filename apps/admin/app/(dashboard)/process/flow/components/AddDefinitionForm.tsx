@@ -1,5 +1,5 @@
-import { Word, Definition } from '@/types/dictionary';
-import { apiFetch } from '@/utils/api';
+import type { Definition, Word } from '@rjecnik/api';
+import { api } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
@@ -45,9 +45,7 @@ const AddDefinitionForm: React.FC<AddDefinitionFormProps> = ({
           setResults([]);
           return;
         }
-        const data = await apiFetch<{ items: Word[] }>(
-          `/api/words/search?page_size=5&q=${encodeURIComponent(query)}`
-        );
+        const data = await api.words.search({ q: query, page_size: 5 });
         setResults(data.items);
       },
       query ? 300 : 0
@@ -58,7 +56,8 @@ const AddDefinitionForm: React.FC<AddDefinitionFormProps> = ({
 
   useEffect(() => {
     if (!selectedWord) return;
-    apiFetch<Word>(`/api/words/headword/${encodeURIComponent(selectedWord.headword)}`)
+    api.words
+      .byHeadword(selectedWord.headword)
       .then((data) => setDefinitions(data.definitions || []))
       .catch(() => {})
       .finally(() => setIsLoading(false));

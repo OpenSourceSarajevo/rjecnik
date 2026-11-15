@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Search, Inbox, Trash2, Upload, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
-import { IgnoredWord, IgnoreType } from '@/types/words';
-import { ApiError, apiFetch } from '@/utils/api';
+import type { IgnoreType, IgnoredWord } from '@rjecnik/api';
+import { ApiError, api } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';
 
@@ -51,12 +51,11 @@ export default function Page() {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        const params = new URLSearchParams({
+        return api.ignoredWords.list({
           q: searchTerm,
-          page: String(currentPage),
-          page_size: String(ITEMS_PER_PAGE),
+          page: currentPage,
+          page_size: ITEMS_PER_PAGE,
         });
-        return apiFetch<{ items: IgnoredWord[]; total: number }>(`/api/words/ignored?${params}`);
       })
       .then(({ items, total }) => {
         if (ignore) return;
@@ -87,10 +86,7 @@ export default function Page() {
   const handleTypeChange = async (id: number, type: IgnoreType) => {
     let data: IgnoredWord;
     try {
-      data = await apiFetch<IgnoredWord>(`/api/words/ignored/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ type }),
-      });
+      data = await api.ignoredWords.update(id, { type });
     } catch (err) {
       addToast({ type: 'error', message: err instanceof ApiError ? err.message : 'Greška.' });
       return;
@@ -103,7 +99,7 @@ export default function Page() {
       return;
     }
     try {
-      await apiFetch<void>(`/api/words/ignored/${id}`, { method: 'DELETE' });
+      await api.ignoredWords.remove(id);
     } catch (err) {
       addToast({ type: 'error', message: err instanceof ApiError ? err.message : 'Greška.' });
       return;
@@ -130,10 +126,7 @@ export default function Page() {
 
     setIsImporting(true);
     try {
-      const data = await apiFetch<{ count: number }>('/api/words/ignored', {
-        method: 'POST',
-        body: JSON.stringify({ headwords, type: importType }),
-      });
+      const data = await api.ignoredWords.bulkAdd({ headwords, type: importType });
       addToast({
         type: 'success',
         message: `Dodano/ažurirano ${data.count} riječi.`,

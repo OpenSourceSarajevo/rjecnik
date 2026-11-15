@@ -1,4 +1,4 @@
-import { IgnoreType } from '@/types/words';
+import type { IgnoreType } from '@rjecnik/api';
 import style from './IgnoreForm.module.css';
 
 const ignoreTypes: { value: IgnoreType; label: string; description: string }[] = [

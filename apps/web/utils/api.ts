@@ -1,22 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+import { createApi, createFetchTransport } from '@rjecnik/api';
 
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string
-  ) {
-    super(message);
-  }
-}
+export { ApiError } from '@rjecnik/api';
 
-/**
- * Calls the public endpoints of the Rječnik API (apps/api). Works both on the
- * server and in the browser; pass `next.revalidate` for cached server fetches.
- */
-export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${API_URL}/api${path}`, init);
-  if (!res.ok) {
-    throw new ApiError(res.status, `Greška: ${res.status}`);
-  }
-  return res.json() as Promise<T>;
-}
+/** Public endpoints of the Rječnik API; works on the server and in the browser. */
+export const api = createApi(createFetchTransport({ baseUrl: process.env.NEXT_PUBLIC_API_URL! }));

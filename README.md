@@ -4,6 +4,7 @@ Rječnik is a Bosnian language dictionary application. This is a monorepo contai
 
 - [`apps/web`](./apps/web) — public-facing dictionary search site (Vercel)
 - [`apps/admin`](./apps/admin) — admin dashboard for managing entries (Netlify)
+- [`packages/api`](./packages/api) — shared Rječnik API client and response types used by both apps
 - [`tools/etl`](./tools/etl) — one-time Python ETL pipeline (historical use, not actively developed)
 - [`supabase`](./supabase) — migrations, edge functions, and local dev config shared by both apps
 

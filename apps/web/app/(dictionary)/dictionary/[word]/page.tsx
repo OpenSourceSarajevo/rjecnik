@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 
-import { ApiError, apiFetch } from '@/utils/api';
-import WordEntry, { type WordDetails } from '@/app/components/WordEntry';
+import { ApiError, api } from '@/utils/api';
+import WordEntry from '@/app/components/WordEntry';
 import { openGraphDefaults } from '@/app/shared-metadata';
 
 import ReportButton from './ReportButton';
@@ -22,7 +22,7 @@ export const generateStaticParams = async () => [];
 // Deduplicates the request between generateMetadata and the page
 const getWord = cache(async (headword: string) => {
   try {
-    return await apiFetch<WordDetails>(`/words/headword/${encodeURIComponent(headword)}`, {
+    return await api.words.byHeadword(headword, {
       next: { revalidate },
     });
   } catch (error) {

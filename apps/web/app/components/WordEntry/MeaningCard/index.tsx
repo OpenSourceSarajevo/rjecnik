@@ -7,8 +7,8 @@ type MeaningCardProps = {
   gender: string | null;
   definition: string | null;
   examples: string[] | null;
-  synonyms: string[] | null;
-  antonyms: string[] | null;
+  synonyms?: string[] | null;
+  antonyms?: string[] | null;
 };
 
 const Examples = ({ examples }: { examples: string[] | null }) => {

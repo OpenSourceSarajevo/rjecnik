@@ -1,4 +1,4 @@
-import type { Definition } from '@/types/dictionary';
+import type { Definition } from '@rjecnik/api';
 import {
   toWordContext,
   type ProposedDefinition,

@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { v4 as uuidv4 } from 'uuid';
 import WordEditor from '../components/WordEditor';
-import { Definition, WordForm } from '@/types/dictionary';
-import { apiFetch } from '@/utils/api';
+import type { Definition, WordForm } from '@rjecnik/api';
+import { api } from '@/utils/api';
 
 import style from './page.module.css';
 
@@ -42,14 +42,11 @@ export default function AddWordPage() {
         forms: forms,
         alternatives: alternatives,
         origins: origins,
-        synonyms: definitions.flatMap((d) => d.synonyms),
-        antonyms: definitions.flatMap((d) => d.antonyms),
+        synonyms: definitions.flatMap((d) => d.synonyms ?? []),
+        antonyms: definitions.flatMap((d) => d.antonyms ?? []),
       };
 
-      await apiFetch('/api/words', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
+      await api.words.create(payload);
       setToasts((prev) => [
         ...prev,
         {

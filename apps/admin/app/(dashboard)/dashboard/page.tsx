@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Book, FileText, Layers, Upload, Database, ArrowRight } from 'lucide-react';
 
-import { apiFetch } from '@/utils/api';
+import { api } from '@/utils/api';
 
 import TypeBreakdown from './components/TypeBreakdown';
 import style from './page.module.css';
@@ -67,9 +67,7 @@ export default function Page() {
       setLoading(true);
       setError(null);
       try {
-        const data = await apiFetch<{ stats: Stats; type_breakdown: TypeBreakdownItem[] }>(
-          '/api/dashboard/stats'
-        );
+        const data = await api.dashboard.stats();
         setStats(data.stats);
         setTypeBreakdown(data.type_breakdown);
       } catch {

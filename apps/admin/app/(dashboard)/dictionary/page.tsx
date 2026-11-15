@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Edit, Search } from 'lucide-react';
-import { Word } from '@/types/dictionary';
-import { apiFetch } from '@/utils/api';
+import type { WordSummary } from '@rjecnik/api';
+import { api } from '@/utils/api';
 import style from './page.module.css';
 import Link from 'next/link';
 import Button from '@/app/components/Button';
@@ -11,7 +11,7 @@ import Button from '@/app/components/Button';
 const ITEMS_PER_PAGE = 10;
 
 const Page: React.FC = () => {
-  const [words, setWords] = useState<Word[]>([]);
+  const [words, setWords] = useState<WordSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
@@ -34,12 +34,11 @@ const Page: React.FC = () => {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        const params = new URLSearchParams({
+        return api.words.search({
           q: searchTerm,
-          page: String(currentPage),
-          page_size: String(ITEMS_PER_PAGE),
+          page: currentPage,
+          page_size: ITEMS_PER_PAGE,
         });
-        return apiFetch<{ items: Word[]; has_more: boolean }>(`/api/words/search?${params}`);
       })
       .then((data) => {
         if (ignore) return;

@@ -7,8 +7,8 @@ import ToastContainer, { Toast } from '@/app/components/Toast';
 import WordEditor from '../components/WordEditor';
 import WordChatPanel from './components/WordChatPanel';
 import NoteField from './components/NoteField';
-import { Definition, Word, WordForm } from '@/types/dictionary';
-import { ApiError, apiFetch } from '@/utils/api';
+import type { Definition, WordForm } from '@rjecnik/api';
+import { ApiError, api } from '@/utils/api';
 
 import style from './page.module.css';
 
@@ -34,7 +34,8 @@ export default function UpdateWordPage() {
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    apiFetch<Word>(`/api/words/${id}`)
+    api.words
+      .byId(Number(id))
       .then((data) => {
         setHeadword(data.headword || '');
         setDefinitions(data.definitions || []);
@@ -85,10 +86,7 @@ export default function UpdateWordPage() {
         antonyms: antonyms,
         note: note.trim() || null,
       };
-      await apiFetch<Word>(`/api/words/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(payload),
-      });
+      await api.words.update(Number(id), payload);
       setToasts((prev) => [
         ...prev,
         {

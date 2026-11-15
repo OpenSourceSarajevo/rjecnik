@@ -4,7 +4,7 @@ import style from './RelatedWords.module.css';
 
 type RelatedWordsProps = {
   label: string;
-  words: string[] | null;
+  words?: string[] | null;
 };
 
 const RelatedWords = ({ label, words }: RelatedWordsProps) => {

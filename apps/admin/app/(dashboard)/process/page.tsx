@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Wand2, Inbox, Search, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
-import { NewWord, WordProcessingStrategy } from '@/types/words';
-import { ApiError, apiFetch } from '@/utils/api';
+import type { NewWord, Strategy } from '@rjecnik/api';
+import { ApiError, api } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';
 
@@ -28,10 +28,10 @@ export default function Page() {
   const [expandedExamples, setExpandedExamples] = useState<Set<number>>(new Set());
   const [headwordInput, setHeadwordInput] = useState('');
   const [headwordFilter, setHeadwordFilter] = useState('');
-  const [strategyFilter, setStrategyFilter] = useState('');
+  const [strategyFilter, setStrategyFilter] = useState<Strategy | 'none' | ''>('');
   const [isNewFilter, setIsNewFilter] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
-  const [bulkStrategy, setBulkStrategy] = useState('');
+  const [bulkStrategy, setBulkStrategy] = useState<Strategy | ''>('');
   const [isBulkApplying, setIsBulkApplying] = useState(false);
   const router = useRouter();
 
@@ -68,7 +68,7 @@ export default function Page() {
     });
   };
 
-  const strategyTranslations: Record<WordProcessingStrategy, string> = {
+  const strategyTranslations: Record<Strategy, string> = {
     'Frequency Only': 'Samo frekvencija',
     // "New Example": "Novi primjer",
     'New Definition': 'Nova definicija',
@@ -79,7 +79,7 @@ export default function Page() {
     Remove: 'Ukloni',
   };
 
-  const strategies: WordProcessingStrategy[] = [
+  const strategies: Strategy[] = [
     'Frequency Only',
     // "New Example",
     'New Definition',
@@ -97,14 +97,13 @@ export default function Page() {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        const params = new URLSearchParams({
-          page: String(currentPage),
-          page_size: String(ITEMS_PER_PAGE),
+        return api.newWords.list({
+          page: currentPage,
+          page_size: ITEMS_PER_PAGE,
+          headword: headwordFilter,
+          strategy: strategyFilter || undefined,
+          is_new: isNewFilter ? isNewFilter === 'true' : undefined,
         });
-        if (headwordFilter) params.set('headword', headwordFilter);
-        if (strategyFilter) params.set('strategy', strategyFilter);
-        if (isNewFilter) params.set('is_new', isNewFilter);
-        return apiFetch<{ items: NewWord[]; total: number }>(`/api/words/new?${params}`);
       })
       .then(({ items, total }) => {
         if (ignore) return;
@@ -126,13 +125,10 @@ export default function Page() {
     };
   }, [currentPage, headwordFilter, strategyFilter, isNewFilter]);
 
-  const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
+  const handleStrategyChange = async (id: number, strategy: Strategy) => {
     let updatedWord: NewWord;
     try {
-      updatedWord = await apiFetch<NewWord>(
-        `/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
-        { method: 'PATCH' }
-      );
+      updatedWord = await api.newWords.assignStrategy(id, strategy);
     } catch (err) {
       setToasts((prev) => [
         ...prev,
@@ -184,11 +180,7 @@ export default function Page() {
     setIsBulkApplying(true);
     const ids = Array.from(selectedIds);
     const results = await Promise.allSettled(
-      ids.map((id) =>
-        apiFetch<NewWord>(`/api/words/new/${id}/strategy/${encodeURIComponent(bulkStrategy)}`, {
-          method: 'PATCH',
-        })
-      )
+      ids.map((id) => api.newWords.assignStrategy(id, bulkStrategy))
     );
 
     const updatedById = new Map<number, NewWord>();
@@ -267,7 +259,7 @@ export default function Page() {
           className={style.filterSelect}
           value={strategyFilter}
           onChange={(e) => {
-            setStrategyFilter(e.target.value);
+            setStrategyFilter(e.target.value as typeof strategyFilter);
             setCurrentPage(1);
           }}
         >
@@ -309,7 +301,7 @@ export default function Page() {
           <select
             className={style.filterSelect}
             value={bulkStrategy}
-            onChange={(e) => setBulkStrategy(e.target.value)}
+            onChange={(e) => setBulkStrategy(e.target.value as typeof bulkStrategy)}
           >
             <option value="">Odaberi strategiju...</option>
             {strategies.map((s) => (
@@ -447,10 +439,7 @@ export default function Page() {
                           className={style.strategySelect}
                           value={(word.strategy as string) || ''}
                           onChange={(e) =>
-                            handleStrategyChange(
-                              word.id,
-                              (e.target.value as WordProcessingStrategy) || null
-                            )
+                            handleStrategyChange(word.id, (e.target.value as Strategy) || null)
                           }
                         >
                           <option value="">Bez strategije</option>

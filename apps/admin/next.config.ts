@@ -7,9 +7,10 @@ const nextConfig: NextConfig = {
   // which causes flaky dev-server behavior (stale 404s, wrong static asset MIME types).
   // outputFileTracingRoot covers the webpack build; turbopack.root covers `next dev`
   // (Turbopack is the default dev bundler as of Next.js 16).
-  outputFileTracingRoot: path.join(__dirname),
+  // It's the repo root rather than this app so shared code in packages/ can be compiled.
+  outputFileTracingRoot: path.join(__dirname, '../..'),
   turbopack: {
-    root: path.join(__dirname),
+    root: path.join(__dirname, '../..'),
   },
 
   experimental: {

@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,9 +11,10 @@ const nextConfig = {
   // which causes flaky dev-server behavior (stale 404s, wrong static asset MIME types).
   // outputFileTracingRoot covers the webpack build; turbopack.root covers `next dev`
   // (Turbopack is the default dev bundler as of Next.js 16).
-  outputFileTracingRoot: __dirname,
+  // It's the repo root rather than this app so shared code in packages/ can be compiled.
+  outputFileTracingRoot: repoRoot,
   turbopack: {
-    root: __dirname,
+    root: repoRoot,
   },
   async headers() {
     return [

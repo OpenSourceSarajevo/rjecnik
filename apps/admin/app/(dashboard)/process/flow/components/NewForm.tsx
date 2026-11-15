@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Search, X, Plus } from 'lucide-react';
-import { NewWord } from '@/types/words';
+import type { NewWord, Word, WordForm } from '@rjecnik/api';
 import style from './NewForm.module.css';
-import { Word, WordForm } from '@/types/dictionary';
-import { apiFetch } from '@/utils/api';
+import { api } from '@/utils/api';
 import Button from '@/app/components/Button';
 
 type NewFormProps = {
@@ -40,9 +39,7 @@ const NewForm: React.FC<NewFormProps> = ({
           setResults([]);
           return;
         }
-        const data = await apiFetch<{ items: Word[] }>(
-          `/api/words/search?page_size=5&q=${encodeURIComponent(query)}`
-        );
+        const data = await api.words.search({ q: query, page_size: 5 });
         setResults(data.items);
       },
       query ? 300 : 0
@@ -54,7 +51,8 @@ const NewForm: React.FC<NewFormProps> = ({
   // Fetch single word details when selectedWord changes
   useEffect(() => {
     if (!selectedWord) return;
-    apiFetch<Word>(`/api/words/headword/${encodeURIComponent(selectedWord.headword)}`)
+    api.words
+      .byHeadword(selectedWord.headword)
       .then((data) => setForms(data.forms || []))
       .catch(() => {})
       .finally(() => setIsLoading(false));

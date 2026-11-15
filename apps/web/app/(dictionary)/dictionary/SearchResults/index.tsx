@@ -3,28 +3,13 @@
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 
-import { apiFetch } from '@/utils/api';
+import type { WordSummary } from '@rjecnik/api';
+
+import { api } from '@/utils/api';
 
 import Card from '../Card';
 
 import style from './SearchResults.module.css';
-
-type Word = {
-  id: number;
-  headword: string;
-  definitions: Definition[];
-};
-
-type Definition = {
-  type: string | null;
-  gender: string | null;
-  definition: string;
-};
-
-type SearchResponse = {
-  items: Word[];
-  has_more: boolean;
-};
 
 const PAGE_SIZE = 20;
 const DEBOUNCE_MS = 250;
@@ -33,7 +18,7 @@ const SearchResults = ({ initialQuery }: { initialQuery: string }) => {
   const [query, setQuery] = useState(initialQuery);
   // Query and page change together so a new query never fetches a stale page
   const [search, setSearch] = useState({ query: initialQuery.trim(), page: 0 });
-  const [data, setData] = useState<Word[]>([]);
+  const [data, setData] = useState<WordSummary[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -62,14 +47,10 @@ const SearchResults = ({ initialQuery }: { initialQuery: string }) => {
       if (page === 0) setData([]);
 
       try {
-        const params = new URLSearchParams({
-          q: query,
-          page: (page + 1).toString(),
-          page_size: PAGE_SIZE.toString(),
-        });
-        const result = await apiFetch<SearchResponse>(`/words/search?${params}`, {
-          signal: controller.signal,
-        });
+        const result = await api.words.search(
+          { q: query, page: page + 1, page_size: PAGE_SIZE },
+          { signal: controller.signal }
+        );
 
         setData((prevData) => [...prevData, ...result.items]);
         setHasMore(result.has_more);

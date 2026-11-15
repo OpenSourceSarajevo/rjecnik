@@ -1,15 +1,13 @@
 import type { MetadataRoute } from 'next';
 
-import { apiFetch } from '@/utils/api';
+import { api } from '@/utils/api';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
 
 export const revalidate = 86400;
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const headwords = await apiFetch<string[]>('/words/headwords', {
-    next: { revalidate },
-  });
+  const headwords = await api.words.headwords({ next: { revalidate } });
 
   return [
     { url: SITE_URL, changeFrequency: 'monthly', priority: 1 },

@@ -1,4 +1,4 @@
-import { Definition, WordForm } from '@/types/dictionary';
+import type { Definition, WordForm } from '@rjecnik/api';
 import DefinitionsForm from '@/app/(dashboard)/dictionary/components/DefinitionsForm';
 import FormsForm from '@/app/(dashboard)/dictionary/components/FormsForm';
 import OriginsForm from '@/app/(dashboard)/dictionary/components/OriginsForm';
