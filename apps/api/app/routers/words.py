@@ -27,6 +27,12 @@ class Word(BaseModel):
     frequency: int | None = None
 
 
+class WordSummary(BaseModel):
+    id: int
+    headword: str
+    definitions: list[dict[str, Any]]
+
+
 class WordDetail(Word):
     """Full row for the admin app, including the editor note and audit columns."""
 
@@ -98,12 +104,17 @@ def list_words(
 # Fixed paths must come before /{word_id}, otherwise they're matched as an id.
 @router.get("/search")
 def search_words(
+    db: Db,
     q: str = "",
     page: Annotated[int, Query(ge=1)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100)] = 20,
-) -> dict[str, Any]:
-    """Ranked search via the search_words_ranked RPC."""
-    not_implemented()
+) -> list[WordSummary]:
+    """Exact match first, then prefix matches, then other matches; alphabetical within each."""
+    res = db.rpc(
+        "search_words_ranked",
+        {"search_term": q, "limit_value": page_size, "offset_value": (page - 1) * page_size},
+    ).execute()
+    return [WordSummary(**row) for row in res.data]
 
 
 # :path so headwords containing "/" (e.g. "A/a") still match
