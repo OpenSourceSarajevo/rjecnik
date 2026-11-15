@@ -4,7 +4,7 @@ from fastapi import APIRouter, Body, HTTPException, Query
 from pydantic import BaseModel
 
 from app.auth import AdminOnly
-from app.db import Db
+from app.db import AdminDb, Db
 from app.stubs import not_implemented
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -24,6 +24,16 @@ class Word(BaseModel):
     synonyms: list[str] | None = None
     antonyms: list[str] | None = None
     frequency: int | None = None
+
+
+class WordDetail(Word):
+    """Full row for the admin app, including the editor note and audit columns."""
+
+    note: str | None = None
+    created_by: str | None = None
+    created_at: str | None = None
+    updated_by: str | None = None
+    updated_at: str | None = None
 
 
 class WordPage(BaseModel):
@@ -69,8 +79,11 @@ def get_word_by_headword(db: Db, headword: str) -> Word:
 
 
 @router.get("/{word_id:int}", dependencies=AdminOnly)
-def get_word(word_id: int) -> Word:
-    not_implemented()
+def get_word(db: AdminDb, word_id: int) -> WordDetail:
+    res = db.table("words_v2").select("*").eq("id", word_id).limit(1).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Riječ nije pronađena")
+    return WordDetail(**res.data[0])
 
 
 @router.post("", status_code=201, dependencies=AdminOnly)

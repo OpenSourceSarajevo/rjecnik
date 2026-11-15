@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
+from app.errors import register_error_handlers
 from app.routers import dashboard, health, ignored_words, new_words, words
 
 settings = get_settings()
 
 app = FastAPI(title=settings.app_name)
+register_error_handlers(app)
 
 app.add_middleware(
     CORSMiddleware,
