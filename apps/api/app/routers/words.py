@@ -2,10 +2,11 @@ from datetime import UTC, datetime
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, HTTPException, Query
+from postgrest.exceptions import APIError
 from pydantic import BaseModel
 
 from app.auth import Admin, AdminOnly
-from app.db import AdminDb, Db
+from app.db import RANGE_NOT_SATISFIABLE, AdminDb, Db
 from app.stubs import not_implemented
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -124,6 +125,34 @@ def search_words(
         items=[WordSummary(**row) for row in res.data[:page_size]],
         has_more=len(res.data) > page_size,
     )
+
+
+# PostgREST caps a single select at 1000 rows
+HEADWORDS_BATCH_SIZE = 1000
+
+
+@router.get("/headwords")
+def list_headwords(db: Db) -> list[str]:
+    """Every headword, for the public sitemap."""
+    headwords: list[str] = []
+    while True:
+        start = len(headwords)
+        try:
+            res = (
+                db.table("words_v2")
+                .select("headword")
+                .order("id")
+                .range(start, start + HEADWORDS_BATCH_SIZE - 1)
+                .execute()
+            )
+        except APIError as e:
+            # The previous batch ended exactly on the last row
+            if e.code != RANGE_NOT_SATISFIABLE:
+                raise
+            return headwords
+        headwords.extend(row["headword"] for row in res.data)
+        if len(res.data) < HEADWORDS_BATCH_SIZE:
+            return headwords
 
 
 # :path so headwords containing "/" (e.g. "A/a") still match

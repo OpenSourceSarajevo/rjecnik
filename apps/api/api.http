@@ -8,6 +8,9 @@ GET {{baseUrl}}/health
 ### List words
 GET {{baseUrl}}/words?limit=5&offset=0
 
+### All headwords (sitemap)
+GET {{baseUrl}}/words/headwords
+
 ### Word by headword
 GET {{baseUrl}}/words/headword/kuća
 

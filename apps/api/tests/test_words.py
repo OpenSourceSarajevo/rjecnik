@@ -36,6 +36,22 @@ def test_health(client):
     assert client.get("/api/health").json() == {"status": "ok"}
 
 
+def test_list_headwords(client, words):
+    assert client.get("/api/words/headwords").json() == ["kuća", "kućanica", "A/a"]
+
+
+def test_list_headwords_pages_through_batches(client, db, monkeypatch):
+    monkeypatch.setattr("app.routers.words.HEADWORDS_BATCH_SIZE", 2)
+    db.tables["words_v2"] = [{"id": i, "headword": f"w{i}"} for i in range(1, 6)]
+    assert client.get("/api/words/headwords").json() == [f"w{i}" for i in range(1, 6)]
+
+
+def test_list_headwords_exact_multiple_of_batch(client, db, monkeypatch):
+    monkeypatch.setattr("app.routers.words.HEADWORDS_BATCH_SIZE", 2)
+    db.tables["words_v2"] = [{"id": i, "headword": f"w{i}"} for i in range(1, 5)]
+    assert client.get("/api/words/headwords").json() == [f"w{i}" for i in range(1, 5)]
+
+
 def test_get_by_headword_hides_note(client, words):
     r = client.get("/api/words/headword/kuća")
     assert r.status_code == 200
