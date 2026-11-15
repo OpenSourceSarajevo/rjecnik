@@ -37,6 +37,16 @@ const emptyDefinition = (examples: string[]): Definition => ({
   antonyms: [],
 });
 
+// API endpoint per strategy: POST /api/words/new/{id}/{endpoint}; Remove is DELETE /api/words/new/{id}
+const strategyEndpoints: Record<Exclude<WordProcessingStrategy, 'Remove'>, string> = {
+  'Frequency Only': 'frequency-only',
+  'Existing Form': 'existing-form',
+  'New Form': 'new-form',
+  'New Definition': 'new-definition',
+  'New Headword': 'new-headword',
+  Ignore: 'ignore',
+};
+
 export default function Page() {
   const [assignedWords, setAssignedWords] = useState<NewWord[]>([]);
   const [processingIndex, setProcessingIndex] = useState(0);
@@ -180,10 +190,14 @@ export default function Page() {
     }
 
     try {
-      await apiFetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
-        method: 'POST',
-        body,
-      });
+      if (strategy === 'Remove') {
+        await apiFetch(`/api/words/new/${id}`, { method: 'DELETE' });
+      } else {
+        await apiFetch(`/api/words/new/${id}/${strategyEndpoints[strategy]}`, {
+          method: 'POST',
+          body,
+        });
+      }
     } catch (err) {
       setToasts((prev) => [
         ...prev,
