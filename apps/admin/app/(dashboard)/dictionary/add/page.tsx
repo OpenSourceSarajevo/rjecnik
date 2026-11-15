@@ -5,6 +5,7 @@ import ToastContainer, { Toast } from '@/app/components/Toast';
 import { v4 as uuidv4 } from 'uuid';
 import WordEditor from '../components/WordEditor';
 import { Definition, WordForm } from '@/app/api/dictionary/route';
+import { apiFetch } from '@/utils/api';
 
 import style from './page.module.css';
 
@@ -45,23 +46,10 @@ export default function AddWordPage() {
         antonyms: definitions.flatMap((d) => d.antonyms),
       };
 
-      const res = await fetch('/api/dictionary', {
+      await apiFetch('/api/words', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        setToasts((prev) => [
-          ...prev,
-          {
-            id: uuidv4(),
-            type: 'error',
-            message: data.error ? String(data.error) : `Greška: ${res.status}`,
-          },
-        ]);
-        return;
-      }
       setToasts((prev) => [
         ...prev,
         {
