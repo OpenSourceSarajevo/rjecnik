@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Search, Inbox, Trash2, Upload, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { IgnoredWord, IgnoreType } from '@/app/api/words/contracts';
+import { apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';
 
@@ -50,21 +51,18 @@ export default function Page() {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        return fetch(
-          `/api/words/ignore?pageNumber=${currentPage - 1}&pageSize=${ITEMS_PER_PAGE}&word=${encodeURIComponent(searchTerm)}`
-        );
+        const params = new URLSearchParams({
+          q: searchTerm,
+          page: String(currentPage),
+          page_size: String(ITEMS_PER_PAGE),
+        });
+        return apiFetch<{ items: IgnoredWord[]; total: number }>(`/api/words/ignored?${params}`);
       })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(({ data, total }) => {
+      .then(({ items, total }) => {
         if (ignore) return;
         setTotalCount(total);
         setHasMore(total > currentPage * ITEMS_PER_PAGE);
-        setWords(data || []);
+        setWords(items);
       })
       .catch(() => {
         if (!ignore) setError('Greška pri učitavanju riječi.');
