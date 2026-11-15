@@ -52,6 +52,16 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Make sure to configure a different port for one of the apps if running both.
 
+### Running everything with Docker
+
+`compose.yaml` runs the API (http://localhost:8000), the public site (http://localhost:3000) and the admin dashboard (http://localhost:3001), each configured by its own `.env` (`apps/api`, `apps/web`, `apps/admin`, set up as described above):
+
+```bash
+docker compose up --build
+```
+
+The web app is built when its container starts, because the build fetches the sitemap from the API, so each start takes about a minute. The admin's `NEXT_PUBLIC_*` values are baked into its image, so rebuild it (`--build`) after changing them. The historical ETL scripts run via `docker compose run --rm etl python <script>`.
+
 ### Setting up auth
 
 1. Set up a Google Cloud Console app to get a client id and secret:

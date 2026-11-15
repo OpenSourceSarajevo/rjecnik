@@ -1,0 +1,19 @@
+# Build context for apps/web and apps/admin is the repo root (they compile shared code from packages/)
+**/node_modules
+**/.next
+**/.env*
+!**/.env.example
+# The admin image inlines NEXT_PUBLIC_* values from it at build time
+!apps/admin/.env
+**/*.tsbuildinfo
+**/next-env.d.ts
+**/.DS_Store
+.git
+.github
+.vscode
+.cursor
+.claude
+docs
+supabase
+tools
+apps/api

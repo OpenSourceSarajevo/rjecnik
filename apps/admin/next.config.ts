@@ -2,6 +2,9 @@ import path from 'path';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // Docker images run the self-contained server; Netlify does its own bundling
+  output: process.env.NEXT_OUTPUT === 'standalone' ? 'standalone' : undefined,
+
   // Pin the workspace root explicitly — otherwise Next.js walks up from cwd looking
   // for lockfiles and can lock onto an unrelated one (e.g. ~/package-lock.json),
   // which causes flaky dev-server behavior (stale 404s, wrong static asset MIME types).

@@ -1,0 +1,52 @@
+# Runs the API, the public site and the admin dashboard, configured by each app's own .env
+# (apps/api/.env, apps/web/.env, apps/admin/.env). Values below only override what differs in Docker.
+#   docker compose up --build
+#   docker compose run --rm etl python load/load.py   # historical ETL scripts
+name: rjecnik
+
+services:
+  api:
+    build: apps/api
+    ports:
+      - "8000:8000"
+    env_file: apps/api/.env
+    environment:
+      CORS_ORIGINS: '["http://localhost:3000", "http://localhost:3001"]'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+      start_interval: 1s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "3000:3000"
+    # The app is built when the container starts (it needs the API), so .env changes apply on restart
+    env_file: apps/web/.env
+    environment:
+      # The build and server-side rendering reach the API over the compose network
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+      # The build reads apps/admin/.env; this only moves the OAuth redirect to the admin's port
+      args:
+        NEXT_PUBLIC_SITE_URL: http://localhost:3001
+    ports:
+      - "3001:3000"
+    env_file: apps/admin/.env
+    depends_on:
+      api:
+        condition: service_healthy
