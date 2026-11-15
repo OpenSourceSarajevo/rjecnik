@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Save, PartyPopper, Hash, Sparkles } from 'lucide-react';
 import { IgnoreType, NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
+import { apiFetch } from '@/utils/api';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 
 import NewForm from './components/NewForm';
@@ -84,13 +85,7 @@ export default function Page() {
       .then(() => {
         setIsLoading(true);
         setError(null);
-        return fetch('/api/words/new/my');
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
+        return apiFetch<NewWord[]>('/api/words/new/mine');
       })
       .then((data) => {
         if (!ignore) setAssignedWords(data);
