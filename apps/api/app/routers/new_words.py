@@ -1,6 +1,6 @@
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Body, Query
+from fastapi import APIRouter, Body, HTTPException, Query
 from pydantic import BaseModel
 
 from app.auth import Admin, AdminOnly
@@ -88,9 +88,19 @@ def list_my_new_words(db: AdminDb, user: Admin) -> list[NewWord]:
 
 
 @router.patch("/{new_word_id}/strategy/{strategy}")
-def assign_strategy(new_word_id: int, strategy: str) -> dict[str, Any]:
-    """Assign a strategy to the current user; strategy "null" clears the assignment."""
-    not_implemented()
+def assign_strategy(
+    db: AdminDb, user: Admin, new_word_id: int, strategy: Strategy | Literal["null"]
+) -> NewWord:
+    """Assign a strategy to the signed-in editor; "null" clears the strategy and assignee."""
+    values = (
+        {"strategy": None, "assigned_to": None}
+        if strategy == "null"
+        else {"strategy": strategy, "assigned_to": user.email}
+    )
+    res = db.table("words_new").update(values).eq("id", new_word_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Riječ nije pronađena")
+    return NewWord(**res.data[0])
 
 
 @router.post("/{new_word_id}/strategy/{strategy}")
