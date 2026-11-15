@@ -1,0 +1,104 @@
+@baseUrl = http://localhost:8000/api
+@token = ''
+
+### Health
+GET {{baseUrl}}/health
+
+
+### List words
+GET {{baseUrl}}/words?limit=5&offset=0
+
+### Word by headword
+GET {{baseUrl}}/words/headword/kuća
+
+### Word by headword containing "/"
+GET {{baseUrl}}/words/headword/A%2Fa
+
+### Search words [stub]
+GET {{baseUrl}}/words/search?q=kuć&page=1&page_size=20
+
+
+### Dashboard stats
+GET {{baseUrl}}/dashboard/stats
+Authorization: Bearer {{token}}
+
+### Dashboard stats without token (expect 401)
+GET {{baseUrl}}/dashboard/stats
+
+### Word by id [stub]
+GET {{baseUrl}}/words/1
+Authorization: Bearer {{token}}
+
+### Create word [stub]
+POST {{baseUrl}}/words
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "headword": "primjer",
+  "definitions": [{ "definition": "…", "type": "imenica" }]
+}
+
+### Update word [stub]
+PATCH {{baseUrl}}/words/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "note": "…"
+}
+
+### Chat about word [stub]
+POST {{baseUrl}}/words/1/chat
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+
+### List ignored words [stub]
+GET {{baseUrl}}/words/ignored?q=&page=1&page_size=20
+Authorization: Bearer {{token}}
+
+### Bulk add ignored words [stub]
+POST {{baseUrl}}/words/ignored
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "headwords": ["primjer"],
+  "type": "…"
+}
+
+### Update ignored word [stub]
+PATCH {{baseUrl}}/words/ignored/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "type": "…"
+}
+
+### Delete ignored word [stub]
+DELETE {{baseUrl}}/words/ignored/1
+Authorization: Bearer {{token}}
+
+
+### List new words [stub]
+GET {{baseUrl}}/words/new?page=1&page_size=20
+Authorization: Bearer {{token}}
+
+### My new words [stub]
+GET {{baseUrl}}/words/new/mine
+Authorization: Bearer {{token}}
+
+### Assign strategy [stub]
+PATCH {{baseUrl}}/words/new/1/strategy/merge
+Authorization: Bearer {{token}}
+
+### Apply strategy [stub]
+POST {{baseUrl}}/words/new/1/strategy/merge
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

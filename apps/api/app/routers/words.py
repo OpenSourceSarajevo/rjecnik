@@ -1,11 +1,10 @@
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Query
+from fastapi import APIRouter, Body, HTTPException, Query
 from pydantic import BaseModel
-from supabase import Client
 
 from app.auth import AdminOnly
-from app.db import get_db
+from app.db import Db
 from app.stubs import not_implemented
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -13,8 +12,6 @@ router = APIRouter(prefix="/words", tags=["words"])
 WORD_COLUMNS = (
     "id, headword, origins, definitions, forms, alternatives, synonyms, antonyms, frequency"
 )
-
-Db = Annotated[Client, Depends(get_db)]
 
 
 class Word(BaseModel):
