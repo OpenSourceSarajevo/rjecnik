@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Search, Inbox, Trash2, Upload, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { IgnoredWord, IgnoreType } from '@/app/api/words/contracts';
-import { apiFetch } from '@/utils/api';
+import { ApiError, apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';
 
@@ -136,19 +136,10 @@ export default function Page() {
 
     setIsImporting(true);
     try {
-      const res = await fetch('/api/words/ignore', {
+      const data = await apiFetch<{ count: number }>('/api/words/ignored', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ headwords, type: importType }),
       });
-      const data = await res.json();
-      if (!res.ok || data.error) {
-        addToast({
-          type: 'error',
-          message: data.error ? String(data.error) : `Greška: ${res.status}`,
-        });
-        return;
-      }
       addToast({
         type: 'success',
         message: `Dodano/ažurirano ${data.count} riječi.`,
@@ -157,8 +148,11 @@ export default function Page() {
       setIsImportOpen(false);
       setCurrentPage(1);
       setRefreshKey((k) => k + 1);
-    } catch {
-      addToast({ type: 'error', message: 'Greška pri uvozu riječi.' });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        message: err instanceof ApiError ? err.message : 'Greška pri uvozu riječi.',
+      });
     } finally {
       setIsImporting(false);
     }
