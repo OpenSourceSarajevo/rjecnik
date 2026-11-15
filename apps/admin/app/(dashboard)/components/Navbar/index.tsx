@@ -138,9 +138,7 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onToggle }) => {
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <div className={`${style.avatar} ${isCollapsed ? style.avatarCollapsed : ''}`}>
-            {avatar_url && (
-              <Image src={avatar_url} alt={name} width={25} height={25} quality={100} />
-            )}
+            {avatar_url && <Image src={avatar_url} alt={name} width={25} height={25} />}
           </div>
           {!isCollapsed && (
             <div className={style.userDetails}>
