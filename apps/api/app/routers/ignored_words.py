@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Literal
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from postgrest.exceptions import APIError
@@ -7,7 +7,6 @@ from pydantic import BaseModel, Field, StringConstraints
 from app.auth import AdminOnly
 from app.db import AdminDb
 from app.routers.words import now_iso
-from app.stubs import not_implemented
 
 router = APIRouter(prefix="/words/ignored", tags=["ignored-words"], dependencies=AdminOnly)
 
@@ -101,6 +100,8 @@ def update_ignored_word(db: AdminDb, ignored_id: int, body: IgnoreUpdate) -> Ign
     return IgnoredWord(**res.data[0])
 
 
-@router.delete("/{ignored_id}")
-def delete_ignored_word(ignored_id: int) -> dict[str, Any]:
-    not_implemented()
+@router.delete("/{ignored_id}", status_code=204)
+def delete_ignored_word(db: AdminDb, ignored_id: int) -> None:
+    res = db.table("words_ignore").delete().eq("id", ignored_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Riječ nije pronađena")
