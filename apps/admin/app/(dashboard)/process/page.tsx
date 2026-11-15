@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Wand2, Inbox, Search, X } from 'lucide-react';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 import { NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
-import { apiFetch } from '@/utils/api';
+import { ApiError, apiFetch } from '@/utils/api';
 import style from './page.module.css';
 import Button from '@/app/components/Button';
 
@@ -127,24 +127,24 @@ export default function Page() {
   }, [currentPage, headwordFilter, strategyFilter, isNewFilter]);
 
   const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
-    const res = await fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
-    if (!res.ok || data.error) {
+    let updatedWord: NewWord;
+    try {
+      updatedWord = await apiFetch<NewWord>(
+        `/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
+        { method: 'PATCH' }
+      );
+    } catch (err) {
       setToasts((prev) => [
         ...prev,
         {
           id: uuidv4(),
           type: 'error',
-          message: data.error ? String(data.error) : `Greška: ${res.status}`,
+          message: err instanceof ApiError ? err.message : 'Greška.',
         },
       ]);
       return;
     }
 
-    const updatedWord = data as NewWord;
     setWords((prevWords) =>
       prevWords.map((word) =>
         word.id === updatedWord.id
@@ -185,15 +185,8 @@ export default function Page() {
     const ids = Array.from(selectedIds);
     const results = await Promise.allSettled(
       ids.map((id) =>
-        fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(bulkStrategy)}`, {
+        apiFetch<NewWord>(`/api/words/new/${id}/strategy/${encodeURIComponent(bulkStrategy)}`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-        }).then(async (res) => {
-          const data = await res.json();
-          if (!res.ok || data.error) {
-            throw new Error(data.error ? String(data.error) : `Greška: ${res.status}`);
-          }
-          return data as NewWord;
         })
       )
     );

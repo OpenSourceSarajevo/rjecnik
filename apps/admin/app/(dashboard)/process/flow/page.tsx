@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ArrowLeft, ArrowRight, Save, PartyPopper, Hash, Sparkles } from 'lucide-react';
 import { IgnoreType, NewWord, WordProcessingStrategy } from '@/app/api/words/contracts';
-import { apiFetch } from '@/utils/api';
+import { ApiError, apiFetch } from '@/utils/api';
 import ToastContainer, { Toast } from '@/app/components/Toast';
 
 import NewForm from './components/NewForm';
@@ -103,19 +103,19 @@ export default function Page() {
   }, []);
 
   const handleStrategyChange = async (id: number, strategy: WordProcessingStrategy) => {
-    const res = await fetch(`/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
-
-    if (!res.ok || data.error) {
+    let data: NewWord;
+    try {
+      data = await apiFetch<NewWord>(
+        `/api/words/new/${id}/strategy/${encodeURIComponent(strategy)}`,
+        { method: 'PATCH' }
+      );
+    } catch (err) {
       setToasts((prev) => [
         ...prev,
         {
           id: uuidv4(),
           type: 'error',
-          message: data.error ?? `Greška: ${res.status}`,
+          message: err instanceof ApiError ? err.message : 'Greška.',
         },
       ]);
       return;
