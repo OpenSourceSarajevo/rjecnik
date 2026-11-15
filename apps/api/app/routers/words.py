@@ -1,9 +1,10 @@
+from datetime import UTC, datetime
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, HTTPException, Query
 from pydantic import BaseModel
 
-from app.auth import AdminOnly
+from app.auth import Admin, AdminOnly
 from app.db import AdminDb, Db
 from app.stubs import not_implemented
 
@@ -34,6 +35,42 @@ class WordDetail(Word):
     created_at: str | None = None
     updated_by: str | None = None
     updated_at: str | None = None
+
+
+class DefinitionInput(BaseModel):
+    # Nullable fields are still required keys, matching the admin app's form payload
+    type: str | None
+    gender: str | None
+    examples: list[str] | None
+    definition: str
+    part_of_speech: str | None
+    pronunciation_ipa: str | None
+    pronunciation_audio: str | None
+    synonyms: list[str] | None = None
+    antonyms: list[str] | None = None
+
+
+class WordFormInput(BaseModel):
+    form: str
+    name: str
+    value: str
+    category: str
+
+
+class WordInput(BaseModel):
+    headword: str
+    definitions: list[DefinitionInput]
+    forms: list[WordFormInput] | None = None
+    alternatives: list[str] | None = None
+    origins: list[str] | None = None
+    synonyms: list[str] | None = None
+    antonyms: list[str] | None = None
+    frequency: int | None = None
+    note: str | None = None
+
+
+def now_iso() -> str:
+    return datetime.now(UTC).isoformat()
 
 
 class WordPage(BaseModel):
@@ -91,9 +128,15 @@ def create_word(body: Annotated[dict[str, Any], Body()]) -> Word:
     not_implemented()
 
 
-@router.patch("/{word_id:int}", dependencies=AdminOnly)
-def update_word(word_id: int, body: Annotated[dict[str, Any], Body()]) -> Word:
-    not_implemented()
+@router.patch("/{word_id:int}")
+def update_word(db: AdminDb, user: Admin, word_id: int, body: WordInput) -> WordDetail:
+    # Only fields present in the request are written; omitted optional fields stay as they are
+    values = body.model_dump(exclude_unset=True)
+    values |= {"updated_by": user.email, "updated_at": now_iso()}
+    res = db.table("words_v2").update(values).eq("id", word_id).execute()
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Riječ nije pronađena")
+    return WordDetail(**res.data[0])
 
 
 @router.post("/{word_id:int}/chat", dependencies=AdminOnly)
