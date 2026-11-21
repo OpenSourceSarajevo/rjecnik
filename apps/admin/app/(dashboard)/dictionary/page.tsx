@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Edit, Search } from 'lucide-react';
-import type { WordSummary } from '@rjecnik/api';
+import type { QualityLevel, QualityWord } from '@rjecnik/api';
 import { api } from '@/utils/api';
+import QualityBadge, { LEVEL_LABELS } from '../components/QualityBadge';
 import style from './page.module.css';
 import Link from 'next/link';
 import Button from '@/app/components/Button';
@@ -11,7 +12,8 @@ import Button from '@/app/components/Button';
 const ITEMS_PER_PAGE = 10;
 
 const Page: React.FC = () => {
-  const [words, setWords] = useState<WordSummary[]>([]);
+  const [words, setWords] = useState<QualityWord[]>([]);
+  const [level, setLevel] = useState<QualityLevel | ''>('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
@@ -31,19 +33,41 @@ const Page: React.FC = () => {
     let ignore = false;
 
     Promise.resolve()
-      .then(() => {
+      .then(async () => {
         setIsLoading(true);
         setError(null);
-        return api.words.search({
+
+        // A quality filter lists the weakest words first; otherwise the fuzzy search order is kept
+        if (level) {
+          const data = await api.quality.words({
+            level,
+            q: searchTerm,
+            page: currentPage,
+            page_size: ITEMS_PER_PAGE,
+          });
+          return { items: data.items, hasMore: currentPage * ITEMS_PER_PAGE < data.total };
+        }
+
+        const data = await api.words.search({
           q: searchTerm,
           page: currentPage,
           page_size: ITEMS_PER_PAGE,
         });
+        const scores = data.items.length
+          ? await api.quality.scores(data.items.map((w) => w.id))
+          : [];
+        const byId = new Map(scores.map((s) => [s.id, s]));
+        const items = data.items.map((w) => ({
+          ...w,
+          quality: byId.get(w.id)?.quality ?? null,
+          level: byId.get(w.id)?.level ?? null,
+        }));
+        return { items, hasMore: data.has_more };
       })
-      .then((data) => {
+      .then(({ items, hasMore }) => {
         if (ignore) return;
-        setHasMore(data.has_more);
-        setWords(data.items);
+        setHasMore(hasMore);
+        setWords(items);
       })
       .catch(() => {
         if (!ignore) setError('Greška pri učitavanju riječi.');
@@ -55,7 +79,7 @@ const Page: React.FC = () => {
     return () => {
       ignore = true;
     };
-  }, [currentPage, searchTerm]);
+  }, [currentPage, searchTerm, level]);
 
   return (
     <div className={style.container}>
@@ -78,6 +102,22 @@ const Page: React.FC = () => {
               className={style.searchInput}
             />
           </div>
+          <select
+            className={style.qualitySelect}
+            value={level}
+            onChange={(e) => {
+              setLevel(e.target.value as QualityLevel | '');
+              setCurrentPage(1);
+            }}
+            aria-label="Kvaliteta podataka"
+          >
+            <option value="">Sva kvaliteta</option>
+            {(Object.keys(LEVEL_LABELS) as QualityLevel[]).map((l) => (
+              <option key={l} value={l}>
+                {LEVEL_LABELS[l]}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div>
@@ -94,6 +134,7 @@ const Page: React.FC = () => {
                   <col className={style.colType} />
                   <col />
                   <col className={style.colCount} />
+                  <col className={style.colQuality} />
                   <col className={style.colActions} />
                 </colgroup>
                 <thead>
@@ -102,6 +143,7 @@ const Page: React.FC = () => {
                     <th>Vrsta</th>
                     <th>Značenje</th>
                     <th>Značenja</th>
+                    <th>Kvaliteta</th>
                     <th>
                       <span className={style.srOnly}>Akcije</span>
                     </th>
@@ -120,6 +162,9 @@ const Page: React.FC = () => {
                           {first?.definition || <span className={style.emptyValue}>—</span>}
                         </td>
                         <td>{word.definitions.length}</td>
+                        <td>
+                          <QualityBadge quality={word.quality} level={word.level} />
+                        </td>
                         <td className={style.actionsCell}>
                           <Link
                             href={`/dictionary/${word.id}`}
@@ -160,6 +205,7 @@ const Page: React.FC = () => {
               onClick={() => {
                 setInputValue('');
                 setSearchTerm('');
+                setLevel('');
                 setCurrentPage(1);
               }}
               className={style.emptyStateButton}

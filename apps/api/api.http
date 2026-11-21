@@ -105,3 +105,22 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {}
+
+
+### Quality: green/yellow/red counts
+GET {{baseUrl}}/quality/distribution
+Authorization: Bearer {{token}}
+
+### Quality: weakest words
+GET {{baseUrl}}/quality/words?level=red&page=1&page_size=20
+Authorization: Bearer {{token}}
+
+### Quality: score an unsaved word
+POST {{baseUrl}}/quality/preview
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "definitions": [{ "definition": "zgrada za stanovanje", "type": "imenica", "gender": "ženski", "examples": [] }],
+  "forms": []
+}

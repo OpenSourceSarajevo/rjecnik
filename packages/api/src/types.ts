@@ -35,6 +35,9 @@ export type Word = {
 /** A word as admins see it, including the editor note and audit columns. */
 export type WordDetail = Word & {
   note?: string | null;
+  /** 0–100, set by the database on every write. */
+  quality?: number | null;
+  quality_breakdown?: QualityBreakdown | null;
   created_by?: string | null;
   created_at?: string | null;
   updated_by?: string | null;
@@ -173,4 +176,66 @@ export type NewHeadwordInput = {
 
 export type IgnoreNewWordInput = {
   type?: IgnoreType;
+};
+
+export type QualityLevel = 'green' | 'yellow' | 'red';
+
+export type QualityDistribution = {
+  green: number;
+  yellow: number;
+  red: number;
+  unscored: number;
+  total: number;
+};
+
+export type QualityRuleResult = {
+  key: string;
+  label: string;
+  word_type: string | null;
+  points: number;
+  earned: number;
+  /** Definitions or form cells that pass, out of `total`. */
+  passed: number;
+  total: number;
+  /** Form cells marked as not applicable (they count as passed). */
+  not_applicable: number;
+};
+
+export type QualityBreakdown = {
+  score: number;
+  level: QualityLevel;
+  earned: number;
+  possible: number;
+  /** No definition has a type, so the word is scored out of `untyped_possible`. */
+  untyped: boolean;
+  rules: QualityRuleResult[];
+};
+
+/** A word as the editor holds it, before saving. */
+export type WordToScore = {
+  definitions: Partial<Definition>[];
+  forms?: WordForm[] | null;
+  origins?: string[] | null;
+  alternatives?: string[] | null;
+};
+
+export type ListQualityWordsParams = {
+  level?: QualityLevel;
+  q?: string;
+  order?: 'asc' | 'desc';
+  page?: number;
+  page_size?: number;
+};
+
+export type QualityWord = WordSummary & { quality: number | null; level: QualityLevel | null };
+
+export type QualityWordPage = {
+  items: QualityWord[];
+  total: number;
+};
+
+export type WordScore = {
+  id: number;
+  quality: number | null;
+  level: QualityLevel | null;
 };

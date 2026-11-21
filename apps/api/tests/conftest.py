@@ -1,6 +1,7 @@
 import copy
 import os
 import time
+from collections.abc import Callable
 from typing import Any
 
 import jwt
@@ -39,6 +40,7 @@ class FakeQuery:
         self.window: tuple[int, int] | None = None
         self.count = False
         self.one = False
+        self.negate_next = False
 
     # filters / modifiers
     def select(self, *_: Any, count: str | None = None, **__: Any) -> "FakeQuery":
@@ -49,8 +51,26 @@ class FakeQuery:
         self.filters.append(lambda r: r.get(col) == val)
         return self
 
+    @property
+    def not_(self) -> "FakeQuery":
+        self.negate_next = True
+        return self
+
     def is_(self, col: str, val: str) -> "FakeQuery":
-        self.filters.append(lambda r: r.get(col) is None)
+        negate, self.negate_next = self.negate_next, False
+        self.filters.append(lambda r: (r.get(col) is None) != negate)
+        return self
+
+    def gte(self, col: str, val: Any) -> "FakeQuery":
+        self.filters.append(lambda r: r.get(col) is not None and r[col] >= val)
+        return self
+
+    def lt(self, col: str, val: Any) -> "FakeQuery":
+        self.filters.append(lambda r: r.get(col) is not None and r[col] < val)
+        return self
+
+    def in_(self, col: str, values: list[Any]) -> "FakeQuery":
+        self.filters.append(lambda r: r.get(col) in values)
         return self
 
     def ilike(self, col: str, pattern: str) -> "FakeQuery":
@@ -144,6 +164,8 @@ class FakeDb:
         self.tables = copy.deepcopy(tables or {})
         self._id = 1000
         self.rpc_calls: list[tuple[str, dict]] = []
+        # Database functions other than search, by name: params -> returned data
+        self.rpc_handlers: dict[str, Callable[[dict], Any]] = {}
 
     def next_id(self) -> int:
         self._id += 1
@@ -152,8 +174,11 @@ class FakeDb:
     def table(self, name: str) -> FakeQuery:
         return FakeQuery(self, name)
 
-    def rpc(self, name: str, params: dict) -> FakeQuery:
+    def rpc(self, name: str, params: dict) -> Any:
         self.rpc_calls.append((name, params))
+        if name in self.rpc_handlers:
+            data = self.rpc_handlers[name](params)
+            return type("Rpc", (), {"execute": lambda _: _Result(copy.deepcopy(data))})()
         q = FakeQuery(self, "words_v2")
         start = params["offset_value"]
         q.window = (start, start + params["limit_value"] - 1)

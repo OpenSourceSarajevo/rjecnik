@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Book, FileText, Layers, Upload, Database, ArrowRight } from 'lucide-react';
 
+import type { QualityDistribution as Distribution } from '@rjecnik/api';
 import { api } from '@/utils/api';
 
+import QualityDistribution from './components/QualityDistribution';
 import TypeBreakdown from './components/TypeBreakdown';
 import style from './page.module.css';
 
@@ -61,6 +63,15 @@ export default function Page() {
   const [typeBreakdown, setTypeBreakdown] = useState<TypeBreakdownItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [quality, setQuality] = useState<Distribution | null>(null);
+
+  // Loaded on its own, so a failure here doesn't hide the other statistics
+  useEffect(() => {
+    api.quality
+      .distribution()
+      .then(setQuality)
+      .catch(() => setQuality(null));
+  }, []);
 
   useEffect(() => {
     async function fetchStats() {
@@ -120,6 +131,8 @@ export default function Page() {
               </div>
             ))}
           </div>
+
+          {quality && <QualityDistribution distribution={quality} />}
 
           <TypeBreakdown items={typeBreakdown} />
         </>

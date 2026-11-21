@@ -6,6 +6,7 @@ import DefinitionsForm from './DefinitionsForm';
 import FormsForm from './FormsForm';
 import OriginsForm from './OriginsForm';
 import AlternativesForm from './AlternativesForm';
+import QualityPanel from './QualityPanel';
 import type { Definition, WordForm } from '@rjecnik/api';
 import Button from '@/app/components/Button';
 import style from './WordEditor.module.css';
@@ -159,6 +160,13 @@ const WordEditor: React.FC<Props> = ({
           </Button>
         </div>
       </div>
+
+      <QualityPanel
+        definitions={definitions}
+        forms={forms}
+        origins={origins}
+        alternatives={alternatives}
+      />
 
       <section
         id="osnovno"

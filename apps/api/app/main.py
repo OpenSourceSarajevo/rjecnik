@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.errors import register_error_handlers
-from app.routers import dashboard, health, ignored_words, new_words, words
+from app.routers import dashboard, health, ignored_words, new_words, quality, words
 
 settings = get_settings()
 
@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ROUTERS = (health, words, dashboard, ignored_words, new_words)
+ROUTERS = (health, words, dashboard, ignored_words, new_words, quality)
 
 for module in ROUTERS:
     app.include_router(module.router, prefix="/api")

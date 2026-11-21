@@ -43,6 +43,9 @@ class WordDetail(Word):
     """Full row for the admin app, including the editor note and audit columns."""
 
     note: str | None = None
+    # Set by a database trigger on every write (see docs/data-quality.md)
+    quality: int | None = None
+    quality_breakdown: dict[str, Any] | None = None
     created_by: str | None = None
     created_at: str | None = None
     updated_by: str | None = None

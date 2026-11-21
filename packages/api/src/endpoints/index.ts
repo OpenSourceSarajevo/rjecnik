@@ -2,6 +2,7 @@ import type { Transport } from '../transport';
 import { dashboardEndpoints } from './dashboard';
 import { ignoredWordsEndpoints } from './ignoredWords';
 import { newWordsEndpoints } from './newWords';
+import { qualityEndpoints } from './quality';
 import { wordsEndpoints } from './words';
 
 /**
@@ -14,6 +15,7 @@ export function createApi<Options>(send: Transport<Options>) {
     dashboard: dashboardEndpoints(send),
     ignoredWords: ignoredWordsEndpoints(send),
     newWords: newWordsEndpoints(send),
+    quality: qualityEndpoints(send),
   };
 }
 

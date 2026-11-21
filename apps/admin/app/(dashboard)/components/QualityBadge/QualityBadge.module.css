@@ -1,0 +1,32 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.green {
+  color: var(--color-success);
+}
+
+.yellow {
+  color: var(--color-warning);
+}
+
+.red {
+  color: var(--color-error);
+}
+
+.unscored {
+  color: var(--color-gray-400);
+}
