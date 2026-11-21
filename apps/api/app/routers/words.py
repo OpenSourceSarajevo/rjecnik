@@ -115,7 +115,7 @@ def search_words(
     page: Annotated[int, Query(ge=1)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100)] = 20,
 ) -> SearchResults:
-    """Exact match first, then prefix matches, then other matches; alphabetical within each."""
+    """Fuzzy search that ignores diacritics and tolerates typos; exact matches come first."""
     res = db.rpc(
         "search_words_ranked",
         # One extra row tells us whether another page exists
