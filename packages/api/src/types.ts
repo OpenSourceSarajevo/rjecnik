@@ -81,6 +81,24 @@ export type DashboardStats = {
   type_breakdown: { type: string; count: number }[];
 };
 
+export type ActivityParams = {
+  /** ISO date-time with a time zone; defaults to 24 hours before `end`. */
+  start?: string;
+  /** ISO date-time with a time zone (exclusive); defaults to now. */
+  end?: string;
+};
+
+export type Activity = {
+  start: string;
+  end: string;
+  new_words: number;
+  /** Distinct words with at least one edit in the range. */
+  edited_words: number;
+  /** `new_words + edited_words`. */
+  total_changes: number;
+  average_daily_changes: number;
+};
+
 export type IgnoreType = 'ostalo' | 'ime' | 'strana_riječ' | 'skraćenica';
 
 export type IgnoredWord = {

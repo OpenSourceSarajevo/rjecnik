@@ -6,6 +6,7 @@ import { Book, FileText, Layers, Upload, Database, ArrowRight } from 'lucide-rea
 import type { QualityDistribution as Distribution } from '@rjecnik/api';
 import { api } from '@/utils/api';
 
+import ActivityStats from './components/ActivityStats';
 import QualityDistribution from './components/QualityDistribution';
 import TypeBreakdown from './components/TypeBreakdown';
 import style from './page.module.css';
@@ -131,6 +132,8 @@ export default function Page() {
               </div>
             ))}
           </div>
+
+          <ActivityStats />
 
           {quality && <QualityDistribution distribution={quality} />}
 

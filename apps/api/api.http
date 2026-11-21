@@ -28,6 +28,14 @@ Authorization: Bearer {{token}}
 ### Dashboard stats without token (expect 401)
 GET {{baseUrl}}/dashboard/stats
 
+### Dashboard activity (last 24 hours)
+GET {{baseUrl}}/dashboard/activity
+Authorization: Bearer {{token}}
+
+### Dashboard activity (custom range)
+GET {{baseUrl}}/dashboard/activity?start=2026-11-01T00:00:00Z&end=2026-11-08T00:00:00Z
+Authorization: Bearer {{token}}
+
 ### Word by id [stub]
 GET {{baseUrl}}/words/1
 Authorization: Bearer {{token}}

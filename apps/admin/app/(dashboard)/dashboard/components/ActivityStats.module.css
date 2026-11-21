@@ -1,0 +1,176 @@
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-10);
+  margin-bottom: var(--spacing-4);
+}
+
+.subTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-1);
+  padding: 0.25rem;
+  border-radius: var(--border-radius-md);
+  background: var(--color-gray-100);
+}
+
+.tab {
+  padding: var(--spacing-2) var(--spacing-3);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: transparent;
+  color: var(--color-gray-500);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.tab:hover {
+  color: var(--color-gray-900);
+}
+
+.tabActive {
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  box-shadow: var(--shadow-sm);
+}
+
+.customRange {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+}
+
+.dateField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-gray-500);
+}
+
+.dateInput {
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius);
+  background: var(--color-white);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-900);
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+}
+
+.applyButton {
+  padding: var(--spacing-2) var(--spacing-4);
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--color-primary-light);
+  color: var(--color-white);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.applyButton:hover:not(:disabled) {
+  background: var(--color-primary);
+}
+
+.applyButton:disabled {
+  background: var(--color-gray-300);
+  color: var(--color-gray-500);
+  cursor: not-allowed;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  min-height: 92px;
+  padding: var(--spacing-5);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.cardIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--border-radius-md);
+  background: var(--color-gray-100);
+  color: var(--color-primary);
+}
+
+.cardLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-gray-500);
+}
+
+.cardValue {
+  margin-top: var(--spacing-1);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-gray-900);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100) 25%,
+    var(--color-gray-50) 37%,
+    var(--color-gray-100) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.error {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+}
