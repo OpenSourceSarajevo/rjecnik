@@ -9,4 +9,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: curl -i -X GET "https://rjecnik-liard.vercel.app/api/dictionary?pageNumber=0&page"
+      # Must hit an endpoint that queries the database (/api/health does not)
+      - run: curl -i --fail-with-body "https://api-alpha-nine-81.vercel.app/api/words?limit=1"
