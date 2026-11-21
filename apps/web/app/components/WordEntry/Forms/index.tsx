@@ -11,8 +11,11 @@ type WordForm = {
   category: string;
 };
 
-const getFormValue = (forms: WordForm[], padez: string) => {
-  const form = forms.find((f) => f.name.toLowerCase() === padez.toLowerCase());
+// Which field of a form holds the row label: the case or tense (`name`), or the gender (`form`)
+type RowField = 'name' | 'form';
+
+const getFormValue = (forms: WordForm[], row: string, rowField: RowField) => {
+  const form = forms.find((f) => f[rowField].toLowerCase() === row.toLowerCase());
   return form ? form.value : '-';
 };
 
@@ -20,20 +23,21 @@ type FormsTableProps = {
   title: string;
   rows: string[];
   forms: WordForm[];
+  rowField?: RowField;
 };
 
 const FormsTable = (props: FormsTableProps) => {
-  const { title, rows, forms } = props;
+  const { title, rows, forms, rowField = 'name' } = props;
 
   return (
     <>
       <h3 className={style.title}>{title}</h3>
       <table className={style.table}>
         <tbody>
-          {rows.map((padez: string, index) => (
+          {rows.map((row: string, index) => (
             <tr key={index}>
-              <td className={style.key}>{padez}</td>
-              <td className={style.value}>{getFormValue(forms, padez)}</td>
+              <td className={style.key}>{row}</td>
+              <td className={style.value}>{getFormValue(forms, row, rowField)}</td>
             </tr>
           ))}
         </tbody>
@@ -139,6 +143,34 @@ const VerbForms: React.FC<FormsProps> = ({ forms }) => {
   );
 };
 
+const ComparisonForms: React.FC<FormsProps> = ({ forms }) => {
+  const RODOVI = ['muški', 'ženski', 'srednji'];
+
+  const comparativeForms = forms.filter(
+    (form) => form.name === 'komparativ' && form.category === 'komparacija'
+  );
+  const superlativeForms = forms.filter(
+    (form) => form.name === 'superlativ' && form.category === 'komparacija'
+  );
+
+  return (
+    <section className={style.container} aria-labelledby="oblici">
+      <h2 id="oblici" className={style.heading}>
+        Komparacija
+      </h2>
+      <div className={style.section}>
+        <div className={style.column}>
+          <FormsTable title="Komparativ" rows={RODOVI} forms={comparativeForms} rowField="form" />
+        </div>
+
+        <div className={style.column}>
+          <FormsTable title="Superlativ" rows={RODOVI} forms={superlativeForms} rowField="form" />
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Forms: React.FC<FormsProps> = ({ forms }) => {
   const padezForms = forms.some((form) => form.category === 'padež');
   if (padezForms) {
@@ -148,6 +180,11 @@ const Forms: React.FC<FormsProps> = ({ forms }) => {
   const glagolForms = forms.some((form) => form.category === 'glagolsko vrijeme');
   if (glagolForms) {
     return <VerbForms forms={forms} />;
+  }
+
+  const comparisonForms = forms.some((form) => form.category === 'komparacija');
+  if (comparisonForms) {
+    return <ComparisonForms forms={forms} />;
   }
 
   return <></>;
