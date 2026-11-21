@@ -152,15 +152,15 @@ Seeded by the migration `20261121124928_word_quality.sql`. Each word type can ea
 | `noun_synonyms` | Sinonimi | imenica | `word_list` `synonyms` | 5 | all |
 | `verb_tenses` | Glagolska vremena | glagol | `forms_grid` prezent, perfekt, futur I, aorist, imperfekt × 6 persons | 25 | share |
 | `verb_synonyms` | Sinonimi | glagol | `word_list` `synonyms` | 5 | all |
-| `adjective_comparison` | Komparacija | pridjev | `forms_grid` komparativ, superlativ × muški | 10 | share |
-| `adjective_comparison_genders` | Komparacija (ženski i srednji rod) | pridjev | `forms_grid` komparativ, superlativ × ženski, srednji | 5 | share |
+| `adjective_comparative` | Komparativ | pridjev | `forms_grid` komparativ × muški, ženski, srednji | 5 | share |
+| `adjective_superlative` | Superlativ | pridjev | `forms_grid` superlativ × muški, ženski, srednji | 5 | share |
 | `adjective_synonyms` | Sinonimi | pridjev | `word_list` `synonyms` | 10 | all |
 | `adjective_antonyms` | Antonimi | pridjev | `word_list` `antonyms` | 10 | all |
 | `adverb_synonyms` | Sinonimi | prilog | `word_list` `synonyms` | 10 | all |
 | `pronoun_cases` | Padeži | zamjenica | `forms_grid` cases | 15 | share, **inactive** |
 | `number_cases` | Padeži | broj | `forms_grid` cases | 15 | share, **inactive** |
 
-Points possible with these rules: imenica 100, glagol 100, pridjev 105, prilog 80, other types 70, words without a type 100. Pluskvamperfekt and futur II are stored but not scored. Not scored at all: origins, alternatives, pronunciation, frequency and the editor note (an open note doesn't affect the score).
+Points possible with these rules: imenica 100, glagol 100, pridjev 100, prilog 80, other types 70, words without a type 100. Pluskvamperfekt and futur II are stored but not scored. Not scored at all: origins, alternatives, pronunciation, frequency and the editor note (an open note doesn't affect the score).
 
 ## When scores are recalculated
 

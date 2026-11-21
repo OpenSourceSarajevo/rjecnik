@@ -52,10 +52,10 @@ INSERT INTO quality_rules (sort_order, key, label, word_type, kind, params, poin
     25, 'share', true),
   (210, 'verb_synonyms', 'Sinonimi', 'glagol', 'word_list', '{"from": "definitions", "field": "synonyms", "min": 1}', 5, 'all', true),
 
-  (300, 'adjective_comparison', 'Komparacija', 'pridjev', 'forms_grid',
-    '{"category": "komparacija", "forms": ["muški"], "names": ["komparativ", "superlativ"]}', 10, 'share', true),
-  (310, 'adjective_comparison_genders', 'Komparacija (ženski i srednji rod)', 'pridjev', 'forms_grid',
-    '{"category": "komparacija", "forms": ["ženski", "srednji"], "names": ["komparativ", "superlativ"]}', 5, 'share', true),
+  (300, 'adjective_comparative', 'Komparativ', 'pridjev', 'forms_grid',
+    '{"category": "komparacija", "forms": ["muški", "ženski", "srednji"], "names": ["komparativ"]}', 5, 'share', true),
+  (310, 'adjective_superlative', 'Superlativ', 'pridjev', 'forms_grid',
+    '{"category": "komparacija", "forms": ["muški", "ženski", "srednji"], "names": ["superlativ"]}', 5, 'share', true),
   (320, 'adjective_synonyms', 'Sinonimi', 'pridjev', 'word_list', '{"from": "definitions", "field": "synonyms", "min": 1}', 10, 'all', true),
   (330, 'adjective_antonyms', 'Antonimi', 'pridjev', 'word_list', '{"from": "definitions", "field": "antonyms", "min": 1}', 10, 'all', true),
 
